@@ -43,7 +43,8 @@ Or sign up fresh. The onboarding wizard has a **Try with demo data** button. API
 
 | Path | Responsibility |
 |---|---|
-| `aureus/ingestion/` | Parsers for Tally Prime XML, Zoho Books bills JSON, Busy/generic CSV and GSTR-2B JSON, all producing one `Invoice` model |
+| `aureus/ingestion/` | Parsers for Tally Prime XML, Zoho Books bills JSON, Busy/generic CSV, the GSTN purchase register template, GSTR-2B JSON and IMS JSON |
+| `aureus/engines/ims_actions.py` | Suggests IMS actions (Accept / Pending; never auto-Reject) from the reconciliation and builds the IMS upload file |
 | `aureus/engines/tax.py` | Three-pass matcher and status rules (below) |
 | `aureus/engines/policy.py` | HSN → asset class, MSME category, scheme eligibility and benefit maths |
 | `aureus/engines/deadlines.py` | GSTR-2B / GSTR-3B dates (monthly and QRMP), Sec 16(4) time limit |
@@ -78,6 +79,13 @@ A `reason` code refines each mismatch (`VALUE_MISMATCH`, `TAX_HEAD_MISMATCH`, `I
 - the Sec 16(4) deadline
 
 GSTR-2B entries with no booked invoice are reported separately as unclaimed credit.
+
+### IMS (Invoice Management System)
+
+Since October 2024, a supplier invoice only reaches GSTR-2B if the buyer accepts it in IMS or leaves it untouched. Upload the IMS JSON and the app does two things:
+
+- **Explains each "missing" invoice.** It tells *held back by you* (Pending or Rejected in IMS) apart from *filed late by the supplier* and *never uploaded*.
+- **Suggests an IMS action per document.** It accepts what matches the books and keeps amount mismatches and unbooked documents Pending. It never rejects automatically. The suggestions become an IMS upload file built in the format of GSTN's IMS Offline Tool v2.0. The file has not yet been tried against the live portal, so test it on one document first.
 
 ### Policy engine
 
@@ -158,7 +166,7 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 
 ## What is production-ready vs. what needs work
 
-**Built and tested** (43 tests against MongoDB 8.0, plus a browser run through every screen):
+**Built and tested** (49 tests against MongoDB 8.0, plus a browser run through every screen):
 - ingestion parsers and the reconciliation engine
 - paisa-level matching
 - the policy maths

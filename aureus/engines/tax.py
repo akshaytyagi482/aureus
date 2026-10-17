@@ -4,7 +4,8 @@ Every purchase-register invoice ends in one of three statuses (PRD Module B):
 
 * MATCHED_ELIGIBLE  - found in GSTR-2B, every amount within ₹0.99, ITC available
 * MISMATCH_WARN     - found (or probably found), but something disagrees
-* MISSING_IN_PORTAL - the supplier has not uploaded it, so the ITC is frozen
+* MISSING_IN_PORTAL - not in GSTR-2B, so the ITC is frozen (IMS data, when present,
+                      says whether the supplier never uploaded it or the buyer held it back)
 
 `reason` refines MISMATCH_WARN (which field disagrees and how it was paired).
 GSTR-2B entries with no booked invoice are returned separately as
@@ -49,6 +50,18 @@ REASON_TEXT = {
     "SUPPLIER_GSTIN_MISMATCH": "Invoice found under a different supplier GSTIN",
     "ITC_NOT_AVAILABLE": "GSTR-2B marks this credit as not available",
     "NOT_UPLOADED": "Supplier has not uploaded this invoice in GSTR-1/IFF",
+    "REJECTED_IN_IMS": "You rejected this invoice in IMS, so it is kept out of GSTR-2B",
+    "PENDING_IN_IMS": "You kept this invoice Pending in IMS, so it is kept out of GSTR-2B",
+    "FILED_IN_LATER_PERIOD": "Supplier uploaded it late, in a later return period",
+    "IN_IMS_NOT_IN_2B": "Supplier uploaded it and it is in IMS, but not in the GSTR-2B you imported",
+}
+
+# The GSTN Matching Offline Tool's categories, so CAs see familiar labels.
+GSTN_CATEGORY = {
+    "EXACT": "Exact match", "ITC_NOT_AVAILABLE": "Exact match",
+    "INVOICE_NO_MISMATCH": "Partial match", "DATE_MISMATCH": "Partial match",
+    "SUPPLIER_GSTIN_MISMATCH": "Probable match",
+    "VALUE_MISMATCH": "Unmatched", "TAX_HEAD_MISMATCH": "Unmatched",
 }
 
 ACTIONS = {
@@ -59,6 +72,10 @@ ACTIONS = {
     "SUPPLIER_GSTIN_MISMATCH": "Check the supplier's GSTIN in your ledger master and correct it.",
     "ITC_NOT_AVAILABLE": "Do not claim this credit in GSTR-3B; check the reason shown in GSTR-2B.",
     "NOT_UPLOADED": "Hold the credit and send the supplier a reminder to upload before the GSTR-3B due date.",
+    "REJECTED_IN_IMS": "If the rejection was a mistake, change it to Accept in IMS and recompute GSTR-2B before filing GSTR-3B.",
+    "PENDING_IN_IMS": "Accept it in IMS once the invoice is verified, then recompute GSTR-2B before filing GSTR-3B.",
+    "FILED_IN_LATER_PERIOD": "Claim it in the GSTR-3B for the period in which it appears in GSTR-2B.",
+    "IN_IMS_NOT_IN_2B": "Recompute or re-download GSTR-2B for this period; the document should then match.",
 }
 
 
@@ -172,9 +189,30 @@ def _pair_result(books: Invoice, portal: Invoice, basis: str, tolerance: int) ->
     }
 
 
+def _ims_index(ims: list[dict] | None) -> dict[tuple, dict]:
+    return {(r["supplier_gstin"], normalize_invoice_no(r["doc_no"])): r
+            for r in (ims or []) if r["kind"] == "invoice"}
+
+
+def _missing_reason(inv: Invoice, ims_record: dict | None) -> str:
+    if not ims_record:
+        return "NOT_UPLOADED"
+    if ims_record["action"] == "R":
+        return "REJECTED_IN_IMS"
+    if ims_record["action"] == "P":
+        return "PENDING_IN_IMS"
+    period = ims_record.get("return_period") or ""
+    if len(period) == 6 and (period[2:], period[:2]) > (str(inv.invoice_date.year), f"{inv.invoice_date.month:02d}"):
+        return "FILED_IN_LATER_PERIOD"
+    return "IN_IMS_NOT_IN_2B"
+
+
 def reconcile(books: list[Invoice], portal: list[Invoice], buyer_state: str,
-              today: date | None = None, tolerance_paise: int | None = None) -> dict:
+              today: date | None = None, tolerance_paise: int | None = None,
+              ims: list[dict] | None = None) -> dict:
+    """Match books to GSTR-2B. Optional IMS records explain why a booked invoice is missing from 2B."""
     today = today or date.today()
+    ims_by_key = _ims_index(ims)
     tolerance = config.MATCH_TOLERANCE_PAISE if tolerance_paise is None else tolerance_paise
 
     portal_by_key: dict[tuple, list[int]] = defaultdict(list)
@@ -231,10 +269,15 @@ def reconcile(books: list[Invoice], portal: list[Invoice], buyer_state: str,
         else:
             tax = _tax(inv)
             row.update({
-                "portal": None, "status": MISSING, "reason": "NOT_UPLOADED", "match_basis": None,
+                "portal": None, "status": MISSING, "reason": _missing_reason(inv, ims_by_key.get(_key(inv))),
+                "match_basis": None,
                 "variance": None, "max_variance": None,
                 "itc_books": rupees(tax), "itc_portal": 0.0, "itc_claimable": 0.0, "itc_at_risk": rupees(tax),
             })
+        ims_record = ims_by_key.get(_key(portal[pairs[b_idx][0]])) if b_idx in pairs else None
+        ims_record = ims_record or ims_by_key.get(_key(inv))
+        row["ims_action"] = ims_record["action"] if ims_record else None
+        row["gstn_category"] = GSTN_CATEGORY.get(row["reason"], "In PR not in GSTR-2B")
         row["reason_text"] = REASON_TEXT[row["reason"]]
         row["action"] = ACTIONS.get(row["reason"], "Ready to claim in GSTR-3B.")
         results.append(row)
@@ -247,6 +290,7 @@ def reconcile(books: list[Invoice], portal: list[Invoice], buyer_state: str,
         portal_only.append({
             "id": f"p{p_idx}",
             "portal": p.to_dict(),
+            "gstn_category": "In GSTR-2B not in PR",
             "itc_unclaimed": rupees(tax if p.itc_available and tax > 0 else 0),
             "action": "Book this invoice (or confirm it isn't yours) to claim the credit.",
         })

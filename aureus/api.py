@@ -14,7 +14,7 @@ from . import config, crypto, db, gstin as gstin_mod, integrations, sample, serv
 from .config import BASE_DIR
 from .engines import policy
 from .engines.deadlines import period_label
-from .ingestion import gstr2b, parse_books, parse_gstr2b, zoho
+from .ingestion import gstr2b, ims, parse_books, parse_gstr2b, parse_ims, zoho
 from .outputs import forms, notice
 
 MAX_UPLOAD_BYTES = 20 * 1024 * 1024
@@ -235,13 +235,23 @@ async def import_books(org_id: int, source: str = Form(...), file: UploadFile = 
     return services.store_dataset(org_id, user["id"], "books", source, invoices)
 
 
-def _check_buyer(org: dict, payload: bytes):
+def _check_buyer(org: dict, payload: bytes, kind: str = "gstr2b"):
+    reader, label = (ims.buyer_gstin, "IMS file") if kind == "ims" else (gstr2b.buyer_gstin, "GSTR-2B")
     try:
-        owner = gstr2b.buyer_gstin(payload)
+        owner = reader(payload)
     except Exception:
         owner = ""
     if owner and owner != org["gstin"]:
-        raise HTTPException(400, f"This GSTR-2B belongs to GSTIN {owner}, not {org['name']} ({org['gstin']})")
+        raise HTTPException(400, f"This {label} belongs to GSTIN {owner}, not {org['name']} ({org['gstin']})")
+
+
+@app.post("/api/orgs/{org_id}/import/ims")
+async def import_ims(org_id: int, file: UploadFile = File(...), user=Depends(current_user)):
+    org = services.get_org(user, org_id)
+    payload = await _read(file)
+    records = parse_ims(payload)
+    _check_buyer(org, payload, "ims")
+    return services.store_dataset(org_id, user["id"], "ims", "ims", records)
 
 
 @app.post("/api/orgs/{org_id}/import/gstr2b")
@@ -258,7 +268,8 @@ def import_sample(org_id: int, user=Depends(current_user)):
     services.require_member(user, org_id)
     books = services.store_dataset(org_id, user["id"], "books", "tally", parse_books("tally", sample.tally_xml()))
     portal = services.store_dataset(org_id, user["id"], "gstr2b", "gstr2b", parse_gstr2b(sample.gstr2b_json()))
-    return {"books": books, "gstr2b": portal}
+    ims_data = services.store_dataset(org_id, user["id"], "ims", "ims", parse_ims(sample.ims_json()))
+    return {"books": books, "gstr2b": portal, "ims": ims_data}
 
 
 @app.delete("/api/orgs/{org_id}/datasets/{dataset_id}")
@@ -274,7 +285,7 @@ def connector_token(org_id: int, user=Depends(current_user)):
 
 
 @app.post("/api/connector/import/{kind}")
-async def connector_import(kind: Literal["books", "gstr2b"], source: str = Form("tally"), file: UploadFile = File(...),
+async def connector_import(kind: Literal["books", "gstr2b", "ims"], source: str = Form("tally"), file: UploadFile = File(...),
                            x_connector_token: str = Header(default="")):
     org_id = services.org_for_connector_token(x_connector_token) if x_connector_token else None
     if not org_id:
@@ -283,9 +294,9 @@ async def connector_import(kind: Literal["books", "gstr2b"], source: str = Form(
     if kind == "books":
         invoices = parse_books(source, payload)
     else:
-        invoices = parse_gstr2b(payload)
-        _check_buyer(services.get_org_by_id(org_id), payload)
-    return services.store_dataset(org_id, None, kind, source if kind == "books" else "gstr2b", invoices)
+        invoices = parse_ims(payload) if kind == "ims" else parse_gstr2b(payload)
+        _check_buyer(services.get_org_by_id(org_id), payload, kind)
+    return services.store_dataset(org_id, None, kind, source if kind == "books" else kind, invoices)
 
 
 # ---------------------------------------------------------------- Zoho Books OAuth
@@ -364,6 +375,27 @@ def notice_copilot(org_id: int, body: DefenseBody, user=Depends(current_user)):
     draft = notice.draft_reply(org, rows, body.notice_type, body.notice_ref, body.notice_date,
                                period_label(body.period) if body.period else "")
     return notice.polish_with_claude(draft) if body.polish else draft
+
+
+# ---------------------------------------------------------------- IMS
+
+@app.get("/api/orgs/{org_id}/ims")
+def ims_recommendations(org_id: int, period: str | None = Query(default=None, pattern=r"^\d{6}$"), user=Depends(current_user)):
+    return services.ims_recommendations(services.get_org(user, org_id), period)
+
+
+class ImsUploadBody(BaseModel):
+    ids: list[str] = Field(min_length=1)
+    overrides: dict[str, Literal["A", "R", "P", "N"]] = {}
+    period: str | None = Field(default=None, pattern=r"^\d{6}$")
+
+
+@app.post("/api/orgs/{org_id}/ims/upload-file")
+def ims_upload_file(org_id: int, body: ImsUploadBody, user=Depends(current_user)):
+    org = services.get_org(user, org_id)
+    data = services.ims_upload(org, body.ids, body.overrides, body.period)
+    services.audit(org_id, user["id"], "ims_file_generated", {"documents": sum(len(v) for v in data["invdata"].values())})
+    return JSONResponse(data, headers={"Content-Disposition": f'attachment; filename="ims-actions-{org["gstin"]}.json"'})
 
 
 # ---------------------------------------------------------------- policy engine
@@ -456,7 +488,10 @@ def check_gstin(value: str):
 
 
 @app.get("/api/public/sample/{name}")
-def sample_file(name: Literal["tally.xml", "gstr2b.json"]):
+def sample_file(name: Literal["tally.xml", "gstr2b.json", "ims.json"]):
+    if name == "ims.json":
+        return HTMLResponse(sample.ims_json(), media_type="application/json",
+                            headers={"Content-Disposition": 'attachment; filename="sample-ims.json"'})
     if name == "tally.xml":
         return HTMLResponse(sample.tally_xml(), media_type="application/xml",
                             headers={"Content-Disposition": 'attachment; filename="sample-tally-purchases.xml"'})

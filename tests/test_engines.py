@@ -237,3 +237,67 @@ def test_hsn_flags_in_reconciliation():
                 lines=[InvoiceLine("Mystery part", "98765432", 500), InvoiceLine("No code", "", 500)])
     flags = {f["code"] for f in tax.reconcile([b], [], "27", today=TODAY)["results"][0]["flags"]}
     assert {"HSN_UNKNOWN", "HSN_MISSING"} <= flags
+
+
+def _with_ims():
+    books = parse_books("tally", sample.tally_xml())
+    portal = parse_gstr2b(sample.gstr2b_json())
+    from aureus.ingestion import parse_ims
+    ims = parse_ims(sample.ims_json())
+    return tax.reconcile(books, portal, "27", today=TODAY, ims=ims), ims
+
+
+def test_ims_explains_missing_invoices():
+    recon, _ = _with_ims()
+    by_no = {r["books"]["invoice_no"]: r for r in recon["results"]}
+    assert by_no["BST/2026/1187"]["reason"] == "PENDING_IN_IMS"
+    assert by_no["KFC/0931"]["reason"] == "REJECTED_IN_IMS"
+    assert by_no["PTC/1214"]["reason"] == "NOT_UPLOADED"
+    assert all(by_no[n]["status"] == tax.MISSING for n in ("BST/2026/1187", "KFC/0931", "PTC/1214"))
+    assert by_no["DC-0951"]["gstn_category"] == "Partial match"
+    assert by_no["PIS/2026/333"]["gstn_category"] == "Probable match"
+    assert recon["portal_only"][0]["gstn_category"] == "In GSTR-2B not in PR"
+
+
+def test_ims_suggestions_are_conservative():
+    from aureus.engines import ims_actions
+    recon, ims = _with_ims()
+    rows = {r["doc_no"]: r for r in ims_actions.recommend(recon, ims)["rows"]}
+    assert rows["BST/2026/1187"]["suggested"] == "A" and rows["BST/2026/1187"]["priority"] == "high"
+    assert rows["DC-0937"]["suggested"] == "P" and rows["DC-0937"]["priority"] == "high"  # amounts differ
+    assert rows["SPI/0455"]["suggested"] == "P"  # in 2B, not in books
+    assert rows["BST/2026/1101"]["suggested"] == "A" and rows["BST/2026/1101"]["priority"] == "low"
+    assert "17(5)" in rows["MM/INV/5521"]["reason"]
+    assert all(r["suggested"] != "R" for r in rows.values())  # never auto-reject
+
+
+def test_ims_upload_json_shape():
+    from aureus.ingestion import ims as ims_mod, parse_ims
+    records = parse_ims(sample.ims_json())
+    rec = next(r for r in records if r["doc_no"] == "DC-0937")
+    out = ims_mod.upload_json("27AAGCS4821K1Z4", [{**rec, "action": "P", "remarks": "Amounts differ"}])
+    assert out["rtin"] == "27AAGCS4821K1Z4" and out["reqtyp"] == "SAVE"
+    doc = out["invdata"]["b2b"][0]
+    assert doc["action"] == "P" and doc["inum"] == "DC-0937" and doc["remarks"] == "Amounts differ"
+    assert "tradenm" not in doc
+
+
+def test_gst_purchase_register_template():
+    import io
+    import openpyxl
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Purchase Register"
+    ws.append(["GSTIN of recipient* : "])
+    for _ in range(3):
+        ws.append([])
+    ws.append(["GSTIN of Supplier/ECO *", "Trade/Legal name", "Type of inward supplies *", "Document type *",
+               "Document number *", "Document date *", "Taxable value (₹) *", "Integrated tax (₹) ", "Central tax (₹) ",
+               "State/ UT tax (₹) ", "Cess (₹) "])
+    ws.append(["27AAPFU0939F1ZV", "Acme", "B2B", "Invoice", "A/1", "05/09/2026", 1000, 0, 90, 90, 0])
+    ws.append(["27AAPFU0939F1ZV", "Acme", "B2B", "Credit Note", "CN/1", "06/09/2026", 100, 0, 9, 9, 0])
+    buf = io.BytesIO()
+    wb.save(buf)
+    inv, cn = parse_books("gst_template", buf.getvalue())
+    assert (inv.invoice_no, inv.invoice_date, inv.cgst) == ("A/1", date(2026, 9, 5), 90)
+    assert cn.taxable_value == -100 and cn.sgst == -9

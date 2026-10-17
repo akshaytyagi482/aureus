@@ -12,20 +12,21 @@ from pymongo.errors import DuplicateKeyError
 
 from . import config, crypto, db, gstin as gstin_mod
 from .db import fmt, get_db, next_id
-from .engines import deadlines, policy, tax
+from .engines import deadlines, ims_actions, policy, tax
+from .ingestion import ims as ingest_ims
 from .models import Invoice
 
 PURPOSES = {
     "books_sync": {
         "label": "Read purchase records from accounting software",
         "data": ["Purchase invoices", "Supplier names and GSTINs", "Item descriptions and HSN codes"],
-        "dataset_kind": "books",
+        "dataset_kinds": ["books"],
         "integrations": ["zoho"],
     },
     "gstr2b_feed": {
-        "label": "Read GSTR-2B statements from the GST system",
-        "data": ["GSTR-2B invoice details uploaded by suppliers"],
-        "dataset_kind": "gstr2b",
+        "label": "Read GSTR-2B and IMS statements from the GST system",
+        "data": ["GSTR-2B and IMS invoice details uploaded by suppliers", "Your IMS accept/reject/pending actions"],
+        "dataset_kinds": ["gstr2b", "ims"],
         "integrations": [],
     },
 }
@@ -218,7 +219,7 @@ def delete_org(user: dict, org_id: int) -> None:
         raise AccessDenied("Only the business owner can delete this organisation")
     # Remove access first, so a half-finished delete never leaves data reachable.
     d.memberships.delete_many({"org_id": org_id})
-    _purge_org_data(org_id, ["books", "gstr2b"], ["zoho"], connector_tokens=True)
+    _purge_org_data(org_id, ["books", "gstr2b", "ims"], ["zoho"], connector_tokens=True)
     d.dataset_chunks.delete_many({"org_id": org_id})
     for name in ("consents", "integrations", "oauth_states"):
         d[name].delete_many({"org_id": org_id})
@@ -272,7 +273,7 @@ def revoke_consent(user: dict, org_id: int, purpose: str) -> dict:
                                   {"$set": {"revoked_at": db.now()}})
     purged = _purge_org_data(
         org_id,
-        kinds=[PURPOSES[p]["dataset_kind"] for p in purposes],
+        kinds=[k for p in purposes for k in PURPOSES[p]["dataset_kinds"]],
         providers=[prov for p in purposes for prov in PURPOSES[p]["integrations"]],
         connector_tokens="books_sync" in purposes)
     audit(org_id, user["id"], "consent_revoked", {"purposes": purposes, **purged})
@@ -280,20 +281,28 @@ def revoke_consent(user: dict, org_id: int, purpose: str) -> dict:
 
 
 def _require_consent(org_id: int, kind: str):
-    purpose = next(p for p, spec in PURPOSES.items() if spec["dataset_kind"] == kind)
+    purpose = next(p for p, spec in PURPOSES.items() if kind in spec["dataset_kinds"])
     if purpose not in active_consents(org_id):
         raise ConsentRequired(f"Consent for '{PURPOSES[purpose]['label']}' is needed before importing this data")
 
 
 # ---------------------------------------------------------------- datasets
 
-def store_dataset(org_id: int, user_id: int | None, kind: str, source: str, invoices: list[Invoice]) -> dict:
+def store_dataset(org_id: int, user_id: int | None, kind: str, source: str, invoices: list) -> dict:
+    """Store invoices (books / gstr2b) or IMS records (plain dicts) as one encrypted dataset."""
     if not invoices:
         raise ValueError("The file contained no invoices")
-    periods = sorted({i.return_period for i in invoices if i.return_period}) if kind == "gstr2b" else \
-        sorted({deadlines.period_of(i.invoice_date) for i in invoices})
+    if kind == "ims":
+        periods = sorted({r["return_period"] for r in invoices if r["return_period"]})
+        records = invoices
+    elif kind == "gstr2b":
+        periods = sorted({i.return_period for i in invoices if i.return_period})
+        records = [i.to_dict() for i in invoices]
+    else:
+        periods = sorted({deadlines.period_of(i.invoice_date) for i in invoices})
+        records = [i.to_dict() for i in invoices]
     _require_consent(org_id, kind)
-    payload = crypto.encrypt_json([i.to_dict() for i in invoices], _ctx(org_id, "dataset"))
+    payload = crypto.encrypt_json(records, _ctx(org_id, "dataset"))
     chunks = [payload[i:i + CHUNK_CHARS] for i in range(0, len(payload), CHUNK_CHARS)]
     dataset_id = next_id("datasets")
     d = get_db()
@@ -338,6 +347,16 @@ def load_invoices(org_id: int, kind: str) -> list[Invoice]:
     return list(merged.values())
 
 
+def load_ims(org_id: int) -> list[dict]:
+    """Latest IMS record per document: a newer IMS download supersedes older actions."""
+    merged: dict[tuple, dict] = {}
+    for dataset in get_db().datasets.find({"org_id": org_id, "kind": "ims"}).sort("_id", ASCENDING):
+        for record in _read_payload(org_id, dataset):
+            key = (record["section"], record["supplier_gstin"], tax.normalize_invoice_no(record["doc_no"]))
+            merged[key] = record
+    return list(merged.values())
+
+
 # ---------------------------------------------------------------- engine runs
 
 def available_periods(org_id: int) -> list[str]:
@@ -352,13 +371,42 @@ def run_reconciliation(org: dict, period: str | None = None, today: date | None 
     if period:
         books = [b for b in books if deadlines.period_of(b.invoice_date) == period]
         portal = [p for p in portal if p.return_period == period]
-    result = tax.reconcile(books, portal, org["state_code"], today=today)
+    ims = load_ims(org["id"])
+    result = tax.reconcile(books, portal, org["state_code"], today=today, ims=ims)
     result["filing"] = deadlines.filing_status(today, org["state_code"], org.get("filing_frequency") or "monthly")
     result["period"] = period
     result["periods"] = available_periods(org["id"])
     result["has_books"] = bool(books)
     result["has_portal"] = bool(portal)
+    result["has_ims"] = bool(ims)
     return result
+
+
+def ims_recommendations(org: dict, period: str | None = None) -> dict:
+    ims = load_ims(org["id"])
+    recon = run_reconciliation(org, period)
+    return {"has_ims": bool(ims), **ims_actions.recommend(recon, ims)}
+
+
+def ims_upload(org: dict, ids: list[str], overrides: dict[str, str] | None = None, period: str | None = None) -> dict:
+    """Build the IMS upload JSON for the chosen rows, using the suggested (or overridden) action."""
+    ims = load_ims(org["id"])
+    recs = ims_actions.recommend(run_reconciliation(org, period), ims)["rows"]
+    chosen, overrides = set(ids), overrides or {}
+    changes = []
+    for rec, row in zip(ims, recs):
+        if row["id"] not in chosen:
+            continue
+        action = overrides.get(row["id"], row["suggested"])
+        if action not in ingest_ims.ACTIONS:
+            raise ValueError(f"Unknown IMS action '{action}'")
+        if action == "P" and rec["pending_blocked"]:
+            raise ValueError(f"Pending is not allowed for {rec['doc_no']} from {rec['supplier_gstin']}")
+        if action != rec["action"]:
+            changes.append({**rec, "action": action, "remarks": row["reason"]})
+    if not changes:
+        raise ValueError("None of the selected documents change their IMS action")
+    return ingest_ims.upload_json(org["gstin"], changes)
 
 
 def profile_for(org: dict) -> policy.Profile:

@@ -5,13 +5,14 @@ connectors (Zoho OAuth, Tally ODBC/XML server, GSP access to GSTR-2B) would
 produce the same records; the parsers here handle the exported-file path.
 """
 
-from . import busy, gstr2b, tally, zoho
+from . import busy, gst_template, gstr2b, ims, tally, zoho
 
 BOOK_PARSERS = {
     "tally": tally.parse,
     "zoho": zoho.parse,
     "busy": busy.parse,
     "csv": busy.parse,
+    "gst_template": gst_template.parse,
 }
 
 
@@ -39,3 +40,10 @@ def parse_gstr2b(payload: bytes):
         return gstr2b.parse(payload)
     except Exception as exc:
         raise IngestionError(f"Could not read GSTR-2B file: {exc}") from exc
+
+
+def parse_ims(payload: bytes) -> list[dict]:
+    try:
+        return ims.parse(payload)
+    except Exception as exc:
+        raise IngestionError(f"Could not read IMS file: {exc}") from exc

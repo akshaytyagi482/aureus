@@ -413,10 +413,16 @@ function importPanel(org) {
         <input type="file" accept=".json" data-upload="books" data-source="zoho" data-org="${org.id}" style="margin-top:.5rem"></div>
       <div class="source"><strong>Busy / Excel</strong><p class="muted">Upload a purchase register CSV (one row per item).</p>
         <input type="file" accept=".csv" data-upload="books" data-source="busy" data-org="${org.id}"></div>
+      <div class="source"><strong>Any other software</strong><p class="muted">Fill the GSTN purchase register template (from the portal's Matching Offline Tool) and upload the .xlsx or .csv.</p>
+        <input type="file" accept=".xlsx,.csv" data-upload="books" data-source="gst_template" data-org="${org.id}"></div>
     </div>
-    <h3 style="margin-top:1.2rem">2. GSTR-2B</h3>
-    <div class="source"><p class="muted">Download the JSON from GST portal → Returns → GSTR-2B, then upload it here. We never ask for your portal login.</p>
-      <input type="file" accept=".json" data-upload="gstr2b" data-org="${org.id}"></div>
+    <h3 style="margin-top:1.2rem">2. From the GST portal</h3>
+    <div class="source-grid">
+      <div class="source"><strong>GSTR-2B</strong><p class="muted">GST portal → Returns → GSTR-2B → Download JSON. We never ask for your portal login.</p>
+        <input type="file" accept=".json" data-upload="gstr2b" data-org="${org.id}"></div>
+      <div class="source"><strong>IMS (optional)</strong><p class="muted">GST portal → Invoice Management System → Download JSON. Explains invoices you held back and lets AureusRecon suggest IMS actions.</p>
+        <input type="file" accept=".json" data-upload="ims" data-org="${org.id}"></div>
+    </div>
     <div id="import-msg" style="margin-top:1rem"></div>`;
 }
 
@@ -428,7 +434,7 @@ async function viewOnboardConnect(orgId) {
     <p class="muted">Bring in purchases from your accounting software and the matching GSTR-2B. You can add more months later.</p>
     ${importPanel(org)}
     <div class="row" style="margin-top:1rem"><a class="btn primary" href="#/org/${orgId}">Run my reconciliation →</a>
-      <span class="muted">Sample files: <a href="/api/public/sample/tally.xml">Tally XML</a> · <a href="/api/public/sample/gstr2b.json">GSTR-2B JSON</a></span></div>
+      <span class="muted">Sample files: <a href="/api/public/sample/tally.xml">Tally XML</a> · <a href="/api/public/sample/gstr2b.json">GSTR-2B JSON</a> · <a href="/api/public/sample/ims.json">IMS JSON</a></span></div>
   </div></div>`;
 }
 
@@ -443,7 +449,7 @@ async function uploadFile(input) {
   msg.innerHTML = '<div class="banner info">Reading file…</div>';
   try {
     const r = await api(`/api/orgs/${input.dataset.org}/import/${kind}`, { method: 'POST', form: fd });
-    msg.innerHTML = `<div class="banner ok">✓ Imported ${r.records} ${kind === 'books' ? 'purchase invoices' : 'GSTR-2B records'} for ${esc(r.periods.map(periodLabel).join(', '))}.</div>`;
+    msg.innerHTML = `<div class="banner ok">✓ Imported ${r.records} ${({ books: 'purchase invoices', gstr2b: 'GSTR-2B records', ims: 'IMS documents' })[kind]} for ${esc(r.periods.map(periodLabel).join(', '))}.</div>`;
     store.cache = {};
   } catch (err) {
     showError(err, msg);
@@ -454,7 +460,7 @@ async function uploadFile(input) {
 
 // ---------------------------------------------------------------- organisation workspace
 
-const TABS = [['', 'Overview'], ['recon', 'Tax reconciliation'], ['subsidies', 'Subsidies'], ['notices', 'Notice copilot'], ['data', 'Data & consent'], ['settings', 'Profile']];
+const TABS = [['', 'Overview'], ['recon', 'Tax reconciliation'], ['ims', 'IMS actions'], ['subsidies', 'Subsidies'], ['notices', 'Notice copilot'], ['data', 'Data & consent'], ['settings', 'Profile']];
 
 async function orgShell(orgId, tab) {
   const org = await api(`/api/orgs/${orgId}`);
@@ -576,7 +582,7 @@ function renderReconTable(recon = store.recon) {
           <td class="num" style="${Math.abs(r.variance[h]) > 0.99 ? 'color:var(--red);font-weight:600' : ''}">${inr2(r.variance[h])}</td></tr>`).join('')}</tbody></table>`
           : '<p class="muted">No matching record in GSTR-2B.</p>'}</div></div></td></tr>` : '';
       return `<tr class="clickable" data-action="toggle-row" data-id="${r.id}">
-        <td>${badge(r.status)}</td><td>${esc(r.books.supplier_name)}<br><small class="mono">${esc(r.books.supplier_gstin)}</small></td>
+        <td>${badge(r.status)}<br><small>${esc(r.gstn_category)}</small></td><td>${esc(r.books.supplier_name)}<br><small class="mono">${esc(r.books.supplier_gstin)}</small></td>
         <td class="mono">${esc(r.books.invoice_no)}${r.flags.length ? ' <span class="flag" title="Has flags">⚠</span>' : ''}</td><td>${fmtDate(r.books.invoice_date)}</td>
         <td class="num">${inr2(r.itc_books)}</td><td class="num">${inr2(r.itc_portal)}</td>
         <td class="num" style="${r.itc_at_risk ? 'color:var(--red);font-weight:600' : ''}">${r.itc_at_risk ? inr2(r.itc_at_risk) : '—'}</td></tr>${detail}`;
@@ -734,6 +740,58 @@ async function viewOrgData(orgId, params) {
       <td><small>${esc(a.detail ? Object.entries(a.detail).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join(' · ') : '')}</small></td></tr>`).join('')}</tbody></table></div>`;
 }
 
+const IMS_LABEL = { A: 'Accept', R: 'Reject', P: 'Pending', N: 'No action' };
+
+async function viewOrgIms(orgId) {
+  const { el } = await orgShell(orgId, 'ims');
+  const r = await api(`/api/orgs/${orgId}/ims`);
+  store.ims = r;
+  if (!r.has_ims) {
+    el.innerHTML = `<div class="card empty"><h3>Add your IMS download</h3>
+      <p>The Invoice Management System decides which supplier invoices reach GSTR-2B. Upload its JSON and AureusRecon will suggest
+      what to accept, keep pending or review, based on your books.</p><a class="btn primary" href="#/org/${orgId}/data">Upload IMS file</a></div>`;
+    return;
+  }
+  const opt = (row) => `<select data-ims-override="${row.id}" style="width:auto">${['A', 'P', 'R', 'N'].map((a) =>
+    `<option value="${a}" ${a === row.suggested ? 'selected' : ''}>${IMS_LABEL[a]}</option>`).join('')}</select>`;
+  const changed = r.rows.filter((x) => x.changes).sort((a, b) => (a.priority !== 'high') - (b.priority !== 'high'));
+  const moving = changed.filter((x) => x.priority === 'high').length;
+  el.innerHTML = `
+    <div class="banner info">Suggestions follow your reconciliation: accept what matches your books, keep doubtful documents Pending,
+      and never reject automatically. <strong>Review before uploading.</strong> Upload the file on the GST portal's IMS dashboard,
+      the same way as a file from the GSTN IMS Offline Tool, and recompute GSTR-2B before filing GSTR-3B.</div>
+    <div class="card"><div class="row between"><h2>${moving} change(s) that move credit <small class="muted">· ${changed.length - moving} optional</small></h2>
+      <button class="primary" data-action="ims-download" data-org="${orgId}">Download IMS upload file</button></div>
+      <p class="muted">Pre-selected: changes that move credit. Turning <em>No action</em> into <em>Accept</em> is optional, because
+      untouched documents are deemed accepted when GSTR-3B is filed.</p>
+      <div class="table-wrap"><table><thead><tr><th></th><th>Supplier</th><th>Document</th><th class="num">Tax</th><th>Now</th><th>Suggested</th><th>Why</th></tr></thead><tbody>
+      ${changed.map((x) => `<tr><td><input type="checkbox" data-ims-pick="${x.id}" ${x.priority === 'high' ? 'checked' : ''}></td>
+        <td>${esc(x.supplier_name)}<br><small class="mono">${esc(x.supplier_gstin)}</small></td>
+        <td class="mono">${esc(x.doc_no)}<br><small>${fmtDate(x.doc_date)}</small></td><td class="num">${inr2(x.tax)}</td>
+        <td>${esc(IMS_LABEL[x.current] || x.current)}</td><td>${opt(x)}${x.priority === 'high' ? ' ' + badge('warn', 'moves credit') : ''}</td>
+        <td><small>${esc(x.reason)}</small></td></tr>`).join('') || '<tr><td colspan="7" class="muted">Nothing to change.</td></tr>'}
+      </tbody></table></div><div id="ims-msg"></div></div>
+    ${r.rows.filter((x) => !x.changes).length ? `<details class="card"><summary>${r.rows.filter((x) => !x.changes).length} document(s) with no change suggested</summary>
+      <table style="margin-top:.6rem"><tbody>${r.rows.filter((x) => !x.changes).map((x) => `<tr><td>${esc(x.supplier_name)}</td><td class="mono">${esc(x.doc_no)}</td>
+      <td>${esc(IMS_LABEL[x.current] || x.current)}</td><td><small>${esc(x.reason)}</small></td></tr>`).join('')}</tbody></table></details>` : ''}`;
+}
+
+async function downloadImsFile(orgId) {
+  const ids = [...document.querySelectorAll('[data-ims-pick]:checked')].map((c) => c.dataset.imsPick);
+  const msg = document.getElementById('ims-msg');
+  if (!ids.length) { msg.innerHTML = '<div class="banner warn">Select at least one document.</div>'; return; }
+  const overrides = {};
+  for (const sel of document.querySelectorAll('[data-ims-override]')) {
+    const row = store.ims.rows.find((x) => x.id === sel.dataset.imsOverride);
+    if (ids.includes(row.id) && sel.value !== row.suggested) overrides[row.id] = sel.value;
+  }
+  try {
+    const res = await api(`/api/orgs/${orgId}/ims/upload-file`, { method: 'POST', body: { ids, overrides }, raw: true });
+    download(`ims-actions-${store.org.gstin}.json`, await res.blob());
+    msg.innerHTML = `<div class="banner ok">File ready with ${ids.length} document(s). Upload it on the GST portal's IMS dashboard.</div>`;
+  } catch (err) { showError(err, msg); }
+}
+
 async function viewOrgSettings(orgId) {
   await meta();
   const { org, el } = await orgShell(orgId, 'settings');
@@ -768,6 +826,7 @@ const actions = {
     renderReconTable();
   },
   'export-csv': exportCsv,
+  'ims-download': (el) => downloadImsFile(el.dataset.org),
   reminder: (el) => showReminder(el.dataset.org, el.dataset.gstin),
   packet: (el) => showPacket(el.dataset.org, el.dataset.scheme),
   'packet-download': (el) => downloadPacket(el.dataset.org, el.dataset.scheme),
@@ -776,7 +835,7 @@ const actions = {
     try {
       await api(`/api/orgs/${el.dataset.org}/import/sample`, { method: 'POST' });
       store.cache = {};
-      toast('Demo data loaded: 21 purchase invoices and a GSTR-2B for Sep 2026');
+      toast('Demo data loaded: 21 purchase invoices, GSTR-2B and IMS for Sep 2026');
       go(`#/org/${el.dataset.org}`);
     } catch (err) {
       showError(err, document.getElementById('import-msg'));
@@ -894,6 +953,7 @@ const routes = [
   [/^\/onboard\/(\d+)\/connect$/, (m) => viewOnboardConnect(m[1]), true],
   [/^\/org\/(\d+)$/, (m) => viewOrgOverview(m[1]), true],
   [/^\/org\/(\d+)\/recon$/, (m, p) => viewOrgRecon(m[1], p), true],
+  [/^\/org\/(\d+)\/ims$/, (m) => viewOrgIms(m[1]), true],
   [/^\/org\/(\d+)\/subsidies$/, (m) => viewOrgSubsidies(m[1]), true],
   [/^\/org\/(\d+)\/notices$/, (m) => viewOrgNotices(m[1]), true],
   [/^\/org\/(\d+)\/data$/, (m, p) => viewOrgData(m[1], p), true],

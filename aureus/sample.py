@@ -184,3 +184,29 @@ def gstr2b_json() -> bytes:
 
 def book_key_by_invoice_no() -> dict[str, str]:
     return {inv_no: key for key, _, inv_no, *_ in _BOOKS}
+
+
+# IMS: every GSTR-2B invoice is in IMS with no action yet; two "missing" invoices
+# were actually held back by the buyer (one Pending, one Rejected).
+IMS_HELD_BACK = {"missing1": "P", "missing2": "R"}
+
+
+def ims_json() -> bytes:
+    portal = json.loads(gstr2b_json())["data"]["docdata"]["b2b"]
+    items = []
+    for supplier in portal:
+        for doc in supplier["inv"]:
+            items.append({"stin": supplier["ctin"], "tradenm": supplier["trdnm"], "inum": doc["inum"], "inv_typ": "R",
+                          "idt": doc["dt"], "val": doc["val"], "action": "N", "pos": doc["pos"], "txval": doc["txval"],
+                          "iamt": doc["igst"], "camt": doc["cgst"], "samt": doc["sgst"], "cess": doc["cess"],
+                          "srcform": "R1", "rtnprd": PERIOD, "srcfilstatus": "Filed", "supFilingDt": "11-10-2026",
+                          "ispendactblocked": "N", "isRemarksBlocked": "N", "isEdit": "N"})
+    for key, name, ctin, inv_no, d, lines, value, taxes in _books_records():
+        if key not in IMS_HELD_BACK:
+            continue
+        items.append({"stin": ctin, "tradenm": name, "inum": inv_no, "inv_typ": "R", "idt": d.strftime("%d-%m-%Y"),
+                      "val": round(value + sum(taxes.values()), 2), "action": IMS_HELD_BACK[key], "pos": "27",
+                      "txval": value, "iamt": taxes["igst"], "camt": taxes["cgst"], "samt": taxes["sgst"], "cess": 0,
+                      "srcform": "R1", "rtnprd": PERIOD, "srcfilstatus": "Filed", "supFilingDt": "11-10-2026",
+                      "ispendactblocked": "N", "isRemarksBlocked": "N", "isEdit": "N"})
+    return json.dumps({"rtin": BUYER["gstin"], "imsDetails": {"b2b": items}}, indent=1).encode()

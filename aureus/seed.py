@@ -5,7 +5,7 @@
 """
 
 from . import db, sample, services
-from .ingestion import parse_books, parse_gstr2b
+from .ingestion import parse_books, parse_gstr2b, parse_ims
 
 PASSWORD = "demo-pass-123"
 
@@ -29,6 +29,7 @@ def main():
         services.grant_consent(owner, org["id"], purpose)
     services.store_dataset(org["id"], owner["id"], "books", "tally", parse_books("tally", sample.tally_xml()))
     services.store_dataset(org["id"], owner["id"], "gstr2b", "gstr2b", parse_gstr2b(sample.gstr2b_json()))
+    services.store_dataset(org["id"], owner["id"], "ims", "ims", parse_ims(sample.ims_json()))
     services.add_member(owner, org["id"], ca["email"])
     services.create_org(ca, {"name": "Vardhman Polymers", "gstin": sample.gstin("27", "AAECV4411N"), "district": "Nashik",
                              "industry": "Injection-moulded plastic parts", "annual_turnover": 9e7, "investment_pm": 2e7})

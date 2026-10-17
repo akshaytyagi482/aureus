@@ -13,8 +13,8 @@ Every month, AureusRecon reads a factory's purchase records and its GSTR-2B. It 
 | Stage | What happens | Status today | What would make it better |
 |---|---|---|---|
 | **1. Onboard** | Business profile, GSTIN check, taluka group, consent | Built | Read the Udyam certificate PDF to pre-fill the profile |
-| **2. Bring in data** | Tally XML / Zoho / Busy CSV + GSTR-2B JSON | Built; Zoho and Tally connector untested on live systems | Real client exports to harden parsers; licensed GSTR-2B feed (GSP) instead of manual download |
-| **3. Check tax credit** | Match every bill to GSTR-2B, flag missing or wrong uploads, HSN checks | Built (paisa-exact, 3-pass matching) | GST rate check (was the right rate charged for this HSN?); supplier filing-history score; multi-month carry-forward |
+| **2. Bring in data** | Tally XML / Zoho / Busy CSV / GSTN template + GSTR-2B + IMS JSON | Built; Zoho and Tally connector untested on live systems | Real client exports to harden parsers; licensed GSTR-2B feed (GSP) instead of manual download |
+| **3. Check tax credit** | Match every bill to GSTR-2B, explain misses with IMS, suggest IMS actions, HSN checks | Built (paisa-exact, 3-pass matching, GSTN categories, IMS) | GST rate check (was the right rate charged for this HSN?); supplier filing-history score; multi-month carry-forward |
 | **4. Find incentives** | Machinery purchases → state/central scheme rules → estimate | Built; Maharashtra + ZED verified, 4 states still illustrative | Verify more states; read building and land costs too, not just machinery |
 | **5. Act** | Supplier reminders, notice replies, DIC application packets | Built | Read the notice PDF the officer sent and pre-fill the reply; send reminders by email/WhatsApp |
 | **6. Repeat monthly** | New month's data, deadline countdown, CA console | Manual uploads | Scheduled syncs and alerts before the 20th |
@@ -42,6 +42,11 @@ No model training is needed for any of these: Claude works from instructions plu
 - **Maharashtra MIISP 2025 government order and its taluka list.** Used for verified subsidy rules.
 - **MSME ZED scheme guidelines.** Used for verified certification subsidy figures.
 - **PSI-2019 government order.** Used to confirm it no longer applies.
+
+**Collected from the GST portal's offline tools** (downloaded on retry; the portal throttles non-Indian traffic):
+- **IMS Offline Tool v2.0.** I decoded the IMS download/upload JSON format from its macros. The app now imports IMS files, uses them to explain *why* an invoice is missing from GSTR-2B (held back by you vs. not uploaded by the supplier), and generates an IMS action file for upload.
+- **Matching Offline Tool v2.9.** From its purchase register template v2.4, any accounting software that can fill the template can now feed the app. Its six official match categories (*Exact, Partial, Probable, Unmatched, In 2B not in PR, In PR not in 2B*) are shown beside our own reasons.
+- **Not used:** the other offline tools (TRAN, GSTR-4/6/7/8/10/11, SRM, ITC-01/03/04, annual returns, advance ruling, DRC-22A, TDS/TCS) are for other taxpayer types or filings outside this product. The portal's **tax-collection statistics** are useful for market sizing in a pitch, not for the product. The **CBIC and state tax websites** are the sources to use for Notice Copilot citations and GST rate data.
 
 **Could not get from here:**
 - **The GST portal** (gst.gov.in) refuses connections from outside India. It has the official 8-digit Indian HSN + SAC directory (free, no login) and the GSTR-2B offline matching tool. Your brother can download the HSN directory from India: *services.gst.gov.in → Search HSN Code → Download HSN Directory in Excel Format*.

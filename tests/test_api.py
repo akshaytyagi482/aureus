@@ -84,7 +84,7 @@ def test_data_is_encrypted_at_rest(client, owner, demo_org):
 def test_revoke_consent_purges_immediately(client, owner, demo_org):
     client.post(f"/api/orgs/{demo_org}/import/sample", headers=owner)
     res = client.post(f"/api/orgs/{demo_org}/consent/revoke", headers=owner, json={"purpose": "all"}).json()
-    assert res["datasets"] == 2
+    assert res["datasets"] == 3  # books, GSTR-2B and IMS
     org = client.get(f"/api/orgs/{demo_org}", headers=owner).json()
     assert org["datasets"] == [] and org["consents"] == {}
     recon = client.get(f"/api/orgs/{demo_org}/reconciliation", headers=owner).json()
@@ -167,3 +167,26 @@ def test_expiring_collections_have_ttl_indexes():
     assert sessions[(("expires_at", 1),)]["expireAfterSeconds"] == 0
     states = {tuple(i["key"].items()): i for i in d.oauth_states.list_indexes()}
     assert states[(("created_at", 1),)]["expireAfterSeconds"] == 900
+
+
+def test_ims_flow(client, owner, demo_org):
+    client.post(f"/api/orgs/{demo_org}/import/sample", headers=owner)
+    recon = client.get(f"/api/orgs/{demo_org}/reconciliation", headers=owner).json()
+    assert recon["has_ims"] and recon["summary"]["by_reason"]["PENDING_IN_IMS"] == 1
+    recs = client.get(f"/api/orgs/{demo_org}/ims", headers=owner).json()
+    high = [r["id"] for r in recs["rows"] if r["priority"] == "high"]
+    res = client.post(f"/api/orgs/{demo_org}/ims/upload-file", headers=owner, json={"ids": high})
+    assert res.status_code == 200
+    body = res.json()
+    assert body["reqtyp"] == "SAVE" and body["rtin"] == sample.BUYER["gstin"]
+    assert len(body["invdata"]["b2b"]) == len(high)
+    # Nothing changes for an unchanged row
+    same = [r["id"] for r in recs["rows"] if not r["changes"]]
+    assert client.post(f"/api/orgs/{demo_org}/ims/upload-file", headers=owner, json={"ids": same}).status_code == 400
+
+
+def test_ims_for_another_gstin_is_rejected(client, owner):
+    org = client.post("/api/orgs", headers=owner, json={"name": "X", "gstin": "27AAPFU0939F1ZV"}).json()
+    client.post(f"/api/orgs/{org['id']}/consent", headers=owner, json={"purpose": "gstr2b_feed"})
+    res = client.post(f"/api/orgs/{org['id']}/import/ims", headers=owner, files={"file": ("ims.json", sample.ims_json())})
+    assert res.status_code == 400 and "IMS file belongs to GSTIN" in res.json()["detail"]
