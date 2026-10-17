@@ -42,7 +42,7 @@ def owner(client):
 def demo_org(client, owner):
     res = client.post("/api/orgs", headers=owner, json={k: sample.BUYER[k] for k in (
         "name", "gstin", "district", "address", "sector", "industry", "udyam", "annual_turnover", "investment_pm",
-        "term_loan_amount", "monthly_power_bill")})
+        "term_loan_amount", "zone", "monthly_electricity_duty", "monthly_power_units")})
     assert res.status_code == 200, res.text
     org_id = res.json()["id"]
     for purpose in ("books_sync", "gstr2b_feed"):

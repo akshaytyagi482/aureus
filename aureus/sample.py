@@ -28,7 +28,9 @@ BUYER = {
     "annual_turnover": 320000000,
     "investment_pm": 180000000,
     "term_loan_amount": 6000000,
-    "monthly_power_bill": 450000,
+    "zone": "A",  # Haveli taluka, within the Pune Metropolitan Region (Annexure I)
+    "monthly_electricity_duty": 28000,
+    "monthly_power_units": 60000,
 }
 
 S = {

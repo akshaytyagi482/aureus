@@ -81,9 +81,31 @@ A purchase-invoice line counts as a capital asset when two things hold:
 - **Its HSN maps to an asset class.** Plant & machinery (ch. 84/85 minus IT/solar), testing equipment (9024–9031), solar, pollution control.
 - **Its value is high enough.** The value per unit must reach ₹50,000. For solar and pollution control, the line total counts instead, because those are bought by the panel.
 
-Each scheme in `schemes.json` declares states, enterprise categories, sectors, asset classes, an investment window, minimum spend, benefit formula (capital subsidy on cost or term loan, power-tariff exemption, certification support, interest subvention) and cap. MSME category uses the revised investment/turnover limits.
+Each scheme in `schemes.json` declares its states, enterprise categories, sectors, asset classes, investment window and minimum spend. Maharashtra schemes also declare the eligible zones. The benefit formula is one of: capital subsidy, SGST-refund ceiling, electricity-duty exemption, ₹/unit power tariff subsidy, interest subsidy, or certification support. Caps apply throughout. Benefits that draw on the same zone ceiling are shown but not added to the headline total, so it never double-counts.
 
-> ⚠️ **The scheme figures are illustrative.** Every scheme carries `"verified": false`. Before relying on an estimate, check the rate, cap and window against the current notification, then set `verified: true`. The UI shows a warning on every estimate and on generated forms until then.
+**Verified (17 Oct 2026):**
+
+| Source | Section |
+|---|---|
+| Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025 ([PDF](https://industry.maharashtra.gov.in/sites/default/files/2025-12/202512311332497910.pdf)) | MSME section 4.1.1(A), Table 4, and the Annexure I taluka groups |
+| [MSME ZED scheme guidelines](https://dcmsme.gov.in/CLCS_TUS_Scheme/ZED_Scheme/Scheme_Guidelines.aspx) | Key Benefits (fees and subsidy rates) |
+
+Every verified scheme carries `source_document`, `clause` and `verified_on`, which the UI and the printed application show.
+
+| Maharashtra taluka group | A | B | C | D | D+ | Vidarbha/Marathwada etc. | No-industry / aspirational |
+|---|---|---|---|---|---|---|---|
+| SGST-refund ceiling (% of FCI) | 30% | 40% | 50% | 60% | 70% | 80% | 100% |
+| Incentive period (years) | 5 | 7 | 7 | 10 | 10 | 10 | 10 |
+| Electricity duty exemption | – | – | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Power tariff ₹1/unit, 3 yrs | – | – | – | ✓ | ✓ | ✓ | ✓ |
+
+PSI-2019 is not in the grid. MIISP 2025 replaced it for new investment from 31 Dec 2025, and PSI-2019 put MSMEs in Group A (e.g. Pune City, Haveli in PMR) outside the scheme altogether.
+
+**Still open in Maharashtra:**
+- The rules on what counts as eligible fixed capital investment, on expansion units and on cut-off dates are left to a separate implementing scheme order, which I could not find.
+- Ceilings use only the capital purchases found in the books. Building and other fixed assets would raise them.
+
+> ⚠️ **Gujarat, Tamil Nadu, Karnataka and Uttar Pradesh are still illustrative** (`"verified": false`). The UI warns whenever an unverified scheme is counted.
 
 ### Notice Copilot
 
@@ -133,5 +155,5 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 
 **Not built yet:**
 - **Licensed GSTR-2B feed.** Pulling GSTR-2B automatically requires a GSP licence or a GST Suvidha Provider partner (the PRD mentions Account Aggregators). Until then the user downloads the JSON from the portal and uploads it; the parser reads the portal's own format.
-- **Verified scheme data.** See the warning above.
+- **Verified scheme data for states other than Maharashtra.** See the warning above.
 - **Production hardening** beyond the basics: SQLite → Postgres, a KMS-held master key, rate limiting on login, email verification and password reset, background jobs for scheduled syncs, and invitations for users who don't yet have an account.

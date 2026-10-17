@@ -176,9 +176,14 @@ async function calculatorForm() {
         <div class="field"><label>Testing / quality equipment <span class="hint">(₹)</span></label><input name="testing_equipment" inputmode="numeric" placeholder="0"></div>
         <div class="field"><label>Solar plant <span class="hint">(₹)</span></label><input name="solar" inputmode="numeric" placeholder="0"></div>
         <div class="field"><label>Pollution control equipment <span class="hint">(₹)</span></label><input name="pollution_control" inputmode="numeric" placeholder="0"></div>
-        <div class="field"><label>Monthly electricity bill <span class="hint">(₹)</span></label><input name="monthly_power_bill" inputmode="numeric" placeholder="3,00,000"></div>
         <div class="field"><label>Term loan for machinery <span class="hint">(₹, optional)</span></label><input name="term_loan_amount" inputmode="numeric"></div>
       </div>
+      <div class="fields">
+        <div class="field"><label>Taluka group <span class="hint">(Maharashtra)</span></label>${zoneSelect(m, '')}</div>
+        <div class="field"><label>Monthly electricity duty <span class="hint">(₹, on your bill)</span></label><input name="monthly_electricity_duty" inputmode="numeric"></div>
+        <div class="field"><label>Monthly power use <span class="hint">(units / kWh)</span></label><input name="monthly_power_units" inputmode="numeric"></div>
+      </div>
+      <p class="muted" style="font-size:.85rem">Maharashtra incentives depend on your taluka's group. Find it in <a href="${esc(m.zone_source_url)}" target="_blank" rel="noopener noreferrer">Annexure I of the policy</a>.</p>
       <button class="gold" type="submit">Show my estimate</button>
     </form>
     <div id="calc-result"></div>`;
@@ -191,15 +196,18 @@ async function submitCalculator(form) {
   const out = document.getElementById('calc-result');
   try {
     const r = await api('/api/public/subsidy-calculator', { method: 'POST', body: {
-      state_code: d.state_code, category: d.category, investments,
-      monthly_power_bill: numOrNull(d.monthly_power_bill), term_loan_amount: numOrNull(d.term_loan_amount) } });
-    const eligible = r.schemes.filter((s) => s.status === 'eligible');
+      state_code: d.state_code, category: d.category, investments, zone: d.zone || null,
+      monthly_electricity_duty: numOrNull(d.monthly_electricity_duty), monthly_power_units: numOrNull(d.monthly_power_units),
+      term_loan_amount: numOrNull(d.term_loan_amount) } });
+    const eligible = r.schemes.filter((s) => s.status === 'eligible' && s.in_total);
+    const extra = r.schemes.filter((s) => s.status === 'eligible' && !s.in_total);
     const needs = r.schemes.filter((s) => s.status === 'needs_info');
     out.innerHTML = `<hr style="border:0;border-top:1px solid var(--line);margin:1.2rem 0">
       <div class="muted">Estimated incentives you may be able to claim</div>
       <div class="result-total">${inrShort(r.total_estimated_benefit)}</div>
       ${eligible.length ? `<ul class="tight">${eligible.map((s) => `<li><strong>${inrShort(s.estimated_benefit)}</strong> · ${esc(s.name)} <span class="muted">(${esc(s.basis)})</span></li>`).join('')}</ul>`
         : '<p>No scheme in our directory matches these inputs yet. Try adding your machinery spend.</p>'}
+      ${extra.map((s) => `<p class="muted">Possibly also: ${esc(s.name)}, ${inrShort(s.estimated_benefit)} (${esc(s.basis)}). Not added to the total.</p>`).join('')}
       ${needs.map((s) => `<p class="muted">Also check: ${esc(s.name)}. Needs ${esc(s.missing_inputs.join(', '))}.</p>`).join('')}
       <div class="banner warn" style="margin-top:.8rem">${esc(r.disclaimer)}</div>
       <div class="banner info"><strong>Unlock the invoice-level breakdown.</strong> Sync your accounting data and AureusRecon finds the exact qualifying
@@ -298,6 +306,11 @@ function stepper(active) {
   return `<div class="steps">${steps.map((s, i) => `<div class="step ${i === active ? 'active' : i < active ? 'done' : ''}">${i < active ? '✓ ' : `${i + 1}. `}${esc(s)}</div>`).join('')}</div>`;
 }
 
+function zoneSelect(m, current) {
+  return `<select name="zone"><option value="">Not in Maharashtra / not sure</option>${(m?.zones || []).map((z) =>
+    `<option value="${esc(z.id)}" ${z.id === current ? 'selected' : ''}>${esc(z.label)}</option>`).join('')}</select>`;
+}
+
 function profileFields(o = {}) {
   const v = (k) => esc(o[k] ?? '');
   return `<div class="fields">
@@ -317,19 +330,23 @@ function profileFields(o = {}) {
     <div class="field"><label>Annual turnover <span class="hint">(₹)</span></label><input name="annual_turnover" inputmode="numeric" value="${v('annual_turnover')}"></div>
     <div class="field"><label>Investment in plant &amp; machinery <span class="hint">(₹, total)</span></label><input name="investment_pm" inputmode="numeric" value="${v('investment_pm')}"></div>
     <div class="field"><label>Term loan for machinery <span class="hint">(₹)</span></label><input name="term_loan_amount" inputmode="numeric" value="${v('term_loan_amount')}"></div>
-    <div class="field"><label>Monthly electricity bill <span class="hint">(₹)</span></label><input name="monthly_power_bill" inputmode="numeric" value="${v('monthly_power_bill')}"></div>
-  </div>`;
+    <div class="field"><label>Taluka group <span class="hint">(Maharashtra units)</span></label>${zoneSelect(store.meta, o.zone)}</div>
+    <div class="field"><label>Monthly electricity duty <span class="hint">(₹, on your bill)</span></label><input name="monthly_electricity_duty" inputmode="numeric" value="${v('monthly_electricity_duty')}"></div>
+    <div class="field"><label>Monthly power use <span class="hint">(units / kWh)</span></label><input name="monthly_power_units" inputmode="numeric" value="${v('monthly_power_units')}"></div>
+  </div>
+  <p class="muted" style="font-size:.85rem">Find your taluka's group in <a href="${esc(store.meta.zone_source_url)}" target="_blank" rel="noopener noreferrer">Annexure I of the Maharashtra policy</a>. Within the Pune and Mumbai metropolitan regions most talukas are Group A.</p>`;
 }
 
 function profilePayload(d) {
   const out = {};
-  for (const k of ['name', 'gstin', 'district', 'address', 'industry', 'udyam', 'filing_frequency']) if (k in d) out[k] = d[k] || null;
-  for (const k of ['annual_turnover', 'investment_pm', 'term_loan_amount', 'monthly_power_bill']) if (k in d) out[k] = numOrNull(d[k]);
+  for (const k of ['name', 'gstin', 'district', 'address', 'industry', 'udyam', 'filing_frequency', 'zone']) if (k in d) out[k] = d[k] || null;
+  for (const k of ['annual_turnover', 'investment_pm', 'term_loan_amount', 'monthly_electricity_duty', 'monthly_power_units']) if (k in d) out[k] = numOrNull(d[k]);
   if (out.gstin) out.gstin = out.gstin.toUpperCase();
   return out;
 }
 
-function viewOnboardProfile() {
+async function viewOnboardProfile() {
+  await meta();
   app.innerHTML = `<div style="max-width:860px;margin:0 auto">${stepper(0)}<div class="card">
     <h1>${store.user.role === 'ca' ? 'Add a client business' : 'Tell us about your business'}</h1>
     <p class="muted">We read your state from the GSTIN. Turnover and investment decide your MSME category for subsidy rules.</p>
@@ -594,7 +611,8 @@ async function viewOrgSubsidies(orgId) {
   const subs = await getSubsidies(orgId);
   const classes = Object.fromEntries((await meta()).asset_classes.map((a) => [a.id, a.label]));
   el.innerHTML = `
-    <div class="banner warn"><strong>Verify before filing.</strong> ${esc(subs.disclaimer)}</div>
+    <div class="banner ${subs.unverified_in_total.length ? 'warn' : 'info'}">${subs.unverified_in_total.length ? '<strong>Verify before filing.</strong> ' : ''}${esc(subs.disclaimer)}</div>
+    ${subs.zone ? '' : `<div class="banner warn">Add your taluka group in <a href="#/org/${orgId}/settings">Profile</a> to see Maharashtra incentives.</div>`}
     <div class="grid kpis">
       <div class="card kpi gold"><div class="label">Estimated incentives</div><div class="value">${inrShort(subs.total_estimated_benefit)}</div><div class="sub">across eligible schemes</div></div>
       ${Object.entries(subs.capital_spend_by_class).map(([k, v]) => `<div class="card kpi"><div class="label">${esc(classes[k] || k)}</div><div class="value">${inrShort(v)}</div><div class="sub">capital spend detected</div></div>`).join('')}
@@ -602,6 +620,8 @@ async function viewOrgSubsidies(orgId) {
     ${subs.schemes.map((x) => `<div class="card scheme ${x.status}">
       <div class="row between"><div style="flex:1;min-width:260px"><h3>${esc(x.name)}</h3><small>${esc(x.authority)} · ${esc(x.level)}</small></div>
         <div class="num"><div class="amount">${x.estimated_benefit ? inrShort(x.estimated_benefit) : '—'}</div>${badge(x.status, x.status === 'eligible' ? 'Eligible' : 'Needs info')}</div></div>
+      <p style="margin-top:.4rem">${x.verified ? `${badge('ok', 'Verified ' + fmtDate(x.verified_on))} <small>${esc(x.source_document)}${x.clause ? ', ' + esc(x.clause) : ''}</small>` : badge('warn', 'Unverified figures')}</p>
+      ${x.in_total ? '' : '<p class="muted">Not added to the total (see note).</p>'}
       ${x.basis ? `<p style="margin-top:.6rem">${esc(x.basis)}${x.capped_at ? ` · capped at ${inrShort(x.capped_at)}` : ''}${x.disbursal ? ` · ${esc(x.disbursal)}` : ''}</p>` : ''}
       ${x.assumptions.map((a) => `<p class="muted">Assumption: ${esc(a)}</p>`).join('')}
       ${x.missing_inputs.length ? `<p class="flag">Needs: ${esc(x.missing_inputs.join('; '))} · <a href="#/org/${orgId}/settings">update profile</a></p>` : ''}
@@ -715,6 +735,7 @@ async function viewOrgData(orgId, params) {
 }
 
 async function viewOrgSettings(orgId) {
+  await meta();
   const { org, el } = await orgShell(orgId, 'settings');
   el.innerHTML = `<div class="card"><h2>Business profile</h2>
       <form data-form="update-org" data-org="${orgId}">${profileFields(org)}<div id="form-msg"></div><button class="primary" type="submit">Save</button></form></div>

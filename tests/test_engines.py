@@ -94,46 +94,92 @@ def test_hsn_classification():
     assert policy.classify_hsn("72142090") is None
 
 
-def test_policy_on_sample():
+def _scheme(result, scheme_id):
+    return next((s for s in result["schemes"] if s["scheme_id"] == scheme_id), None)
+
+
+def test_policy_on_sample_group_a():
     assets = policy.detect_capital_assets(parse_books("tally", sample.tally_xml()))
     by_class = {}
     for a in assets:
         by_class[a.asset_class] = by_class.get(a.asset_class, 0) + a.value
     assert by_class["plant_machinery"] == 5000000
     assert by_class["solar"] == 1450000  # modules counted on line total, plus inverter
-    prof = policy.Profile("27", category="small", monthly_power_bill=450000, has_udyam=True)
-    result = policy.match(prof, assets)
-    psi = next(s for s in result["schemes"] if s["scheme_id"] == "mh-psi-2019-ips")
-    assert psi["status"] == "eligible"
-    assert psi["eligible_cost"] == 5000000 + 1800000 + 450000 + 1450000
-    assert psi["estimated_benefit"] == pytest.approx(0.30 * psi["eligible_cost"])
-    assert all(s["scheme_id"] != "gj-msme-2022-capital" for s in result["schemes"])
+    prof = policy.Profile("27", category="small", zone="A", term_loan_amount=6e6,
+                          monthly_electricity_duty=28000, monthly_power_units=60000, has_udyam=True)
+    result = policy.match(prof, assets, include_ineligible=True)
+    ips = _scheme(result, "mh-miisp-2025-ips")
+    assert ips["status"] == "eligible" and ips["verified"]
+    assert ips["eligible_cost"] == 5000000 + 1800000 + 450000 + 1450000
+    assert ips["estimated_benefit"] == pytest.approx(0.30 * ips["eligible_cost"])  # Group A: 30% of FCI
+    assert "5 years" in ips["basis"]
+    # Group A units get neither the electricity duty exemption nor the power tariff subsidy.
+    assert _scheme(result, "mh-miisp-2025-electricity-duty")["status"] == "not_eligible"
+    assert _scheme(result, "mh-miisp-2025-power-tariff")["status"] == "not_eligible"
+    interest = _scheme(result, "mh-miisp-2025-interest")
+    assert interest["estimated_benefit"] == pytest.approx(300000) and not interest["in_total"]
+    assert _scheme(result, "mh-miisp-2025-zed")["estimated_benefit"] == pytest.approx(0.5 * 90000 * 0.4)
+    counted = [s for s in result["schemes"] if s["status"] == "eligible" and s["in_total"]]
+    assert result["total_estimated_benefit"] == pytest.approx(sum(s["estimated_benefit"] for s in counted))
+    assert result["unverified_in_total"] == []
+    assert _scheme(result, "gj-msme-2022-capital")["status"] == "not_eligible"
 
 
-def test_policy_cap_and_missing_inputs():
-    big = [policy.CapitalAsset("plant_machinery", "Press line", "8462", 9e7, date(2026, 6, 1))]
-    result = policy.match(policy.Profile("27", category="micro"), big)
-    psi = next(s for s in result["schemes"] if s["scheme_id"] == "mh-psi-2019-ips")
-    assert psi["estimated_benefit"] == 10000000 and psi["capped_at"] == 10000000
-    power = next(s for s in result["schemes"] if s["scheme_id"] == "mh-electricity-duty")
-    assert power["status"] == "needs_info"
-    assert any("Udyam" in m for m in psi["missing_inputs"])
+@pytest.mark.parametrize("zone,ceiling,years", [("B", 0.40, 7), ("C", 0.50, 7), ("D", 0.60, 10), ("D+", 0.70, 10),
+                                                ("VM", 0.80, 10), ("NI", 1.00, 10)])
+def test_miisp_zone_ceilings(zone, ceiling, years):
+    assets = [policy.CapitalAsset("plant_machinery", "VMC", "8457", 1e7, date(2026, 6, 1))]
+    result = policy.match(policy.Profile("27", category="micro", zone=zone, has_udyam=True), assets)
+    ips = _scheme(result, "mh-miisp-2025-ips")
+    assert ips["estimated_benefit"] == pytest.approx(ceiling * 1e7)
+    assert f"{years} years" in ips["basis"]
 
 
-def test_term_loan_basis_assumption():
+def test_miisp_power_benefits_by_zone():
+    prof = policy.Profile("27", category="small", zone="D", monthly_electricity_duty=10000,
+                          monthly_power_units=50000, has_udyam=True)
+    result = policy.match(prof, [])
+    assert _scheme(result, "mh-miisp-2025-electricity-duty")["estimated_benefit"] == 10000 * 12 * 10
+    assert _scheme(result, "mh-miisp-2025-power-tariff")["estimated_benefit"] == 50000 * 12 * 3
+    prof.zone = "C"
+    result = policy.match(prof, [], include_ineligible=True)
+    assert _scheme(result, "mh-miisp-2025-electricity-duty")["estimated_benefit"] == 10000 * 12 * 7
+    assert _scheme(result, "mh-miisp-2025-power-tariff")["status"] == "not_eligible"
+
+
+def test_power_tariff_cap():
+    prof = policy.Profile("27", category="small", zone="D+", monthly_power_units=5e6, has_udyam=True)
+    assert _scheme(policy.match(prof, []), "mh-miisp-2025-power-tariff")["estimated_benefit"] == 10000000
+
+
+def test_missing_zone_and_udyam():
+    assets = [policy.CapitalAsset("plant_machinery", "Press", "8462", 9e6, date(2026, 6, 1))]
+    result = policy.match(policy.Profile("27", category="micro"), assets)
+    ips = _scheme(result, "mh-miisp-2025-ips")
+    assert ips["status"] == "needs_info" and ips["estimated_benefit"] == 0
+    assert any("zone" in m for m in ips["missing_inputs"])
+    assert any("Udyam" in m for m in ips["missing_inputs"])
+
+
+def test_purchases_before_policy_window_do_not_count():
+    assets = [policy.CapitalAsset("plant_machinery", "Old lathe", "8458", 5e6, date(2025, 6, 1))]
+    result = policy.match(policy.Profile("27", category="small", zone="C", has_udyam=True), assets, include_ineligible=True)
+    assert _scheme(result, "mh-miisp-2025-ips")["status"] == "not_eligible"
+
+
+def test_unverified_schemes_flagged_in_disclaimer():
     assets = [policy.CapitalAsset("plant_machinery", "VMC", "8457", 4e6, date(2026, 6, 1))]
     result = policy.match(policy.Profile("24", category="small", has_udyam=True), assets)
-    gj = next(s for s in result["schemes"] if s["scheme_id"] == "gj-msme-2022-capital")
-    assert gj["estimated_benefit"] == pytest.approx(0.25 * 0.75 * 4e6)
-    assert gj["assumptions"]
+    gj = _scheme(result, "gj-msme-2022-capital")
+    assert gj["estimated_benefit"] == pytest.approx(0.25 * 0.75 * 4e6) and gj["assumptions"]
+    assert gj["name"] in result["unverified_in_total"]
+    assert "not yet verified" in result["disclaimer"]
 
 
 def test_calculator():
-    result = policy.calculator("27", "manufacturing", {"plant_machinery": 5e6}, turnover=8e7, investment_pm=2e7)
+    result = policy.calculator("27", "manufacturing", {"plant_machinery": 5e6}, turnover=8e7, investment_pm=2e7, zone="B")
     assert result["category"] == "micro"
-    psi = next(s for s in result["schemes"] if s["scheme_id"] == "mh-psi-2019-ips")
-    assert psi["estimated_benefit"] == pytest.approx(2e6)
-    assert "illustrative" in result["disclaimer"]
+    assert _scheme(result, "mh-miisp-2025-ips")["estimated_benefit"] == pytest.approx(2e6)
 
 
 def test_csv_and_zoho_parsers():

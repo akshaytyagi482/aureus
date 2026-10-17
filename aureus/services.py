@@ -112,7 +112,7 @@ def _org_from_row(row, conn) -> dict:
 
 
 ORG_FIELDS = ("name", "district", "address", "sector", "industry", "annual_turnover", "investment_pm",
-              "term_loan_amount", "monthly_power_bill", "filing_frequency")
+              "term_loan_amount", "zone", "monthly_electricity_duty", "monthly_power_units", "filing_frequency")
 
 
 def create_org(user: dict, data: dict) -> dict:
@@ -349,7 +349,8 @@ def run_reconciliation(org: dict, period: str | None = None, today: date | None 
 def profile_for(org: dict) -> policy.Profile:
     return policy.Profile(
         state_code=org["state_code"], sector=org.get("sector") or "manufacturing", category=org.get("category"),
-        term_loan_amount=org.get("term_loan_amount"), monthly_power_bill=org.get("monthly_power_bill"),
+        term_loan_amount=org.get("term_loan_amount"), zone=org.get("zone"),
+        monthly_electricity_duty=org.get("monthly_electricity_duty"), monthly_power_units=org.get("monthly_power_units"),
         has_udyam=bool(org.get("udyam")))
 
 

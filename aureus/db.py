@@ -34,7 +34,9 @@ CREATE TABLE IF NOT EXISTS orgs (
     annual_turnover REAL,
     investment_pm REAL,
     term_loan_amount REAL,
-    monthly_power_bill REAL,
+    zone TEXT,
+    monthly_electricity_duty REAL,
+    monthly_power_units REAL,
     filing_frequency TEXT NOT NULL DEFAULT 'monthly',
     created_by INTEGER REFERENCES users(id),
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -105,9 +107,18 @@ def connect() -> sqlite3.Connection:
     return conn
 
 
+# Columns added after the first release; init() adds any that an older database lacks.
+_ADDED_COLUMNS = {"orgs": [("zone", "TEXT"), ("monthly_electricity_duty", "REAL"), ("monthly_power_units", "REAL")]}
+
+
 def init() -> None:
     with connect() as conn:
         conn.executescript(SCHEMA)
+        for table, columns in _ADDED_COLUMNS.items():
+            existing = {row["name"] for row in conn.execute(f"PRAGMA table_info({table})")}
+            for name, kind in columns:
+                if name not in existing:
+                    conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {kind}")
 
 
 @contextmanager

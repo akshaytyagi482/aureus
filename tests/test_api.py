@@ -51,11 +51,12 @@ def test_full_flow(client, owner, demo_org):
     subsidies = client.get(f"/api/orgs/{demo_org}/subsidies", headers=owner).json()
     assert subsidies["category"] == "small"
     ids = [s["scheme_id"] for s in subsidies["schemes"]]
-    assert "mh-psi-2019-ips" in ids
+    assert "mh-miisp-2025-ips" in ids
 
-    packet = client.get(f"/api/orgs/{demo_org}/subsidies/mh-psi-2019-ips/application", headers=owner).json()
+    packet = client.get(f"/api/orgs/{demo_org}/subsidies/mh-miisp-2025-ips/application", headers=owner).json()
     assert packet["ready_to_file"] and len(packet["annexure"]) == 5
-    html = client.get(f"/api/orgs/{demo_org}/subsidies/mh-psi-2019-ips/application.html", headers=owner)
+    assert "31.12.2025" in packet["scheme"]["source_document"]
+    html = client.get(f"/api/orgs/{demo_org}/subsidies/mh-miisp-2025-ips/application.html", headers=owner)
     assert html.status_code == 200 and "CNC turning centre" in html.text
 
 
@@ -117,7 +118,7 @@ def test_connector_token_import(client, owner, demo_org):
 
 
 def test_public_endpoints(client):
-    res = client.post("/api/public/subsidy-calculator", json={"state_code": "27", "category": "micro",
+    res = client.post("/api/public/subsidy-calculator", json={"state_code": "27", "category": "micro", "zone": "C",
                                                              "investments": {"plant_machinery": 5000000}})
     assert res.status_code == 200 and res.json()["total_estimated_benefit"] > 0
     assert client.get("/api/public/gstin/27AAPFU0939F1ZV").json()["valid"]
@@ -136,3 +137,16 @@ def test_polish_falls_back_without_credentials(monkeypatch):
     draft = {"text": "x", "citations": []}
     out = notice.polish_with_claude(draft)
     assert out["text"] == "x" and "polish_error" in out
+
+
+def test_init_adds_new_columns_to_older_database(tmp_path, monkeypatch):
+    from aureus import db
+    monkeypatch.setattr(config, "DB_PATH", tmp_path / "old.db")
+    conn = sqlite3.connect(config.DB_PATH)
+    conn.execute("CREATE TABLE orgs (id INTEGER PRIMARY KEY, name TEXT NOT NULL, gstin_enc TEXT NOT NULL, "
+                 "gstin_last4 TEXT NOT NULL, state_code TEXT NOT NULL, monthly_power_bill REAL)")
+    conn.commit()
+    conn.close()
+    db.init()
+    cols = {r[1] for r in sqlite3.connect(config.DB_PATH).execute("PRAGMA table_info(orgs)")}
+    assert {"zone", "monthly_electricity_duty", "monthly_power_units"} <= cols

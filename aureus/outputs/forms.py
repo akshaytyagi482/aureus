@@ -32,6 +32,8 @@ def build_packet(org: dict, scheme: dict) -> dict:
         field("District", org.get("district"), "Business profile"),
         field("State", state_name(org["state_code"]), "Derived from GSTIN"),
     ]
+    if scheme["scheme_id"].startswith("mh-"):
+        applicant.append(field("Taluka group (Annexure I)", org.get("zone"), "Business profile"))
     investment = [
         field("Eligible investment (excl. GST)", scheme["eligible_cost"], "Purchase register"),
         field("Term loan amount", org.get("term_loan_amount"), "Business profile"),
@@ -40,7 +42,8 @@ def build_packet(org: dict, scheme: dict) -> dict:
     missing = [f["label"] for f in applicant + investment if f["missing"] and f["label"] != "Term loan amount"]
     return {
         "title": TEMPLATES.get(scheme["form_template"], "Subsidy application"),
-        "scheme": {k: scheme[k] for k in ("scheme_id", "name", "authority", "source_url", "verified", "notes")},
+        "scheme": {k: scheme.get(k) for k in ("scheme_id", "name", "authority", "source_url", "source_document",
+                                               "clause", "verified", "verified_on", "notes")},
         "sections": [{"title": "Part A - Applicant details", "fields": applicant},
                      {"title": "Part B - Investment and claim", "fields": investment}],
         "annexure": scheme.get("qualifying_assets", []),
@@ -74,6 +77,9 @@ td,th{{border:1px solid #888;padding:6px 8px;text-align:left;vertical-align:top}
     if not s["verified"]:
         parts.append('<p class="warn">Prepared by AureusRecon from an unverified rule grid. Check the current '
                      'official form and scheme notification before submission. This box does not print.</p>')
+    if s.get("source_document"):
+        parts.append(f"<p class='sub'>Ref: {escape(s['source_document'])}"
+                     + (f", {escape(s['clause'])}" if s.get("clause") else "") + "</p>")
     for section in packet["sections"]:
         parts.append(f"<h2>{escape(section['title'])}</h2><table>")
         for f in section["fields"]:

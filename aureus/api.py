@@ -121,6 +121,9 @@ def me(user=Depends(current_user)):
 
 # ---------------------------------------------------------------- organisations
 
+Zone = Literal["A", "B", "C", "D", "D+", "VM", "NI"]
+
+
 class OrgCreate(BaseModel):
     name: str = Field(min_length=1, max_length=200)
     gstin: str
@@ -132,7 +135,9 @@ class OrgCreate(BaseModel):
     annual_turnover: float | None = Field(default=None, ge=0)
     investment_pm: float | None = Field(default=None, ge=0)
     term_loan_amount: float | None = Field(default=None, ge=0)
-    monthly_power_bill: float | None = Field(default=None, ge=0)
+    zone: Zone | None = None
+    monthly_electricity_duty: float | None = Field(default=None, ge=0)
+    monthly_power_units: float | None = Field(default=None, ge=0)
     filing_frequency: Literal["monthly", "quarterly"] = "monthly"
 
 
@@ -146,7 +151,9 @@ class OrgUpdate(BaseModel):
     annual_turnover: float | None = Field(default=None, ge=0)
     investment_pm: float | None = Field(default=None, ge=0)
     term_loan_amount: float | None = Field(default=None, ge=0)
-    monthly_power_bill: float | None = Field(default=None, ge=0)
+    zone: Zone | None = None
+    monthly_electricity_duty: float | None = Field(default=None, ge=0)
+    monthly_power_units: float | None = Field(default=None, ge=0)
     filing_frequency: Literal["monthly", "quarterly"] | None = None
 
 
@@ -415,13 +422,16 @@ class CalculatorBody(BaseModel):
     investment_pm: float | None = Field(default=None, ge=0)
     investments: dict[str, float] = {}
     term_loan_amount: float | None = Field(default=None, ge=0)
-    monthly_power_bill: float | None = Field(default=None, ge=0)
+    zone: Zone | None = None
+    monthly_electricity_duty: float | None = Field(default=None, ge=0)
+    monthly_power_units: float | None = Field(default=None, ge=0)
 
 
 @app.post("/api/public/subsidy-calculator")
 def calculator(body: CalculatorBody):
     return policy.calculator(body.state_code, body.sector, body.investments, body.category, body.annual_turnover,
-                             body.investment_pm, body.term_loan_amount, body.monthly_power_bill)
+                             body.investment_pm, body.term_loan_amount, body.zone, body.monthly_electricity_duty,
+                             body.monthly_power_units)
 
 
 @app.get("/api/public/meta")
@@ -430,6 +440,9 @@ def meta():
     return {
         "states": [{"code": c, "name": n} for c, n in sorted(gstin_mod.STATES.items(), key=lambda kv: kv[1])],
         "asset_classes": [{"id": k, "label": v["label"]} for k, v in grid["asset_classes"].items()],
+        "zones": [{"id": k, "label": v} for k, v in grid["zones"].items() if not k.startswith("_")],
+        "zone_source": grid["zones"]["_source"],
+        "zone_source_url": next(x["source_url"] for x in grid["schemes"] if x["id"] == "mh-miisp-2025-ips"),
         "schemes": [{"id": s["id"], "name": s["name"], "states": s["states"], "verified": s["verified"]} for s in grid["schemes"]],
         "notice_types": [{"id": k, "title": v["title"]} for k, v in notice.NOTICE_TYPES.items()],
         "purposes": [{"id": k, **v} for k, v in services.PURPOSES.items()],

@@ -1,49 +1,454 @@
 {
-  "_comment": "Rule grid for the Policy Engine. Rates, caps and windows here are ILLUSTRATIVE starting values modelled on the named policies and have NOT been verified against the current official notifications. Set verified=true only after a reviewer checks each field against the source document.",
+  "_comment": "Rule grid for the Policy Engine. Schemes with verified=true were checked clause by clause against the source_document on verified_on. Schemes with verified=false are ILLUSTRATIVE starting values that must be checked against the official notification before use.",
   "asset_classes": {
-    "plant_machinery": {"label": "Plant & machinery", "hsn_prefixes": ["84", "85"], "exclude_prefixes": ["8471", "8443", "8517", "8528", "854140", "854142", "854143", "8504"]},
-    "testing_equipment": {"label": "Testing & quality equipment", "hsn_prefixes": ["9024", "9025", "9026", "9027", "9030", "9031"]},
-    "solar": {"label": "Solar power plant", "hsn_prefixes": ["854140", "854142", "854143", "850440"], "count_line_total": true},
-    "pollution_control": {"label": "Pollution control equipment", "hsn_prefixes": ["842121", "842139", "841960"], "count_line_total": true},
-    "it_hardware": {"label": "IT hardware", "hsn_prefixes": ["8471", "8443", "8517"]}
+    "plant_machinery": {
+      "label": "Plant & machinery",
+      "hsn_prefixes": [
+        "84",
+        "85"
+      ],
+      "exclude_prefixes": [
+        "8471",
+        "8443",
+        "8517",
+        "8528",
+        "854140",
+        "854142",
+        "854143",
+        "8504"
+      ]
+    },
+    "testing_equipment": {
+      "label": "Testing & quality equipment",
+      "hsn_prefixes": [
+        "9024",
+        "9025",
+        "9026",
+        "9027",
+        "9030",
+        "9031"
+      ]
+    },
+    "solar": {
+      "label": "Solar power plant",
+      "hsn_prefixes": [
+        "854140",
+        "854142",
+        "854143",
+        "850440"
+      ],
+      "count_line_total": true
+    },
+    "pollution_control": {
+      "label": "Pollution control equipment",
+      "hsn_prefixes": [
+        "842121",
+        "842139",
+        "841960"
+      ],
+      "count_line_total": true
+    },
+    "it_hardware": {
+      "label": "IT hardware",
+      "hsn_prefixes": [
+        "8471",
+        "8443",
+        "8517"
+      ]
+    }
   },
   "_capital_rule": "A line is a capital asset when its unit value reaches the floor, or for classes with count_line_total, when the line total does.",
   "capital_item_min_unit_value": 50000,
   "schemes": [
     {
-      "id": "mh-psi-2019-ips",
-      "name": "Maharashtra Package Scheme of Incentives 2019 - Industrial Promotion Subsidy",
+      "id": "mh-miisp-2025-ips",
+      "name": "Maharashtra MIISP 2025 - Industrial Promotion Subsidy (SGST refund)",
       "authority": "Directorate of Industries, Government of Maharashtra (via District Industries Centre)",
       "level": "state",
-      "states": ["27"],
-      "categories": ["micro", "small", "medium"],
-      "sectors": ["manufacturing"],
-      "asset_classes": ["plant_machinery", "testing_equipment", "pollution_control", "solar"],
-      "window": {"from": "2019-04-01", "to": "2027-03-31"},
+      "states": [
+        "27"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "window": {
+        "from": "2025-12-31",
+        "to": "2030-12-30"
+      },
       "min_investment": 0,
-      "benefit": {"type": "capital_subsidy", "basis": "eligible_cost", "rate": {"micro": 0.40, "small": 0.30, "medium": 0.20}, "cap": 10000000},
-      "disbursal": "Reimbursed against SGST paid over the eligibility period",
+      "source_document": "Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025",
+      "source_url": "https://industry.maharashtra.gov.in/sites/default/files/2025-12/202512311332497910.pdf",
+      "verified": true,
+      "verified_on": "2026-10-17",
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment",
+        "pollution_control",
+        "solar"
+      ],
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "A": 0.3,
+          "B": 0.4,
+          "C": 0.5,
+          "D": 0.6,
+          "D+": 0.7,
+          "VM": 0.8,
+          "NI": 1.0
+        },
+        "years_by_zone": {
+          "A": 5,
+          "B": 7,
+          "C": 7,
+          "D": 10,
+          "D+": 10,
+          "VM": 10,
+          "NI": 10
+        }
+      },
+      "disbursal": "Refund of 100% of gross SGST paid on first sale of eligible products within Maharashtra, up to the ceiling, over the incentive period",
       "form_template": "dic_capital_subsidy",
-      "documents": ["Udyam Registration Certificate", "Eligibility Certificate application", "Purchase invoices with payment proof", "Chartered Engineer certificate for plant & machinery", "Term loan sanction letter (if financed)", "Commencement of production proof"],
-      "notes": "Actual rate depends on the taluka zone (A, B, C, D, D+) of the unit; zone C/D shown.",
-      "source_url": "https://di.maharashtra.gov.in",
-      "verified": false
+      "documents": [
+        "Udyam Registration Certificate",
+        "Eligibility Certificate application",
+        "Purchase invoices with payment proof",
+        "Chartered Engineer certificate for plant & machinery",
+        "Term loan sanction letter (if financed)",
+        "Commencement of production proof"
+      ],
+      "clause": "Section 4.1.1(A), Table 4 and 'Industrial Promotion Subsidy'",
+      "notes": "Figure shown is the maximum ceiling. Actual payout equals the SGST you pay on in-state sales, so it can be lower. Ceiling uses capital purchases found in your books; building and other fixed assets also count towards FCI. For new and expansion units; eligible-FCI rules are set by the implementing scheme GR."
+    },
+    {
+      "id": "mh-miisp-2025-interest",
+      "name": "Maharashtra MIISP 2025 - Interest Subsidy",
+      "authority": "Directorate of Industries, Government of Maharashtra (via District Industries Centre)",
+      "level": "state",
+      "states": [
+        "27"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "window": {
+        "from": "2025-12-31",
+        "to": "2030-12-30"
+      },
+      "min_investment": 0,
+      "source_document": "Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025",
+      "source_url": "https://industry.maharashtra.gov.in/sites/default/files/2025-12/202512311332497910.pdf",
+      "verified": true,
+      "verified_on": "2026-10-17",
+      "asset_classes": [],
+      "in_total": false,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": 10000000
+      },
+      "disbursal": "Annual reimbursement of interest on term loans, within the zone's basket ceiling",
+      "form_template": "dic_capital_subsidy",
+      "documents": [
+        "Udyam Registration Certificate",
+        "Term loan sanction letter",
+        "Bank interest certificate"
+      ],
+      "clause": "Section 4.1.1(A), 'Interest Subsidy'",
+      "notes": "Up to 5% a year; the unit must itself bear at least 5% interest. Shown as a first-year figure and not added to the total because it counts against the same zone ceiling as the SGST refund."
+    },
+    {
+      "id": "mh-miisp-2025-electricity-duty",
+      "name": "Maharashtra MIISP 2025 - Electricity Duty Exemption",
+      "authority": "Directorate of Industries, Government of Maharashtra (via District Industries Centre)",
+      "level": "state",
+      "states": [
+        "27"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "window": {
+        "from": "2025-12-31",
+        "to": "2030-12-30"
+      },
+      "min_investment": 0,
+      "source_document": "Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025",
+      "source_url": "https://industry.maharashtra.gov.in/sites/default/files/2025-12/202512311332497910.pdf",
+      "verified": true,
+      "verified_on": "2026-10-17",
+      "asset_classes": [],
+      "zones": [
+        "C",
+        "D",
+        "D+",
+        "VM",
+        "NI"
+      ],
+      "zone_exclusion_reason": "In Group A and B, only EOUs with 50% export turnover and units fully owned by women, SC/ST or persons with disabilities qualify",
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "A": 5,
+          "B": 7,
+          "C": 7,
+          "D": 10,
+          "D+": 10,
+          "VM": 10,
+          "NI": 10
+        }
+      },
+      "disbursal": "Exemption applied on the electricity bill for the incentive period",
+      "form_template": "dic_power_incentive",
+      "documents": [
+        "Udyam Registration Certificate",
+        "Eligibility Certificate",
+        "Latest 12 months of electricity bills"
+      ],
+      "clause": "Section 4.1.1(A), 'Exemption from Electricity Duty'",
+      "notes": "New units only. Estimate uses the electricity duty line on your monthly bill."
+    },
+    {
+      "id": "mh-miisp-2025-power-tariff",
+      "name": "Maharashtra MIISP 2025 - Power Tariff Subsidy",
+      "authority": "Directorate of Industries, Government of Maharashtra (via District Industries Centre)",
+      "level": "state",
+      "states": [
+        "27"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "window": {
+        "from": "2025-12-31",
+        "to": "2030-12-30"
+      },
+      "min_investment": 0,
+      "source_document": "Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025",
+      "source_url": "https://industry.maharashtra.gov.in/sites/default/files/2025-12/202512311332497910.pdf",
+      "verified": true,
+      "verified_on": "2026-10-17",
+      "asset_classes": [],
+      "zones": [
+        "D",
+        "D+",
+        "VM",
+        "NI"
+      ],
+      "zone_exclusion_reason": "Only for units in Group D, D+ and below",
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "per_unit": 1.0,
+        "years": 3,
+        "cap": 10000000
+      },
+      "disbursal": "₹1 per unit consumed for three years",
+      "form_template": "dic_power_incentive",
+      "documents": [
+        "Udyam Registration Certificate",
+        "Eligibility Certificate",
+        "Electricity bills showing units consumed"
+      ],
+      "clause": "Section 4.1.1(A), 'Power Tariff Subsidy'",
+      "notes": "New units only."
+    },
+    {
+      "id": "mh-miisp-2025-tech-upgradation",
+      "name": "Maharashtra MIISP 2025 - Technology Upgradation Assistance",
+      "authority": "Directorate of Industries, Government of Maharashtra (via District Industries Centre)",
+      "level": "state",
+      "states": [
+        "27"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "window": {
+        "from": "2025-12-31",
+        "to": "2030-12-30"
+      },
+      "min_investment": 0,
+      "source_document": "Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025",
+      "source_url": "https://industry.maharashtra.gov.in/sites/default/files/2025-12/202512311332497910.pdf",
+      "verified": true,
+      "verified_on": "2026-10-17",
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment"
+      ],
+      "in_total": false,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 2500000
+      },
+      "disbursal": "Spread over 5 years",
+      "form_template": "dic_capital_subsidy",
+      "documents": [
+        "Udyam Registration Certificate",
+        "Purchase invoices with payment proof",
+        "Technology upgradation justification / CE certificate"
+      ],
+      "clause": "Section 4.1.1(A), Performance Linked additional Incentives (i)",
+      "notes": "Only for additional capital equipment bought to upgrade technology. Not added to the total: confirm with the DIC whether it can be combined with the SGST refund on the same equipment."
+    },
+    {
+      "id": "mh-miisp-2025-zed",
+      "name": "Maharashtra MIISP 2025 - ZED Certification Fee Reimbursement",
+      "authority": "Directorate of Industries, Government of Maharashtra (via District Industries Centre)",
+      "level": "state",
+      "states": [
+        "27"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "window": {
+        "from": "2025-12-31",
+        "to": "2030-12-30"
+      },
+      "min_investment": 0,
+      "source_document": "Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025",
+      "source_url": "https://industry.maharashtra.gov.in/sites/default/files/2025-12/202512311332497910.pdf",
+      "verified": true,
+      "verified_on": "2026-10-17",
+      "asset_classes": [],
+      "benefit": {
+        "type": "certification_topup",
+        "certification_cost": 90000,
+        "central_rate": {
+          "micro": 0.8,
+          "small": 0.6,
+          "medium": 0.5
+        },
+        "rate": 0.5,
+        "cap": 50000
+      },
+      "disbursal": "Reimbursement after certification",
+      "form_template": "zed_registration",
+      "documents": [
+        "Udyam Registration Certificate",
+        "ZED certificate",
+        "Fee payment receipt"
+      ],
+      "clause": "Section 4.1.1(A), Performance Linked additional Incentives (ix)",
+      "notes": "Estimate assumes ZED Gold and applies the state's 50% to the fee left after the central subsidy (conservative)."
+    },
+    {
+      "id": "msme-zed",
+      "name": "MSME Sustainable (ZED) Certification Scheme",
+      "authority": "Ministry of MSME, Government of India",
+      "level": "central",
+      "states": [
+        "*"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2022-04-01",
+        "to": "2030-12-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_support",
+        "certification_cost": 90000,
+        "rate": {
+          "micro": 0.8,
+          "small": 0.6,
+          "medium": 0.5
+        }
+      },
+      "disbursal": "Subsidised certification fee",
+      "form_template": "zed_registration",
+      "documents": [
+        "Udyam Registration Certificate",
+        "ZED pledge on the ZED portal"
+      ],
+      "clause": "Scheme guidelines: Key Benefits",
+      "notes": "Estimate assumes ZED Gold (fee ₹90,000). Bronze ₹10,000 and Silver ₹40,000. Extra 10% for women/SC/ST-owned units and some regions; extra 5% for SFURTI/MSE-CDP members.",
+      "source_document": "MSME Sustainable (ZED) Certification Scheme guidelines, Office of DC (MSME)",
+      "source_url": "https://dcmsme.gov.in/CLCS_TUS_Scheme/ZED_Scheme/Scheme_Guidelines.aspx",
+      "verified": true,
+      "verified_on": "2026-10-17"
     },
     {
       "id": "gj-msme-2022-capital",
       "name": "Gujarat Scheme for Assistance to MSMEs 2022 - Capital Subsidy",
       "authority": "Industries Commissionerate, Government of Gujarat",
       "level": "state",
-      "states": ["24"],
-      "categories": ["micro", "small", "medium"],
-      "sectors": ["manufacturing"],
-      "asset_classes": ["plant_machinery", "testing_equipment", "pollution_control"],
-      "window": {"from": "2022-10-01", "to": "2027-09-30"},
+      "states": [
+        "24"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment",
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2022-10-01",
+        "to": "2027-09-30"
+      },
       "min_investment": 0,
-      "benefit": {"type": "capital_subsidy", "basis": "term_loan", "rate": 0.25, "cap": 3500000},
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "term_loan",
+        "rate": 0.25,
+        "cap": 3500000
+      },
       "disbursal": "Lump sum after commercial production",
       "form_template": "dic_capital_subsidy",
-      "documents": ["Udyam Registration Certificate", "Term loan sanction and disbursement letters", "Purchase invoices with payment proof", "Chartered Engineer certificate"],
+      "documents": [
+        "Udyam Registration Certificate",
+        "Term loan sanction and disbursement letters",
+        "Purchase invoices with payment proof",
+        "Chartered Engineer certificate"
+      ],
       "notes": "Calculated on the term loan used to buy eligible plant & machinery.",
       "source_url": "https://ic.gujarat.gov.in",
       "verified": false
@@ -53,16 +458,40 @@
       "name": "Tamil Nadu MSME Policy - Capital Subsidy on Plant & Machinery",
       "authority": "Department of MSME, Government of Tamil Nadu",
       "level": "state",
-      "states": ["33"],
-      "categories": ["micro", "small", "medium"],
-      "sectors": ["manufacturing"],
-      "asset_classes": ["plant_machinery", "testing_equipment"],
-      "window": {"from": "2021-04-01", "to": "2027-03-31"},
+      "states": [
+        "33"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment"
+      ],
+      "window": {
+        "from": "2021-04-01",
+        "to": "2027-03-31"
+      },
       "min_investment": 0,
-      "benefit": {"type": "capital_subsidy", "basis": "eligible_cost", "rate": 0.25, "cap": 15000000},
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 15000000
+      },
       "disbursal": "Lump sum after commercial production",
       "form_template": "dic_capital_subsidy",
-      "documents": ["Udyam Registration Certificate", "Purchase invoices with payment proof", "Chartered Engineer certificate", "Commencement of production proof"],
+      "documents": [
+        "Udyam Registration Certificate",
+        "Purchase invoices with payment proof",
+        "Chartered Engineer certificate",
+        "Commencement of production proof"
+      ],
       "notes": "Higher rates and caps apply in notified backward blocks.",
       "source_url": "https://www.msmeonline.tn.gov.in",
       "verified": false
@@ -72,16 +501,39 @@
       "name": "Karnataka Industrial Policy - Capital Investment Subsidy for MSMEs",
       "authority": "Department of Industries and Commerce, Government of Karnataka",
       "level": "state",
-      "states": ["29"],
-      "categories": ["micro", "small"],
-      "sectors": ["manufacturing"],
-      "asset_classes": ["plant_machinery", "testing_equipment", "pollution_control"],
-      "window": {"from": "2020-04-01", "to": "2027-03-31"},
+      "states": [
+        "29"
+      ],
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment",
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2020-04-01",
+        "to": "2027-03-31"
+      },
       "min_investment": 0,
-      "benefit": {"type": "capital_subsidy", "basis": "eligible_cost", "rate": 0.20, "cap": 5000000},
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.2,
+        "cap": 5000000
+      },
       "disbursal": "Lump sum after commercial production",
       "form_template": "dic_capital_subsidy",
-      "documents": ["Udyam Registration Certificate", "Purchase invoices with payment proof", "Chartered Engineer certificate"],
+      "documents": [
+        "Udyam Registration Certificate",
+        "Purchase invoices with payment proof",
+        "Chartered Engineer certificate"
+      ],
       "notes": "Rate varies by taluka zone and promoter category.",
       "source_url": "https://www.karnatakaindustry.gov.in",
       "verified": false
@@ -91,57 +543,57 @@
       "name": "Uttar Pradesh MSME Promotion Policy 2022 - Capital Subsidy",
       "authority": "Directorate of Industries and Enterprise Promotion, Uttar Pradesh",
       "level": "state",
-      "states": ["09"],
-      "categories": ["micro", "small", "medium"],
-      "sectors": ["manufacturing"],
-      "asset_classes": ["plant_machinery", "testing_equipment", "pollution_control"],
-      "window": {"from": "2022-05-01", "to": "2027-04-30"},
+      "states": [
+        "09"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment",
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2022-05-01",
+        "to": "2027-04-30"
+      },
       "min_investment": 0,
-      "benefit": {"type": "capital_subsidy", "basis": "eligible_cost", "rate": {"micro": 0.25, "small": 0.20, "medium": 0.15}, "cap": 40000000},
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": {
+          "micro": 0.25,
+          "small": 0.2,
+          "medium": 0.15
+        },
+        "cap": 40000000
+      },
       "disbursal": "Instalments after commercial production",
       "form_template": "dic_capital_subsidy",
-      "documents": ["Udyam Registration Certificate", "Purchase invoices with payment proof", "Chartered Engineer certificate"],
+      "documents": [
+        "Udyam Registration Certificate",
+        "Purchase invoices with payment proof",
+        "Chartered Engineer certificate"
+      ],
       "notes": "Rate shown is for the Purvanchal/Bundelkhand band for micro; other regions are lower.",
       "source_url": "https://diupmsme.upsdc.gov.in",
       "verified": false
-    },
-    {
-      "id": "mh-electricity-duty",
-      "name": "Maharashtra PSI 2019 - Electricity Duty Exemption",
-      "authority": "Directorate of Industries, Government of Maharashtra",
-      "level": "state",
-      "states": ["27"],
-      "categories": ["micro", "small", "medium"],
-      "sectors": ["manufacturing"],
-      "asset_classes": [],
-      "window": {"from": "2019-04-01", "to": "2027-03-31"},
-      "min_investment": 0,
-      "benefit": {"type": "power_tariff", "rate": 0.075, "years": 7},
-      "disbursal": "Exemption applied on the electricity bill",
-      "form_template": "dic_power_incentive",
-      "documents": ["Udyam Registration Certificate", "Eligibility Certificate", "Latest 12 months of electricity bills"],
-      "notes": "Rate is the duty component of the industrial tariff, approximated as a share of the bill.",
-      "source_url": "https://di.maharashtra.gov.in",
-      "verified": false
-    },
-    {
-      "id": "msme-zed",
-      "name": "MSME Sustainable (ZED) Certification Scheme",
-      "authority": "Ministry of MSME, Government of India",
-      "level": "central",
-      "states": ["*"],
-      "categories": ["micro", "small", "medium"],
-      "sectors": ["manufacturing"],
-      "asset_classes": [],
-      "window": {"from": "2022-04-01", "to": "2027-03-31"},
-      "min_investment": 0,
-      "benefit": {"type": "certification_support", "certification_cost": 90000, "rate": {"micro": 0.80, "small": 0.60, "medium": 0.50}},
-      "disbursal": "Subsidised certification fee",
-      "form_template": "zed_registration",
-      "documents": ["Udyam Registration Certificate", "ZED pledge on the ZED portal"],
-      "notes": "Estimate assumes ZED Gold certification cost.",
-      "source_url": "https://zed.msme.gov.in",
-      "verified": false
     }
-  ]
+  ],
+  "zones": {
+    "_source": "Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025, Annexure I (taluka classification, carried over from PSI-2019)",
+    "A": "Group A",
+    "B": "Group B",
+    "C": "Group C",
+    "D": "Group D",
+    "D+": "Group D+",
+    "VM": "Vidarbha, Marathwada, Ratnagiri, Sindhudurg, Jalgaon & Dhule",
+    "NI": "No-industry district, naxalism-affected area or aspirational district"
+  }
 }
