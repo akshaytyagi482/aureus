@@ -626,7 +626,7 @@ async function viewOrgSubsidies(orgId) {
       ${x.assumptions.map((a) => `<p class="muted">Assumption: ${esc(a)}</p>`).join('')}
       ${x.missing_inputs.length ? `<p class="flag">Needs: ${esc(x.missing_inputs.join('; '))} · <a href="#/org/${orgId}/settings">update profile</a></p>` : ''}
       ${x.qualifying_assets.length ? `<details><summary>${x.qualifying_assets.length} qualifying purchase(s) · ${inr(x.eligible_cost)}</summary><table style="margin-top:.5rem"><tbody>
-        ${x.qualifying_assets.map((a) => `<tr><td>${esc(a.description)}<br><small>HSN ${esc(a.hsn)} · ${esc(classes[a.asset_class] || a.asset_class)}</small></td>
+        ${x.qualifying_assets.map((a) => `<tr><td>${esc(a.description)}<br><small>HSN ${esc(a.hsn)} · ${esc(classes[a.asset_class] || a.asset_class)}${a.hsn_description ? `<br>${esc(a.hsn_description)}` : ''}</small></td>
           <td>${esc(a.supplier_name)}<br><small class="mono">${esc(a.invoice_no)} · ${fmtDate(a.invoice_date)}</small></td><td class="num">${inr(a.value)}</td></tr>`).join('')}</tbody></table></details>` : ''}
       ${x.notes ? `<p class="muted" style="margin-top:.5rem">${esc(x.notes)}</p>` : ''}
       <div class="row" style="margin-top:.6rem"><button class="primary small" data-action="packet" data-org="${orgId}" data-scheme="${esc(x.scheme_id)}">Prepare application</button>

@@ -220,3 +220,20 @@ def test_indian_rupee_grouping():
     assert inr(12345678.9) == "₹1,23,45,678.90"
     assert inr(8700000, 0) == "₹87,00,000"
     assert inr(-999.5) == "-₹999.50"
+
+
+def test_hsn_lookup():
+    from aureus import hsn
+    assert hsn.describe("84581100")["status"] == "valid"
+    assert "Lathes" in hsn.describe("8458 11 00")["description"]
+    assert hsn.describe("")["status"] == "missing"
+    assert hsn.describe("996511")["status"] == "service"
+    assert hsn.describe("98765432")["status"] in ("unknown", "unknown_heading")
+
+
+def test_hsn_flags_in_reconciliation():
+    sup = sample.S["steel"][1]
+    b = Invoice(sup, "S", "X-1", date(2026, 9, 1), 1000, cgst=90, sgst=90,
+                lines=[InvoiceLine("Mystery part", "98765432", 500), InvoiceLine("No code", "", 500)])
+    flags = {f["code"] for f in tax.reconcile([b], [], "27", today=TODAY)["results"][0]["flags"]}
+    assert {"HSN_UNKNOWN", "HSN_MISSING"} <= flags

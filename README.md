@@ -11,6 +11,8 @@ One system serves three audiences: MSME owners, CA firms (multi-client console, 
 
 ---
 
+**Docs:** [product flow, AI and data plan](docs/PRODUCT.md) · [deploying on Render + MongoDB Atlas](docs/DEPLOY.md)
+
 ## Quick start
 
 ```bash
@@ -46,6 +48,7 @@ Or sign up fresh. The onboarding wizard has a **Try with demo data** button. API
 | `aureus/engines/policy.py` | HSN → asset class, MSME category, scheme eligibility and benefit maths |
 | `aureus/engines/deadlines.py` | GSTR-2B / GSTR-3B dates (monthly and QRMP), Sec 16(4) time limit |
 | `aureus/data/schemes.json` | The deterministic rule grid |
+| `aureus/data/hs2022.json.gz`, `aureus/hsn.py` | HS 2022 product codes (UN Comtrade) used to validate and describe HSN codes |
 | `aureus/outputs/notice.py` | Notice Copilot (DRC-01C, ASMT-10, DRC-01) and supplier reminders |
 | `aureus/outputs/forms.py` | Pre-filled application packets (structured JSON and printable HTML) |
 | `aureus/services.py` | Tenancy, consent, encrypted datasets, engine runs, audit log |
@@ -155,7 +158,7 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 
 ## What is production-ready vs. what needs work
 
-**Built and tested** (41 tests against MongoDB 8.0, plus a browser run through every screen):
+**Built and tested** (43 tests against MongoDB 8.0, plus a browser run through every screen):
 - ingestion parsers and the reconciliation engine
 - paisa-level matching
 - the policy maths

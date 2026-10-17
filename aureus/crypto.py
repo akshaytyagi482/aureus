@@ -40,6 +40,10 @@ def _load_key() -> bytes:
     return key
 
 
+def check_key() -> None:
+    _load_key()
+
+
 def encrypt(plaintext: bytes, context: str = "") -> str:
     """Encrypt and bind to `context` (e.g. 'org:12'), so a blob can't be replayed under another org."""
     nonce = os.urandom(12)

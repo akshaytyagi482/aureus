@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 from datetime import date
 from functools import lru_cache
 
+from .. import hsn as hsn_mod
 from ..config import BASE_DIR
 from ..models import Invoice
 from ..money import inr
@@ -58,7 +59,8 @@ class CapitalAsset:
     supplier_gstin: str = ""
 
     def to_dict(self) -> dict:
-        return {**self.__dict__, "invoice_date": self.invoice_date.isoformat()}
+        return {**self.__dict__, "invoice_date": self.invoice_date.isoformat(),
+                "hsn_description": hsn_mod.describe(self.hsn)["description"] if self.hsn else None}
 
 
 ZONE_DEPENDENT = {"sgst_refund_ceiling", "electricity_duty_exemption"}

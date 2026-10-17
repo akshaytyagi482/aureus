@@ -1,0 +1,31 @@
+# Render Blueprint: Dashboard > New > Blueprint > pick this repo.
+# Secrets marked `sync: false` are asked for when the Blueprint is created.
+services:
+  - type: web
+    name: aureusrecon
+    runtime: python
+    region: singapore  # nearest Render region to India; data itself lives in MongoDB Atlas (Mumbai)
+    plan: starter      # free instances sleep after 15 minutes idle; use starter or above for real clients
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn aureus.api:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips "*"
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: AUREUS_ENV
+        value: production
+      - key: AUREUS_MASTER_KEY  # python -c "import os,base64;print(base64.b64encode(os.urandom(32)).decode())"
+        sync: false
+      - key: MONGODB_URI        # Atlas connection string, e.g. mongodb+srv://user:pass@cluster.mongodb.net
+        sync: false
+      - key: MONGODB_DB
+        value: aureus
+      - key: ANTHROPIC_API_KEY  # optional: enables Claude wording polish in Notice Copilot
+        sync: false
+      - key: ZOHO_CLIENT_ID     # optional: Zoho Books one-click connect
+        sync: false
+      - key: ZOHO_CLIENT_SECRET
+        sync: false
+      - key: ZOHO_REDIRECT_URI  # https://<your-domain>/api/integrations/zoho/callback
+        sync: false

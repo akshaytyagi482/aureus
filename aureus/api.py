@@ -10,7 +10,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, EmailStr, Field
 
-from . import db, gstin as gstin_mod, integrations, sample, services
+from . import config, crypto, db, gstin as gstin_mod, integrations, sample, services
 from .config import BASE_DIR
 from .engines import policy
 from .engines.deadlines import period_label
@@ -23,6 +23,8 @@ MAX_UPLOAD_BYTES = 20 * 1024 * 1024
 
 @asynccontextmanager
 async def lifespan(_app):
+    if config.ENV == "production":
+        crypto.check_key()  # fail the deploy now, not on the first import
     db.init()
     yield
 

@@ -17,7 +17,7 @@ import re
 from collections import defaultdict
 from datetime import date
 
-from .. import config
+from .. import config, hsn as hsn_mod
 from ..gstin import is_valid, state_code
 from ..models import Invoice
 from . import deadlines
@@ -114,6 +114,13 @@ def _flags(books: Invoice, buyer_state: str, today: date) -> list[dict]:
     if books.reverse_charge:
         flags.append({"code": "REVERSE_CHARGE", "text": "Reverse charge: pay the tax in cash before claiming this credit"})
     for line in books.lines:
+        code = hsn_mod.describe(line.hsn)
+        if code["status"] == "missing":
+            flags.append({"code": "HSN_MISSING", "text": f"{line.description or 'Item'}: no HSN code, so it cannot be "
+                                                        "checked for blocked credit or matched to subsidies"})
+        elif code["status"] in ("unknown", "unknown_heading"):
+            flags.append({"code": "HSN_UNKNOWN", "text": f"{line.description or 'Item'}: HSN {line.hsn} is not a valid "
+                                                        "HS heading; check the item master"})
         for prefix, why in BLOCKED_PREFIXES.items():
             if line.hsn.startswith(prefix):
                 flags.append({"code": "POSSIBLY_BLOCKED", "text": f"{line.description or line.hsn}: {why}"})
