@@ -1,0 +1,205 @@
+{
+  "state_code": "26",
+  "state": "Dadra and Nagar Haveli and Daman and Diu",
+  "status": "current",
+  "policy": {
+    "name": "Investment Promotion Scheme (IPS) - 2022, U.T. of Dadra & Nagar Haveli and Daman & Diu (as amended by Circular No. DIC/5(514)/2020/2025-26/125 dated 19-08-2026, effective 01-04-2026)",
+    "order_no": "DIC/5(519)/IPS-2021/2021/316 dated 07-05-2022 (Gazette Series II No. 19, 20-05-2022)",
+    "date": "2022-05-07",
+    "valid_from": "2022-05-20",
+    "valid_to": "2027-05-19",
+    "source_url": "https://swp.dddgov.in/assets/pdf/Notification_IPS_2022_DNH_DD.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [
+    {
+      "id": "dd-ips2022-capital",
+      "name": "A.1 Fixed Capital Investment Subsidy (MSME)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery",
+        "building"
+      ],
+      "window": {
+        "from": "2022-05-20",
+        "to": "2027-05-19"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.15,
+        "cap": null,
+        "cap_by_category": {
+          "micro": 1500000,
+          "small": 3000000,
+          "medium": 3500000
+        },
+        "extra_if_gfci_above_10cr": 1000000,
+        "extra_first_gen_women_differently_abled": {
+          "rate": 0.1,
+          "cap": 1500000
+        }
+      },
+      "clause": "Scheme A.1, para A.1.1-A.1.2 (Gazette p.11-12)",
+      "verified": true,
+      "notes": "15% of Gross Fixed Capital Investment (building, P&M, utilities, tools; excludes land). An extra Rs 10 lakh if eligible GFCI is over Rs 10 crore. First-generation women and differently abled entrepreneurs setting up new units get +10% of GFCI, up to Rs 15 lakh. Covers new units and one expansion/diversification (>=50% increase in GFCI, >=60% of it in P&M). The 19-08-2026 amendment requires a 5-year gap between a new unit and its expansion. A bank/FI term loan is required (no NBFC), sanctioned within 1 year of commercial production; apply within 1 year. UT + central capital subsidy combined is capped at 35% of GFCI. Only new assets qualify. Must keep producing for 5 years."
+    },
+    {
+      "id": "dd-ips2022-interest",
+      "name": "A.2 Interest Subsidy (MSME manufacturing)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-05-20",
+        "to": "2027-05-19"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "rate_rule": "from 01-04-2026: 50% of the bank interest rate if the rate is <=10%; capped at 5 percentage points if the rate is >10%",
+        "annual_cap": 3000000,
+        "years": 5
+      },
+      "clause": "Scheme A.2, para A.2.3 (Gazette p.13), amended by Circular dated 19-08-2026 item 1",
+      "verified": true,
+      "notes": "Originally 50% of interest charged, up to Rs 30 lakh/yr, for 5 years or the repayment period, whichever is earlier. From 01-04-2026: 50% of the rate if <=10%, max 5% if >10%. 'rate' 0.05 is the max percentage points; use rate_rule. Women, differently abled and registered startups get +10% extra subsidy, and entrepreneurs under 35 get +10% (A.2.3(2)-(3)). How the +10% combines with the amended rate is unclear. The unit must bear at least 2% interest. Covers term loans on new machinery, equipment, building, furniture (not land). Paid directly to the bank."
+    },
+    {
+      "id": "dd-ips2022-quality-cert",
+      "name": "A.3 Assistance for Quality Certification",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "testing_equipment"
+      ],
+      "window": {
+        "from": "2022-05-20",
+        "to": "2027-05-19"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 1000000
+      },
+      "clause": "Scheme A.3, para A.3.1 (Gazette p.16)",
+      "verified": true,
+      "notes": "50% of certification fees (BIS, ISI, WHO, GMP, Hallmark, etc.) plus 50% of testing equipment needed for certification, up to Rs 10 lakh in total. Certifier must be NABCB-registered. Statutory certifications and renewals are excluded. Apply within 1 year of the certificate."
+    },
+    {
+      "id": "dd-ips2022-zed",
+      "name": "A.5 Assistance for ZED Certification",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-05-20",
+        "to": "2027-05-19"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 100000
+      },
+      "clause": "Scheme A.5, para A.5.1 (Gazette p.19)",
+      "verified": true,
+      "notes": "50% of ZED charges net of GoI assistance, up to Rs 1,00,000. New and existing units. Apply within 1 year of the certificate."
+    },
+    {
+      "id": "dd-ips2022-solar",
+      "name": "A.11 Capital subsidy for Solar Power Generation",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "solar"
+      ],
+      "window": {
+        "from": "2022-05-20",
+        "to": "2027-05-19"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 5000000
+      },
+      "clause": "Scheme A.11, para A.11.1 (Gazette p.25)",
+      "verified": true,
+      "notes": "25% of solar plant capital cost, up to Rs 50 lakh, available once. Solar must meet >=10% of the unit's power consumption. Paid at the prevailing UT SoR rates for panels. Apply within 6 months of generation."
+    },
+    {
+      "id": "dd-ips2022-env-infra",
+      "name": "D.2 Environment Protection Infrastructure Subsidy (ZLD/ETP/HW)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2022-05-20",
+        "to": "2027-05-19"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 3000000
+      },
+      "clause": "Scheme D.2, para D.2.1 (Gazette p.45)",
+      "verified": true,
+      "notes": "25% of capital cost of ZLD / effluent treatment / hazardous waste TSDF / single-use-plastic alternative facilities, up to Rs 30 lakh. Only where PCC has not mandated ZLD. All industrial units."
+    }
+  ],
+  "other_benefits": [
+    "A.4 Patent/Trade Mark registration: 75% of cost up to Rs 25 lakh per applicant",
+    "A.6 Energy/water audit 75% up to Rs 1 lakh; recommended equipment 25% up to Rs 20 lakh (min 20% saving)",
+    "A.7 Skill/entrepreneurship training: 75% of course fee up to Rs 1.5 lakh/course, up to 20 persons/yr",
+    "A.8 SME Exchange listing: 25% of expenses up to Rs 5 lakh",
+    "A.9 Export doubling: 1% of export value up to Rs 20 lakh (women: 2% up to Rs 30 lakh)",
+    "A.10 FOB reimbursement (food/marine exports): 20% of FOB up to Rs 20 lakh/yr for 3 years",
+    "A.12 Exhibitions abroad: 50% of space rent up to Rs 2 lakh",
+    "A.13 Local employment: Rs 3 lakh per 20 local recruits, max Rs 15 lakh",
+    "B.1 Textile sector interest subsidy: 60% of interest up to Rs 60 lakh/yr for 5 years (+10% for export carpet, up to Rs 70 lakh)",
+    "C.1-C.6 Thrust sectors (furniture, marble, IT/ITeS, EV, toys, semiconductors, medical equipment/AYUSH, food processing, marine, vaccines): enhanced capital/interest subsidies; furniture also gets a Re 1/unit power incentive for 1 year up to Rs 50 lakh (C.1.1(6))",
+    "D.1 Stamp duty reimbursement: 50% for MSMEs on land purchase (100% for thrust-sector industrial complexes)"
+  ],
+  "unverifiable": [
+    "No UT SGST-reimbursement, electricity duty or general per-unit power subsidy exists for MSMEs in IPS-2022 (only the furniture thrust-sector power incentive).",
+    "Whether the +10% interest top-ups for women, startups and young entrepreneurs still stack after the 01-04-2026 amendment is not stated."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": []
+}

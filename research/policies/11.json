@@ -1,0 +1,64 @@
+{
+  "state_code": "11",
+  "state": "Sikkim",
+  "status": "current",
+  "policy": {
+    "name": "Sikkim Industrial and Investment Policy 2024 (SIIP 2024)",
+    "order_no": null,
+    "date": null,
+    "valid_from": null,
+    "valid_to": null,
+    "source_url": "https://industries.sikkim.gov.in/investsik/policy.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [
+    {
+      "id": "sk-siip2024-sgst",
+      "name": "SIIP 2024 SGST reimbursement (75% of SGST paid in cash, 10 years)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": null,
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "micro": 2.5,
+          "small": 2.0,
+          "medium": 1.5
+        },
+        "years_by_zone": {
+          "micro": 10,
+          "small": 10,
+          "medium": 10
+        }
+      },
+      "clause": "Para 11.1",
+      "verified": true,
+      "notes": "Keys of rate_by_zone are ENTERPRISE CATEGORIES, not zones (no zoning in this policy). Reimbursement = up to 75% of SGST paid through electronic cash ledger (s.49(1) Sikkim GST Act) on finished products for 10 years from commercial production; total capped at 250% (micro) / 200% (small) / 150% (medium & large) of Fixed Capital Investment. New units only (para 12.1), not in negative list Annexure I; must register under SIIP and start production within 18 months of registration; continue production >=75% of preceding 5-yr average for next 5 years or refund. Subject to State budget allocation. Policy valid 10 years from date of Government Order (GO number/date not printed in the published PDF; PDF dated Sep 2024)."
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty: 50% reimbursement/exemption up to Rs 25 lakh; women entrepreneurs 100% up to Rs 50 lakh (para 11.2.1).",
+    "Patents: actual cost up to Rs 2 lakh domestic / Rs 10 lakh international, max 5 per company (para 11.2.2).",
+    "Frontier Economic Zones (Mangan, Soreng, Gyalshing, Namchi districts): free government-land lease rental for first 5 years (para 11.2.3).",
+    "Para 11.2 lists power subsidy, technology transfer & quality certification, SME-exchange listing and environmental compliance assistance as 'other incentives' (aggregate <=100% of FCI) but gives NO rates or caps."
+  ],
+  "unverifiable": [
+    "No state capital investment subsidy or interest subsidy in SIIP 2024; capital/interest support for Sikkim comes from central UNNATI 2024 (see central-ne.json; Gangtok & Pakyong = Zone A, other districts Zone B).",
+    "Government Order number/date for SIIP 2024 not found (not printed in either official PDF copy); hence valid_from/valid_to unknown (10 years from GO date).",
+    "Power subsidy and quality-certification reimbursement rates not specified in the policy text; no operational guidelines found on industries.sikkim.gov.in.",
+    "A secondary ICAI summary mentions a 'Sikkim MSME Policy 2022' with 20% capital subsidy / 25% interest subsidy; no official document found, not included."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": []
+}

@@ -1,0 +1,292 @@
+{
+  "state_code": "08",
+  "state": "Rajasthan",
+  "status": "current",
+  "policy": {
+    "name": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs",
+    "order_no": "Finance Department (Tax Division) Order No. F.12(32)FD/Tax/2024-93 (as printed: 'F.12(32)FD/TIIX/2024-93A' in the scanned text layer)",
+    "date": "2024-10-08",
+    "valid_from": "2024-10-08",
+    "valid_to": "2029-03-31",
+    "source_url": "https://www.epch.in/sites/default/files/policies/RIPS-2024-Notified-on-8-10-2024.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": "The MSME standard package (para 3.4.2) does not vary by area. RIPS 2024 Annexure 9.3 'List of Tehsils Mapped to Area Categories' (doc pp.112-119) maps tehsils to Area Category 1/2/3. Those categories matter only for the Manufacturing package (para 3.1), which an MSME with EFCI above Rs 25 crore may choose instead (para 3.4.1.2). The TSP (Tribal Sub-Plan) area gives +5% on the sector capital subsidies.",
+  "schemes": [
+    {
+      "id": "rj-rips2024-msme-sgst",
+      "name": "RIPS 2024 MSME Investment Subsidy (reimbursement of 75% of State tax due and deposited)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-10-08",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "sgst_share": 0.75,
+        "rate_by_zone": {
+          "ALL": 1.25
+        },
+        "years_by_zone": {
+          "ALL": 10
+        }
+      },
+      "clause": "Para 3.4.2.1 (Asset Creation Incentive table, 'Investment Subsidy'); cap para 6.7.1; annual cap para 3.4.1.2(2); period para 6.6.1",
+      "verified": true,
+      "notes": "sgst_share is the 75% of State tax (SGST) due and deposited that is reimbursed, for 10 years. rate_by_zone is the OVERALL ceiling: total subsidy over the whole benefit period may not exceed 125% of EFCI for MSMEs (para 6.7.1, which normally allows 100%; MSMEs and women/SC/ST/PwD/TSP enterprises get 125%). All incentives under the MSME section are capped at Rs 5 crore per year in total (para 3.4.1.2(2)). The period runs from the Entitlement Certificate (para 6.6.1). Note that 6.6.1 gives EC validity of 7 years for Investment Subsidy, but the MSME table explicitly says 10 years. Commercial production must start within the operative period or within 2 years of the EC, whichever is later (para 2.4). Expansion by existing MSMEs is eligible on incremental EFCI and incremental state tax (Illustration 11, para 6.3). Excluded sectors are in Annexure 9.2. The document copy is hosted by EPCH, an export promotion council; it is the signed Finance Department order. No copy on a rajasthan.gov.in domain could be reached."
+    },
+    {
+      "id": "rj-rips2024-msme-interest",
+      "name": "RIPS 2024 MSME Interest Subvention (Asset Creation Incentive Top-up)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-10-08",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.06,
+        "rate_slabs": [
+          {
+            "loan_upto": 50000000,
+            "rate": 0.06
+          },
+          {
+            "loan_from": 50000000,
+            "loan_upto": 100000000,
+            "rate": 0.04
+          },
+          {
+            "loan_from": 100000000,
+            "loan_upto": 500000000,
+            "rate": 0.03
+          }
+        ],
+        "annual_cap": null,
+        "years": 7
+      },
+      "clause": "Para 3.4.2.2 (matrix) and Illustration 10; conditions para 6.6.3",
+      "verified": true,
+      "notes": "Rates are percentage points per year on the term loan for plant & machinery/equipment. They apply slab-wise (marginal), e.g. a Rs 6 crore loan gets 6% on the first Rs 5 crore and 4% on Rs 1 crore (Illustration 10). Loans above Rs 50 crore are not covered. 'rate' holds the first-slab rate; use rate_slabs. Duration is 7 years, or 10 years for Khadi enterprises. Loans up to Rs 25 lakh get +1% for Rural Tourism Policy beneficiaries and agro-based industries. Subvention is telescoped and cannot exceed actual interest. It covers interest only (no penal interest), is lost for default periods, and is not available if any other State scheme gives interest subvention (para 6.6.3). The overall MSME cap is Rs 5 crore per year across incentives (para 3.4.1.2). Green Finance: 6% interest subvention on loans under SIDBI's Green Finance Scheme (para 4.1.3, row 2)."
+    },
+    {
+      "id": "rj-rips2024-msme-ed",
+      "name": "RIPS 2024 MSME Electricity Duty exemption",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-10-08",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "ALL": 7
+        }
+      },
+      "clause": "Para 3.4.2.4 (Exemption table, 'Electricity Duty')",
+      "verified": true,
+      "notes": "100% exemption for 7 years. Separately, MSMEs get 100% ED exemption on captive renewable generation for 7 years under Green Growth add-ons (para 4.1.3, row 2), within the Rs 1 crore green ceiling."
+    },
+    {
+      "id": "rj-rips2024-msme-plastic-alt-capital",
+      "name": "RIPS 2024 MSME special capital incentive - manufacturing of alternatives to plastic products",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-10-08",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 4000000
+      },
+      "clause": "Para 3.4.2.1 (Asset Creation Incentive table, 'Capital Subsidy', row 1)",
+      "verified": true,
+      "notes": "Sector-limited: only enterprises manufacturing alternatives to plastic products. 50% of capital investment, max Rs 40 lakh. SC/ST/women-owned FPOs or units in Tribal Sub-Plan areas get +5% capital subsidy (same table).",
+      "conditions": [
+        "Unit makes alternatives to plastic products"
+      ]
+    },
+    {
+      "id": "rj-rips2024-msme-agro-capital",
+      "name": "RIPS 2024 MSME special capital incentive - agro & food processing",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-10-08",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 15000000
+      },
+      "clause": "Para 3.4.2.1 (Asset Creation Incentive table, 'Capital Subsidy', row 2)",
+      "verified": true,
+      "notes": "Sector-limited: agro & food processing enterprises only. 50% of capital investment, max Rs 1.5 crore. +5% for SC/ST/women-owned FPOs or units in Tribal Sub-Plan areas.",
+      "conditions": [
+        "Agro or food processing enterprise"
+      ]
+    },
+    {
+      "id": "rj-rips2024-msme-green",
+      "name": "RIPS 2024 Add-on Green Incentive for MSMEs (environmental projects / clean production machinery)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2024-10-08",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 10000000
+      },
+      "clause": "Para 4.1.3, table row 2 'MSMEs'; Illustration 13",
+      "verified": true,
+      "notes": "50% reimbursement of the cost of environmental projects (ETP/waste management, ZLD, air pollution control, water measures). Also 10% of the cost of machinery & equipment using clean production technology. All green benefits together, including captive RE ED exemption and the 50% consent fee waiver under the Rajasthan Green Rating System, are capped at Rs 1 crore. Disbursed over 10 years (p.70). Green benefits count within the ceilings of the Asset Creation Incentive."
+    },
+    {
+      "id": "rj-msme2024-addl-interest",
+      "name": "Rajasthan MSME Policy 2024 - Additional interest subsidy over RIPS 2024",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-04-01",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.02,
+        "rate_slabs": [
+          {
+            "loan_upto": 50000000,
+            "rate": 0.02
+          },
+          {
+            "loan_from": 50000000,
+            "loan_upto": 100000000,
+            "rate": 0.01
+          },
+          {
+            "loan_from": 100000000,
+            "loan_upto": 500000000,
+            "rate": 0.005
+          }
+        ],
+        "annual_cap": null,
+        "years": 7
+      },
+      "clause": "Rajasthan MSME Policy 2024, section 6.2 (per secondary source)",
+      "verified": false,
+      "notes": "NOT VERIFIED. Figures come from the ICAI MSME & Startup Committee handbook 'Rajasthan State MSME Policy' (startup.icai.org, 2026), table 5.2.1. It also lists +2% (up to Rs 7.5 lakh/yr) for ODOP/thrust-sector MSMEs and +1% (up to Rs 5 lakh/yr) for backward/tribal areas and women/SC/ST/PwBD/young entrepreneurs. Aggregators give different numbers ('0.5% to 2%'). The official MSME Policy 2024 PDF could not be retrieved (industries.rajasthan.gov.in refused connections)."
+    },
+    {
+      "id": "rj-msme2024-cert",
+      "name": "Rajasthan MSME Policy 2024 - Quality certification / IPR assistance",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-04-01",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 300000
+      },
+      "clause": "Rajasthan MSME Policy 2024 (section number not confirmed)",
+      "verified": false,
+      "notes": "NOT VERIFIED. 50% up to Rs 3 lakh for ISO/BIS/FSSAI/ZED/WHO-GMP and IPR, per ICAI handbook section 5.6 (secondary). The official text was not obtained."
+    }
+  ],
+  "other_benefits": [
+    "Mandi/market fee: 100% reimbursement for 7 years (RIPS para 3.4.2.4)",
+    "Stamp duty: 75% exemption + 25% reimbursement on land purchase/lease and on built space of at least 2000 sq ft (para 3.4.2.4)",
+    "Land conversion charges: 75% exemption + 25% reimbursement (para 3.4.2.4)",
+    "Employment generation subsidy: 50% of employer EPF+ESI for 7 years for domiciled employees (para 3.4.2.3); 75% for women/SC/ST/PwD employees or if more than 75% of employees are domiciled (para 6.7.2)",
+    "SME platform fund raising: 50% of listing expenses, max Rs 5 lakh (para 3.4.2.3)",
+    "Cluster CFC: land at circle rate; soft loan up to Rs 10 crore at 5% for MSE SPVs (para 3.4.2.5)",
+    "Export freight: 25% of freight via State ICDs/air cargo, max Rs 25 lakh/yr, for first-time MSME exporters (para 4.2.1)",
+    "Skilling: 50% of training cost for 6 months, up to Rs 20,000/30,000/40,000 per month for micro/small/medium (para 4.3.1)",
+    "Green consent fee: 50% waiver under the Rajasthan Green Rating System (para 4.1.3)",
+    "MSME Policy 2024 (unverified): 100% CGTMSE annual guarantee fee reimbursement for 7 years; SME listing, market development and technology acquisition assistance"
+  ],
+  "unverifiable": [
+    "The RIPS 2024 copy used is the signed Finance Dept order hosted on epch.in. No rajasthan.gov.in-hosted copy was reachable (industries.rajasthan.gov.in, rajnivesh, invest.rajasthan refused connections or returned errors). Pages 44-49 and 65-88 are image-only and were read visually.",
+    "Amendments to RIPS 2024 after Oct 2024 were not found. The Finance Dept issued procedural guidelines on 2025-01-03 (notification F.12(32)FD/Tax/2024-118, per TeamLease RegTech), which were not reviewed.",
+    "Rajasthan MSME Policy 2024 (in force to 2029-03-31): official text not obtained. Its add-on interest subsidy, CGTMSE fee and certification figures are from secondary sources only.",
+    "RIPS 2024 has no per-unit power tariff subsidy for MSMEs. The SGST incentive is a share of tax plus an overall % of EFCI ceiling, not a pure % of FCI ceiling."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "rj-rips2024-msme-plastic-alt-capital: conditions added",
+    "rj-rips2024-msme-agro-capital: conditions added"
+  ]
+}

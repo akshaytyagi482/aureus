@@ -1,0 +1,281 @@
+{
+  "state_code": "36",
+  "state": "Telangana",
+  "status": "current",
+  "policy": {
+    "name": "Telangana MSME Policy 2024 (Incentive Scheme) - Operational Guidelines for Implementation of MSME Policy (Incentive Scheme), 2024",
+    "order_no": "G.O.Ms.No.16, Industries & Commerce (FP & MSME) Department, dated 18-09-2024",
+    "date": "2024-09-18",
+    "valid_from": "2024-09-18",
+    "valid_to": "2029-03-31",
+    "source_url": "https://ipass.telangana.gov.in/viewpdf.aspx?filepathnew=E:/TS-iPASSFinal/docs/Incentives%20guidelines-Final%20Version.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "ELIGIBLE": "Whole state outside GHMC (Greater Hyderabad Municipal Corporation) limits, plus existing/new Industrial Estates/Parks inside GHMC",
+    "GHMC_EXCLUDED": "Inside GHMC limits outside industrial estates/parks, and Sanathnagar, Azamabad, Chandulal Baradari and Kattedan Industrial Estates - no incentives (SC/ST/PwD may set up Annexure I(A) activities in GHMC)"
+  },
+  "zone_lookup": "Guidelines para 1.2 'Area of Operation' (p.6); no district categorisation.",
+  "schemes": [
+    {
+      "id": "tg-msme2024-capital-gen",
+      "name": "Investment Subsidy - Micro & Small, General category",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": [
+        "ELIGIBLE"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-09-18",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 3000000
+      },
+      "clause": "Guidelines 2.1.6, 4.4.1, 4.4.5",
+      "verified": true,
+      "notes": "25% of eligible Fixed Capital Investment (land, building, P&M; computed per para 5). New units and expansion/diversification (>=25% increase in FCI and in capacity/turnover, paras 1.4.11-1.4.12). Expansion cap Rs 30 lakh includes subsidy availed earlier. Apply within 6 months of commercial production on TG-iPASS. Medium enterprises get no investment subsidy. Units commencing between 18-09-2024 and issue of guidelines may choose T-IDEA instead."
+    },
+    {
+      "id": "tg-msme2024-capital-women",
+      "name": "Additional Investment Subsidy - Women-owned Micro & Small",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": [
+        "ELIGIBLE"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-09-18",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.2,
+        "cap": 2000000
+      },
+      "clause": "Guidelines 2.3, 4.4.2",
+      "verified": true,
+      "notes": "Additional to the 25%/Rs 30 lakh general subsidy; combined max Rs 50 lakh."
+    },
+    {
+      "id": "tg-msme2024-capital-scst",
+      "name": "Investment Subsidy - SC/ST/PwD Micro & Small manufacturing",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-09-18",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 10000000
+      },
+      "clause": "Guidelines 3.1.6(a), 4.5(i)",
+      "verified": true,
+      "notes": "In lieu of general rate. SC/ST/PwD women: additional 20% up to Rs 20 lakh, max Rs 120 lakh per unit. (Service enterprises: 35% up to Rs 75 lakh.)"
+    },
+    {
+      "id": "tg-msme2024-sgst-ms",
+      "name": "Net SGST Reimbursement - Micro & Small",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": [
+        "ELIGIBLE"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2024-09-18",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "ALL": 1.0
+        },
+        "years_by_zone": {
+          "ALL": 5
+        }
+      },
+      "clause": "Guidelines 2.1.7, 4.7.1",
+      "verified": true,
+      "notes": "100% of net SGST paid, for 5 years from commercial production or until 100% of eligible FCI reimbursed, whichever earlier (rate_by_zone = ceiling as fraction of FCI). Expansion: only SGST on production above 3-yr average base. Half-yearly claims with GST dept certified Form-A. Same for SC/ST/PwD (3.1.7)."
+    },
+    {
+      "id": "tg-msme2024-sgst-med",
+      "name": "Net SGST Reimbursement - Medium",
+      "categories": [
+        "medium"
+      ],
+      "zones": [
+        "ELIGIBLE"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2024-09-18",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "ALL": 1.0
+        },
+        "years_by_zone": {
+          "ALL": 7
+        }
+      },
+      "clause": "Guidelines 2.2.6, 4.7.2",
+      "verified": true,
+      "notes": "75% of net SGST paid, for 7 years or until 100% of eligible FCI reimbursed, whichever earlier (rate_by_zone = FCI ceiling)."
+    },
+    {
+      "id": "tg-msme2024-pavala-vaddi",
+      "name": "Interest Subsidy (Pavala Vaddi) - new Micro & Small",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": [
+        "ELIGIBLE"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2024-09-18",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.09,
+        "annual_cap": null,
+        "years": 5
+      },
+      "clause": "Guidelines 2.1.8, 4.11",
+      "verified": true,
+      "notes": "Reimburses term-loan interest IN EXCESS OF 3% p.a. (unit bears first 3%), max 9% p.a. reimbursed, 5 years from commercial production. Term loans on eligible FCI only, disbursed within 6 months of DCP; NEW units only (not expansion); account must be standard/regular. Medium enterprises not covered. Same for SC/ST/PwD (3.1.8)."
+    },
+    {
+      "id": "tg-msme2024-power",
+      "name": "Reimbursement of Fixed Power Consumption Charges",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "ELIGIBLE"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2024-09-18",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "per_unit": 1.0,
+        "years": 5,
+        "cap": null
+      },
+      "clause": "Guidelines 2.1.5, 2.2.5, 4.6",
+      "verified": true,
+      "notes": "Rs 1.00/unit (Rs 1.50/unit for SC/ST/PwD, 3.1.5/3.2.5/4.6.2) on energy (kVAh) charges only, 5 years from DCP. Power from DISCOMs/CESS Sircilla in unit's name. Expansion: only consumption above 3-yr average base."
+    },
+    {
+      "id": "tg-msme2024-quality",
+      "name": "Quality Certification / ZED Certification Subsidy",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "ELIGIBLE"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2024-09-18",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 200000
+      },
+      "clause": "Guidelines 2.1.10, 2.2.8, 4.8.1",
+      "verified": true,
+      "notes": "50% of expenses, max Rs 2 lakh per certificate (general). SC/ST/PwD: 100% up to Rs 3 lakh per certificate (3.1.10/4.8.2). Patent registration 100% up to Rs 2 lakh (general). Available to new and existing MSMEs (4.8.4)."
+    },
+    {
+      "id": "tg-msme2024-cleaner",
+      "name": "Cleaner Production Subsidy",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "ELIGIBLE"
+      ],
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2024-09-18",
+        "to": "2029-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 500000
+      },
+      "clause": "Guidelines 2.1.11, 2.2.9, 4.9",
+      "verified": true,
+      "notes": "25% of cost of specific cleaner production measures, max Rs 5 lakh; TGPCB certificate needed."
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty & transfer duty: 100% reimbursement on land purchase, lease, mortgage/hypothecation (Guidelines 2.1.1-2.1.2, 4.1).",
+    "Land cost rebate: 25% up to Rs 10 lakh in TGIIC/approved parks (SC/ST/PwD 50% up to Rs 50 lakh) (2.1.3, 4.2).",
+    "Land conversion charges: 25% up to Rs 10 lakh (2.1.4, 4.3).",
+    "Skill upgradation: 50% of training cost of local manpower up to Rs 2,000 per person, one-time (2.1.9).",
+    "Industrial Infrastructure Development Fund: 50% of infra cost for standalone units >10 km from estates, max Rs 1 crore (2.2.10/3.1.12).",
+    "Electricity duty: none found in the scheme."
+  ],
+  "unverifiable": [
+    "G.O.Ms.No.16 dt 18-09-2024 itself not downloaded (industries.telangana.gov.in unreachable); figures read from the official Operational Guidelines hosted on TG-iPASS (ipass.telangana.gov.in), cross-checked with the MSME Policy 2024 booklet (invest.telangana.gov.in) p.20 (25%/Rs 30 lakh; women +20%/Rs 20 lakh; SC/ST 50%/Rs 1 crore).",
+    "No electricity duty exemption in MSME Policy 2024."
+  ],
+  "checked_on": "2026-10-17"
+}

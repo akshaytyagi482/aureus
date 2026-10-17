@@ -1,0 +1,137 @@
+{
+  "state_code": "19",
+  "state": "West Bengal",
+  "status": "current",
+  "policy": {
+    "name": "West Bengal Incentive Scheme (WBIS) 2026 for MSMEs (successor to Banglashree for MSMEs, which expired 31.03.2025)",
+    "order_no": null,
+    "date": null,
+    "valid_from": "2026-10-01",
+    "valid_to": "2031-09-30",
+    "source_url": null,
+    "language": "en"
+  },
+  "zones": {
+    "A": "Zone A (definition not available)",
+    "B": "Zone B (definition not available)",
+    "C": "Zone C (definition not available)"
+  },
+  "zone_lookup": "Unknown - WBIS 2026 notification not obtained. (Banglashree 2020 used Zones A-E per its annexure; not reused here.)",
+  "schemes": [
+    {
+      "id": "wb-wbis2026-interest-a",
+      "name": "WBIS 2026 Interest subsidy on term loan - Zone A",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": [
+        "A"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2026-10-01",
+        "to": "2031-09-30"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.25,
+        "annual_cap": null,
+        "years": 5
+      },
+      "clause": "unknown (notification not seen)",
+      "verified": false,
+      "notes": "RATE IS SHARE OF ANNUAL INTEREST LIABILITY (25%), not percentage points; 5 years from first loan disbursement; loans from commercial/cooperative/scheduled banks, RRBs, FIs for approved projects. Caps unknown. UNVERIFIED: figures only from news reports of the July 2026 cabinet approval (KNN India 20.07.2026 https://knnindia.co.in/news/newsdetails/msme/west-bengal-approves-wbis-2026-msme-incentive-scheme-with-interest-and-power-subsidies ; LegalSuvidha). Official notification not found/readable (wbmsme.gov.in, silpasathi.wb.gov.in, egazette.wb.gov.in unreachable; not posted on wbmsmet.gov.in or myenterprisewb.in as of 2026-10-17). Applies to new manufacturing MSMEs with Udyam Registration commencing commercial production on/after 01.10.2026; units that started on/before 30.09.2026 are excluded. Zone A/B/C definitions not known."
+    },
+    {
+      "id": "wb-wbis2026-interest-bc",
+      "name": "WBIS 2026 Interest subsidy on term loan - Zones B & C",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": [
+        "B",
+        "C"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2026-10-01",
+        "to": "2031-09-30"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.35,
+        "annual_cap": null,
+        "years": 5
+      },
+      "clause": "unknown (notification not seen)",
+      "verified": false,
+      "notes": "35% of annual interest liability, 5 years from first disbursement. Caps unknown. UNVERIFIED: figures only from news reports of the July 2026 cabinet approval (KNN India 20.07.2026 https://knnindia.co.in/news/newsdetails/msme/west-bengal-approves-wbis-2026-msme-incentive-scheme-with-interest-and-power-subsidies ; LegalSuvidha). Official notification not found/readable (wbmsme.gov.in, silpasathi.wb.gov.in, egazette.wb.gov.in unreachable; not posted on wbmsmet.gov.in or myenterprisewb.in as of 2026-10-17). Applies to new manufacturing MSMEs with Udyam Registration commencing commercial production on/after 01.10.2026; units that started on/before 30.09.2026 are excluded. Zone A/B/C definitions not known."
+    },
+    {
+      "id": "wb-wbis2026-ed",
+      "name": "WBIS 2026 Electricity duty waiver",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2026-10-01",
+        "to": "2031-09-30"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "A": 5,
+          "B": 5,
+          "C": 5
+        }
+      },
+      "clause": "unknown (notification not seen)",
+      "verified": false,
+      "notes": "PARTIAL waiver: 50% of electricity duty in Zone A, 75% in Zones B & C, for 5 years from commercial production; 100% (cap Rs 10 lakh/yr) for micro & small units wholly owned by women or SC/ST entrepreneurs. UNVERIFIED: figures only from news reports of the July 2026 cabinet approval (KNN India 20.07.2026 https://knnindia.co.in/news/newsdetails/msme/west-bengal-approves-wbis-2026-msme-incentive-scheme-with-interest-and-power-subsidies ; LegalSuvidha). Official notification not found/readable (wbmsme.gov.in, silpasathi.wb.gov.in, egazette.wb.gov.in unreachable; not posted on wbmsmet.gov.in or myenterprisewb.in as of 2026-10-17). Applies to new manufacturing MSMEs with Udyam Registration commencing commercial production on/after 01.10.2026; units that started on/before 30.09.2026 are excluded. Zone A/B/C definitions not known."
+    },
+    {
+      "id": "wb-wbis2026-cert",
+      "name": "WBIS 2026 Quality certification reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2026-10-01",
+        "to": "2031-09-30"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 500000
+      },
+      "clause": "unknown (notification not seen)",
+      "verified": false,
+      "notes": "50% of cost of ISI/BIS/ISO/HACCP etc. certification; cap Rs 5 lakh for micro & small, Rs 10 lakh for medium. UNVERIFIED: figures only from news reports of the July 2026 cabinet approval (KNN India 20.07.2026 https://knnindia.co.in/news/newsdetails/msme/west-bengal-approves-wbis-2026-msme-incentive-scheme-with-interest-and-power-subsidies ; LegalSuvidha). Official notification not found/readable (wbmsme.gov.in, silpasathi.wb.gov.in, egazette.wb.gov.in unreachable; not posted on wbmsmet.gov.in or myenterprisewb.in as of 2026-10-17). Applies to new manufacturing MSMEs with Udyam Registration commencing commercial production on/after 01.10.2026; units that started on/before 30.09.2026 are excluded. Zone A/B/C definitions not known."
+    }
+  ],
+  "other_benefits": [
+    "UNVERIFIED (news): expansion incentives for existing MSMEs (capital subsidy, stamp duty/registration reimbursement, power subsidy, ED waiver, water conservation/environmental compliance) - rates not reported.",
+    "UNVERIFIED (news): cluster/industrial park infrastructure subsidy up to Rs 5 crore per cluster.",
+    "No capital investment subsidy for NEW units was reported for WBIS 2026."
+  ],
+  "unverifiable": [
+    "WBIS 2026 official notification (number, date, zone list, caps) not found; all schemes verified=false.",
+    "Predecessor verified from official notification: Banglashree for MSMEs (No. 1543/MSMET-18011(11)/1/2020 dated 22.07.2020, Kolkata Gazette Extraordinary WB(Part-I)/2020/SAR-642) was in force 01.04.2020-31.03.2025 (para 1), source https://myenterprisewb.in (Banglashree - 22/07/2020 download) - EXPIRED; units commencing production 01.04.2025-30.09.2026 appear to have no MSME incentive scheme.",
+    "West Bengal also enacted a 2025 Act revoking older industrial incentive schemes (reported); not relevant to MSME scheme figures."
+  ],
+  "checked_on": "2026-10-17"
+}

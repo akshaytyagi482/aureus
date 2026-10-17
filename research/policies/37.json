@@ -1,0 +1,230 @@
+{
+  "state_code": "37",
+  "state": "Andhra Pradesh",
+  "status": "current",
+  "policy": {
+    "name": "Andhra Pradesh MSME & Entrepreneur Development Policy 4.0 (2024-29) - 'One Entrepreneur, One Family by 2030'",
+    "order_no": "G.O.Ms.No.69, Industries & Commerce (Programme-I) Department, dated 26-10-2024; amended by G.O.Ms.No.22 dated 17-02-2025 (eligibility and capital subsidy paras, enhanced incentives for SC/ST/women/BC/minority)",
+    "date": "2024-10-26",
+    "valid_from": "2024-10-26",
+    "valid_to": "2029-10-25",
+    "source_url": "https://apmsmeone.ap.gov.in/Data/ExistingPolicy/AP%20MSME%20&%20EDP%20(4.0)%20-%202024-29.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [
+    {
+      "id": "ap-medp4-capital-gen",
+      "name": "Investment (capital) subsidy - General category",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-10-26",
+        "to": "2029-10-25"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": null,
+        "cap_by_zone": {
+          "ALL": {
+            "micro": 2500000,
+            "small": 15000000,
+            "medium": 70000000
+          }
+        }
+      },
+      "clause": "MSME&EDP 4.0 - Investment Subsidy (para no. not confirmed)",
+      "verified": false,
+      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). 25% of Fixed Capital Investment; caps micro Rs 25 lakh (disbursed over 2 yrs), small Rs 1.5 crore (3 yrs), medium Rs 7 crore (4 yrs). Both sources agree on these figures. Overall incentives under all packages capped at 75% of FCI (Finance Dept condition quoted in G.O. preamble per search snippet). Manufacturing only; new units and expansion (>=25% increase).",
+      "exclusive_group": "ap-capital"
+    },
+    {
+      "id": "ap-medp4-capital-special",
+      "name": "Investment subsidy - Special category (Women/SC/ST/BC/Minority/specially-abled)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-10-26",
+        "to": "2029-10-25"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": {
+          "micro": 0.45,
+          "small": 0.45,
+          "medium": 0.35
+        },
+        "cap": null,
+        "cap_by_zone": {
+          "ALL": {
+            "micro": 4500000,
+            "small": 45000000,
+            "medium": 70000000
+          }
+        }
+      },
+      "clause": "MSME&EDP 4.0 as amended by G.O.Ms.No.22 dt 17-02-2025 (para no. not confirmed)",
+      "verified": false,
+      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). ICAI: micro 45% (Rs 45 lakh), small 45% (Rs 4.5 crore), medium 35% (Rs 7 crore). CONFLICT: KIP Financial says 35% up to Rs 7 crore for all special categories (likely pre-amendment). Women: ICAI also mentions '10% additional investment subsidy'.",
+      "conditions": [
+        "Unit owned by special-category entrepreneurs as defined in the policy"
+      ],
+      "exclusive_group": "ap-capital"
+    },
+    {
+      "id": "ap-medp4-sgst",
+      "name": "Net SGST reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-10-26",
+        "to": "2029-10-25"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "ALL": 1.0
+        },
+        "years_by_zone": {
+          "ALL": 5
+        }
+      },
+      "clause": "MSME&EDP 4.0 - Net SGST reimbursement (para no. not confirmed)",
+      "verified": false,
+      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). ICAI: 100% of net SGST for 5 years or until 100% of FCI realised (rate_by_zone = FCI ceiling), additionally capped at 5% of annual turnover (as summarised - unclear if annual cap). Applies to manufacturing and service."
+    },
+    {
+      "id": "ap-medp4-power",
+      "name": "Power cost reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-10-26",
+        "to": "2029-10-25"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "per_unit": 1.0,
+        "years": 5,
+        "cap": null
+      },
+      "clause": "MSME&EDP 4.0 - Power cost reimbursement (para no. not confirmed)",
+      "verified": false,
+      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). ICAI: Rs 1/unit for 5 years from commercial production, annual cap micro Rs 1 lakh, small Rs 5 lakh, medium Rs 15 lakh; special category Rs 1.5/unit with same caps. cap field left null because caps are per year and per size."
+    },
+    {
+      "id": "ap-medp4-quality",
+      "name": "Quality certification cost support (top-up to GoI schemes)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-10-26",
+        "to": "2029-10-25"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 1.0,
+        "cap": null
+      },
+      "clause": "MSME&EDP 4.0 - Quality certification (para no. not confirmed)",
+      "verified": false,
+      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). ICAI: 100% reimbursement of certification charges incl. consultancy, as top-up over GoI support (balance after central assistance); cap not given in summary."
+    },
+    {
+      "id": "ap-medp4-techup",
+      "name": "Technology upgradation subsidy (existing units modernisation)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-10-26",
+        "to": "2029-10-25"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.2,
+        "cap": null,
+        "cap_by_zone": {
+          "ALL": {
+            "micro": 2000000,
+            "small": 20000000,
+            "medium": 50000000
+          }
+        }
+      },
+      "clause": "MSME&EDP 4.0 - Technology upgradation (para no. not confirmed)",
+      "verified": false,
+      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). General 20% (micro Rs 20 lakh/2 yrs, small Rs 2 crore/3 yrs, medium Rs 5 crore/5 yrs); special category 40% (micro Rs 40 lakh, small Rs 4 crore, medium Rs 5 crore). Mutually exclusive with capital subsidy per Finance Dept remark.",
+      "conditions": [
+        "Existing unit upgrading technology (instead of the capital subsidy)"
+      ],
+      "exclusive_group": "ap-capital"
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty & transfer duty: 100% reimbursement on purchase/lease of industrial land and buildings (secondary).",
+    "Land cost rebate: SC/ST micro & small, 75% up to Rs 25 lakh in APIIC parks, new units only (secondary).",
+    "Business Development Credits for medium enterprises: 2% of growth in turnover for 5 years (secondary).",
+    "Export: 1% of export turnover for 3 years (secondary).",
+    "No interest subsidy for MSMEs found in summaries (8% interest subsidy is under AP Innovation & Startup Policy 4.0). No electricity duty exemption found."
+  ],
+  "unverifiable": [
+    "Official G.O.Ms.No.69 (26-10-2024) PDF on apmsmeone.ap.gov.in and amendment G.O.Ms.No.22 (17-02-2025) and G.O.Ms.No.28 (2025) could not be downloaded - host resets/503 from this environment; apchambers.in copy returns 404. ALL figures are from secondary summaries and are marked verified:false.",
+    "Policy confirmed in force in Sept 2026 (All India Radio news, 11-09-2026). valid_to computed as 5 years from notification ('5 years or until new policy').",
+    "Operational guidelines (Director of Industries / AP MSME DC) not obtained; disbursement schedules, para numbers, and SGST turnover cap need confirmation."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "ap-medp4-capital-gen: either/or group 'ap-capital'",
+    "ap-medp4-capital-special: conditions added",
+    "ap-medp4-capital-special: either/or group 'ap-capital'",
+    "ap-medp4-techup: conditions added",
+    "ap-medp4-techup: either/or group 'ap-capital'"
+  ]
+}

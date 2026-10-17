@@ -1,0 +1,455 @@
+{
+  "state_code": "22",
+  "state": "Chhattisgarh",
+  "status": "current",
+  "policy": {
+    "name": "Chhattisgarh Industrial Development Policy 2024-30 ('Amrit Kaal: Chhattisgarh Vision @2047') - Chapter A, Category A-2 (MSME package), English version updated to notification dated 27.05.2025, read with Amendment No. GEN-2101/1319/2025/COMM.&INDUS dated 12.01.2026",
+    "order_no": "Department of Commerce & Industries; amendments dated 25.04.2025, 27.05.2025 (Amendment-01, -02), 12.01.2026 (Amendment-04, CG Rajpatra Asadharan No. 17 dated 13.01.2026)",
+    "date": "2024-11-01",
+    "valid_from": "2024-11-01",
+    "valid_to": "2030-03-31",
+    "source_url": "https://invest.cg.gov.in/storage/pdfs/Industrial%20Policy%202024-30.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "G1": "Development Block Group-1 (10 blocks, most developed): Dharsiwa (Raipur); Baloda Bazar, Bhatapara, Simga (Baloda Bazar-Bhatapara); Durg, Dhamdha, Patan (Durg); Raigarh (Raigarh); Akaltara (Janjgir-Champa); Korba (Korba)",
+    "G2": "Development Block Group-2 (61 blocks) - see Annexure-4",
+    "G3": "Development Block Group-3 (75 blocks, least developed, mostly Bastar & Surguja divisions) - see Annexure-4"
+  },
+  "zone_lookup": "Annexure-4 'Development Block Categorisation' (policy pp.59-61; clause 12.28(2)) lists every development block of all 33 districts as Group One/Two/Three. Find the unit's development block (tehsil-level block, not the district). Group-1 is listed in full above; any block not in Group-1 is in G2 or G3 per Annexure-4.",
+  "schemes": [
+    {
+      "id": "cg-idp2024-msme-sgst-general",
+      "name": "Net SGST reimbursement - General MSMEs (OPTION A; alternative to Fixed Capital Investment Subsidy)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "sgst_share": 1.0,
+        "rate_by_zone": {
+          "G1": 0.75,
+          "G2": 0.75,
+          "G3": 0.75
+        },
+        "years_by_zone": {
+          "G1": 5,
+          "G2": 7,
+          "G3": 9
+        }
+      },
+      "clause": "Chapter A, Category A-2, item (1) 'Net SGST Reimbursement' table (policy p.84-85); Annexure-(9.1)",
+      "verified": true,
+      "notes": "Net SGST is reimbursed from the date of commercial production. rate_by_zone is the ceiling as a share of fixed capital investment (75% for General enterprises). This is an OPTION: the unit picks EITHER Net SGST reimbursement OR the Fixed Capital Investment Subsidy; the choice is irrevocable, made by an option letter plus affidavit (Note 1, p.85). Covers new units and expansion/diversification/substitution/modernisation. Total incentives under A-2 are capped at 100% of fixed capital investment (A-2 preamble). Clause 12.4(a): women, state-domicile ex-servicemen/Agniveers, Naxal-affected, differently abled, NRI, FDI, exporters and foreign-technology projects get 10% more subsidy, a 10% higher cap, and +1 year on exemptions (only one such category). Ineligible enterprises: Annexure-3.",
+      "exclusive_group": "cg-sgst-or-capital"
+    },
+    {
+      "id": "cg-idp2024-msme-sgst-thrust",
+      "name": "Net SGST reimbursement - Thrust-sector MSMEs (OPTION A)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "sgst_share": 1.0,
+        "rate_by_zone": {
+          "G1": 1.0,
+          "G2": 1.0,
+          "G3": 1.0
+        },
+        "years_by_zone": {
+          "G1": 6,
+          "G2": 8,
+          "G3": 10
+        }
+      },
+      "clause": "Chapter A, Category A-2, item (1) table, 'Thrust Enterprises' column (p.84-85); thrust list Annexure-2 (p.48)",
+      "verified": true,
+      "notes": "Only for products in the Annexure-2 'List of Thrust Sector Enterprises'. The ceiling is 100% of FCI. It is an alternative to the capital subsidy; other conditions as for the general SGST scheme.",
+      "conditions": [
+        "Product is on the thrust-sector list (Annexure-2)"
+      ],
+      "exclusive_group": "cg-sgst-or-capital"
+    },
+    {
+      "id": "cg-idp2024-msme-fcis-general",
+      "name": "Fixed Capital Investment Subsidy - General MSMEs (OPTION B; alternative to Net SGST)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate_by_zone": {
+          "G1": 0.3,
+          "G2": 0.35,
+          "G3": 0.4
+        },
+        "cap": null,
+        "cap_by_zone": {
+          "G1": {
+            "micro": 3000000,
+            "small": 25000000,
+            "medium": 40000000
+          },
+          "G2": {
+            "micro": 3500000,
+            "small": 35000000,
+            "medium": 45000000
+          },
+          "G3": {
+            "micro": 4000000,
+            "small": 45000000,
+            "medium": 50000000
+          }
+        }
+      },
+      "clause": "Chapter A, Category A-2, 'Fixed Capital Investment Subsidy' table (p.85); instalments (a)-(c); Note (1)-(2)",
+      "verified": true,
+      "notes": "The table gives caps in Rs lakh: micro 30/35/40, small 250/350/450, medium 400/450/500 for G1/G2/G3. The base is fixed capital investment as defined in Annexure-1 and the CG Commercial Production Certificate Rules 2024; land treatment per Annexure-1 definitions, not separately checked. Paid as follows: micro in 1 instalment; small in 3 equal annual instalments; medium in 5 equal annual instalments. The first instalment is paid after production starts. Mutually exclusive with Net SGST (irrevocable option). Clause 12.4(a) special categories get +10% of the subsidy and +10% on the cap. Clause 12.4(c) employment multiplier on FCIS and its cap: 1.1x for 100+ permanent jobs, 1.2x for 200+, 1.3x for 500+, 1.4x for 700+, 1.5x for 1000+. Operational rule: CG Sthayi Punji Nivesh Kshatipurti Anudan Niyam 2024 (notification GENS-2101/1167/2025 dated 19.08.2025).",
+      "exclusive_group": "cg-sgst-or-capital"
+    },
+    {
+      "id": "cg-idp2024-msme-fcis-thrust",
+      "name": "Fixed Capital Investment Subsidy - Thrust-sector MSMEs (OPTION B)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate_by_zone": {
+          "G1": 0.35,
+          "G2": 0.4,
+          "G3": 0.45
+        },
+        "cap": null,
+        "cap_by_zone": {
+          "G1": {
+            "micro": 3500000,
+            "small": 35000000,
+            "medium": 70000000
+          },
+          "G2": {
+            "micro": 4000000,
+            "small": 45000000,
+            "medium": 75000000
+          },
+          "G3": {
+            "micro": 4500000,
+            "small": 55000000,
+            "medium": 80000000
+          }
+        }
+      },
+      "clause": "Chapter A, Category A-2, 'Fixed Capital Investment Subsidy' table, Thrust columns (p.85)",
+      "verified": true,
+      "notes": "The table gives caps in Rs lakh: micro 35/40/45, small 350/450/550, medium 700/750/800. Same instalments, option rules and 12.4 add-ons as the general scheme. Thrust list: Annexure-2.",
+      "conditions": [
+        "Product is on the thrust-sector list (Annexure-2)"
+      ],
+      "exclusive_group": "cg-sgst-or-capital"
+    },
+    {
+      "id": "cg-idp2024-msme-interest-general",
+      "name": "Interest subsidy on term loans - General MSMEs",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate_basis": "fraction_of_interest_paid",
+        "rate": null,
+        "rate_by_zone": {
+          "G1": 0.4,
+          "G2": 0.45,
+          "G3": 0.5
+        },
+        "annual_cap": null,
+        "annual_cap_by_zone": {
+          "G1": {
+            "micro": 1500000,
+            "small": 2500000,
+            "medium": 3500000
+          },
+          "G2": {
+            "micro": 2000000,
+            "small": 3000000,
+            "medium": 4000000
+          },
+          "G3": {
+            "micro": 2500000,
+            "small": 3500000,
+            "medium": 4500000
+          }
+        },
+        "years": null,
+        "years_by_zone": {
+          "G1": 5,
+          "G2": 6,
+          "G3": 7
+        }
+      },
+      "clause": "Chapter A, Category A-2, item (2) 'Interest Subsidy' table (p.86-87); Annexure-(9.2)",
+      "verified": true,
+      "notes": "rate_by_zone is the share OF INTEREST paid on term loans from RBI-recognised FIs, not percentage points. The annual cap in Rs lakh is micro 15/20/25, small 25/30/35, medium 35/40/45 for G1/G2/G3; the term is 5/6/7 years. Available for new units and expansion/diversification/substitution/modernisation. It is NOT part of the SGST/FCIS either-or option, so it can stack with either, within the overall 100% of FCI cap. 12.4(a) special categories get +10%.",
+      "exclusive_group": "cg-interest"
+    },
+    {
+      "id": "cg-idp2024-msme-interest-thrust",
+      "name": "Interest subsidy on term loans - Thrust-sector MSMEs",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate_basis": "fraction_of_interest_paid",
+        "rate": null,
+        "rate_by_zone": {
+          "G1": 0.45,
+          "G2": 0.5,
+          "G3": 0.55
+        },
+        "annual_cap": null,
+        "annual_cap_by_zone": {
+          "G1": {
+            "micro": 2000000,
+            "small": 3000000,
+            "medium": 4000000
+          },
+          "G2": {
+            "micro": 2500000,
+            "small": 3500000,
+            "medium": 4500000
+          },
+          "G3": {
+            "micro": 3000000,
+            "small": 4000000,
+            "medium": 5000000
+          }
+        },
+        "years": null,
+        "years_by_zone": {
+          "G1": 6,
+          "G2": 7,
+          "G3": 8
+        }
+      },
+      "clause": "Chapter A, Category A-2, item (2) table, Thrust columns (p.86-87)",
+      "verified": true,
+      "notes": "Annual cap in Rs lakh: micro 20/25/30, small 30/35/40, medium 40/45/50. Term 6/7/8 years for G1/G2/G3.",
+      "conditions": [
+        "Product is on the thrust-sector list (Annexure-2)"
+      ],
+      "exclusive_group": "cg-interest"
+    },
+    {
+      "id": "cg-idp2024-msme-ed-general",
+      "name": "Electricity duty exemption - General MSMEs (new units)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "G1": 5,
+          "G2": 7,
+          "G3": 9
+        }
+      },
+      "clause": "Chapter A, Category A-2, item (3) 'Electricity Duty Exemption' (p.87-88); Annexure-(9.3)",
+      "verified": true,
+      "notes": "Complete exemption from the date of commercial production. The policy text says 'only new enterprises', but the 27.05.2025 amendment adds expansion/diversification pro-rata by additional P&M over total P&M. Exemptions are over and above the 100% FCI incentive cap (12.1). 12.4(a) special categories get +1 year.",
+      "exclusive_group": "cg-ed"
+    },
+    {
+      "id": "cg-idp2024-msme-ed-thrust",
+      "name": "Electricity duty exemption - Thrust-sector MSMEs",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "G1": 6,
+          "G2": 8,
+          "G3": 10
+        }
+      },
+      "clause": "Chapter A, Category A-2, item (3), Thrust column (p.87-88)",
+      "verified": true,
+      "notes": "Same conditions as the general scheme.",
+      "conditions": [
+        "Product is on the thrust-sector list (Annexure-2)"
+      ],
+      "exclusive_group": "cg-ed"
+    },
+    {
+      "id": "cg-idp2024-msme-quality",
+      "name": "Quality Certification Subsidy",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 1000000
+      },
+      "clause": "Chapter A, Category A-2, item (9) (p.90); Annexure-(9.9); rules notified 14.02.2025 (GENS/32/2025)",
+      "verified": true,
+      "notes": "50% of the cost of ISO-9000/14000/18000/22000, BIS, ZED, BEE, renewable-energy certification, Agmark, Euro standards or similar national/international certification. Max Rs 10 lakh PER CERTIFICATION. Open to new and existing MSMEs."
+    },
+    {
+      "id": "cg-idp2024-msme-env",
+      "name": "Environment Management Project Subsidy (carbon-footprint reducing technology)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2024-11-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 2500000
+      },
+      "clause": "Chapter A, Category A-2, item (14), para 17.1 (p.91)",
+      "verified": true,
+      "notes": "50% of the machinery cost of environmental management technology that reduces the carbon footprint, max Rs 25 lakh per technology."
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty: complete exemption on land/shed/building purchase or lease deeds and on loan deeds within 3 years (A-2 item 4)",
+    "Mandi fee: complete exemption for 5 years for new agro/food processing and biofuel MSMEs, max Rs 5 crore/yr and 75% of FCI (A-2 item 5)",
+    "Land use conversion (diversion) fee: 50% exemption up to 15 acres for micro and small (A-2 item 6)",
+    "Project report subsidy: 1% of FCI up to Rs 10 lakh (A-2 item 8)",
+    "Technical patent: 50% up to Rs 20 lakh per patent; technology purchase from NRDC etc.: 50% up to Rs 10 lakh (A-2 items 10-11)",
+    "Margin money: 25% of capital cost up to Rs 100 lakh for SC/ST, women, ex-servicemen, Naxal-affected, transgender and PwD micro/small units with capital cost up to Rs 10 crore (A-2 item 12)",
+    "Water/energy audit: 50% up to Rs 5 lakh (A-2 item 15)",
+    "Export freight to port/airport: 50% up to Rs 50 lakh/yr for 5 years (Rs 60 lakh for SC/ST) (A-2 item 16)",
+    "SME exchange listing: 50% up to Rs 10 lakh (A-2 item 18)",
+    "Thrust-sector training reimbursement: one month's salary up to Rs 15,000 per domicile employee for 5 years (A-2 item 19)",
+    "EPF reimbursement (Amendment-04, 12.01.2026, new para 21 of Annexure-9): thrust-sector MSMEs get 75% of the employer EPF contribution for CG employees for 5 years, max 2% of eligible FCI per year",
+    "Employment subsidy for PwD/retired Agniveers/surrendered Naxals: 40% of net salary up to Rs 5 lakh/yr for 5 years (A-2 item 13)",
+    "SC/ST land premium: 100% exemption plus Re 1/acre lease rent in CSIDC areas (A-2 item 20). The general land premium concession (A-2 item 17) was deleted by Amendment-04 ('Annexure-9 para 17 omitted')"
+  ],
+  "unverifiable": [
+    "The English text is the department's translation 'updated as per notification dated 27.05.2025'; the Hindi Rajpatra prevails. Amendment-04 (12.01.2026) was read from the scanned Rajpatra (Hindi and English). Its MSME-relevant changes are EPF reimbursement and deletion of Annexure-9 para 17; the SGST/FCIS/interest/ED tables were not changed. Any amendments after 12.01.2026 to the IDP itself were not found on invest.cg.gov.in's notifications list (checked 2026-10-17). The 'Audyogik Nivesh Protsahan (Sanshodhan) Adhiniyam 2026' (18.09.2026) is an Act amendment and was not reviewed.",
+    "Annexure-9 para 17 (deleted by Amendment-04) is assumed to be the land premium concession item, based on the numbering in the English text. Hindi/English numbering differences were not cross-checked.",
+    "Group-2 and Group-3 block lists were not transcribed (more than 40 entries); see Annexure-4.",
+    "No per-unit power tariff subsidy for general MSMEs was found in Category A-2."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "cg-idp2024-msme-sgst-general: either/or group 'cg-sgst-or-capital'",
+    "cg-idp2024-msme-sgst-thrust: conditions added",
+    "cg-idp2024-msme-sgst-thrust: either/or group 'cg-sgst-or-capital'",
+    "cg-idp2024-msme-fcis-general: either/or group 'cg-sgst-or-capital'",
+    "cg-idp2024-msme-fcis-thrust: conditions added",
+    "cg-idp2024-msme-fcis-thrust: either/or group 'cg-sgst-or-capital'",
+    "cg-idp2024-msme-interest-general: either/or group 'cg-interest'",
+    "cg-idp2024-msme-interest-thrust: conditions added",
+    "cg-idp2024-msme-interest-thrust: either/or group 'cg-interest'",
+    "cg-idp2024-msme-ed-general: either/or group 'cg-ed'",
+    "cg-idp2024-msme-ed-thrust: conditions added",
+    "cg-idp2024-msme-ed-thrust: either/or group 'cg-ed'"
+  ]
+}

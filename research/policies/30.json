@@ -1,0 +1,148 @@
+{
+  "state_code": "30",
+  "state": "Goa",
+  "status": "current",
+  "policy": {
+    "name": "Goa Industrial Growth and Investment Promotion Policy, 2022 (incentives delivered through the Goa State Incentives to Encourage Investments Scheme, 2017 - 'Umbrella Scheme' and its target schemes)",
+    "order_no": "Notification No. 3/10/2017-IND/228 (policy, dated 2022-09-30); Umbrella Scheme No. 3/10/2017-IND/268",
+    "date": "2022-10-13",
+    "valid_from": "2022-10-13",
+    "valid_to": null,
+    "source_url": "https://static.investindia.gov.in/s3fs-public/2022-12/Goa%20Industrial%20Policy%202022.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "LDT": "Lesser developed talukas: Pernem, Sattari, Bicholim, Sanguem, Quepem, Canacona, Dharbandora",
+    "OTHER": "All other talukas"
+  },
+  "zone_lookup": "Umbrella Scheme 2017, clause 3(II) Note 2 (Official Gazette Series I No. 28 dated 12-10-2017, p.1424). Zone only changes the cumulative benefit ceiling (50% vs 70% of cumulative capital investment) and hinterland eco-tourism eligibility.",
+  "schemes": [
+    {
+      "id": "ga-umb2017-capital",
+      "name": "Capital Subsidy Scheme, 2017 (Umbrella target scheme)",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery",
+        "building"
+      ],
+      "window": {
+        "from": "2017-10-01",
+        "to": "2026-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.3,
+        "cap": null,
+        "cap_by_category": {
+          "micro": 1000000,
+          "small": 2000000
+        },
+        "building_subcap_by_category": {
+          "micro": 500000,
+          "small": 1000000
+        }
+      },
+      "clause": "Capital Subsidy Scheme 2017, para 4.1-4.4",
+      "verified": true,
+      "notes": "30% of 'cost of capital' (P&M, ICT equipment needed to run machinery, office/factory premises). Excludes land, pre-operative expenses, office equipment, furniture and ERP. White/green/orange category manufacturing units with commercial production after 1-10-2017, or substantial expansion (>=25% of gross investment). Paid in 2 equal instalments; apply within 1 year of commercial production. Units that took CMRY, other capital subsidy or IT-policy benefits are not eligible. Overall umbrella ceiling across all target schemes is 50% of cumulative capital investment (70% in lesser developed talukas), with +10% for women and SC/ST. The notified validity was to 30-09-2022. A one-year extension to 31-03-2026 is reported (digitalgoa.com, Apr 2025); no extension beyond that was found. The scheme is still listed as open for online application on the official msme.goa.gov.in (UDP) portal."
+    },
+    {
+      "id": "ga-umb2017-interest",
+      "name": "Interest Subsidy Scheme, 2017 (Umbrella target scheme)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2017-10-01",
+        "to": "2026-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.3,
+        "rate_basis": "share_of_interest_paid",
+        "annual_cap": 2500000,
+        "annual_cap_women_scst": 2750000,
+        "years": 7,
+        "working_capital": "lower of 1.5% of turnover or 30% of interest paid"
+      },
+      "clause": "Interest Subsidy Scheme 2017, paras 5.1, 6.1-6.4",
+      "verified": true,
+      "notes": "30% OF the interest paid on the term loan (not 30 percentage points). Up to 7 years (27 quarters after the first claim). Requires >=60% Goan employees: benefit scales linearly from 60% at 60% Goan staff to 100% at 80%+. Loans from banks, co-operative banks, EDC or RBI-recognised NBFCs. Same validity caveat as the capital subsidy; currently listed with online application on msme.goa.gov.in. Source PDF: https://api.msme.goa.gov.in//Schemes/DetailsAndDocuments/6d2894ac-81b7-4c2a-9be0-c5d111edb39c.pdf"
+    },
+    {
+      "id": "ga-umb2017-cert",
+      "name": "Financial Incentives for Certification and IPR Reimbursement Scheme, 2017",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2017-10-01",
+        "to": "2026-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 1.0,
+        "cap": 800000
+      },
+      "clause": "Certification & IPR Reimbursement Scheme 2017, para 5.1 (IPR: para 5.2)",
+      "verified": true,
+      "notes": "100% of actual certification charges (excluding travel and lodging), combined ceiling Rs 8 lakh for the whole scheme period. IPR: 50% of professional and registry fees, up to Rs 15 lakh. Source: https://www.goa.gov.in/wp-content/uploads/2019/07/Financial-Incentives-for-Certification-and-intellectual-property-rights-reimbursement-scheme-2017.pdf . Same validity caveat. Not found on the current UDP portal."
+    },
+    {
+      "id": "ga-gigipp2022-re-ed",
+      "name": "Electricity duty reduction for units installing renewable power (GIGIPP 2022 green practices)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "solar"
+      ],
+      "window": {
+        "from": "2022-10-13",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "ALL": null
+        }
+      },
+      "clause": "GIGIPP 2022, para 13.2(i)(f)(iii)",
+      "verified": true,
+      "notes": "100% reduction in electricity duty for units that install renewable power generation and use a fixed % of open rooftop for solar. The policy gives no duration or %, and says 'Detailed notification for the schemes will be issued'. That detailed notification was not found."
+    }
+  ],
+  "other_benefits": [
+    "Water & energy audit: 25% reimbursement; conservation equipment 25% up to Rs 1,00,000 per unit (GIGIPP 2022 para 13.2(i)(f)(i)-(ii))",
+    "Production-linked incentive 2-5% of incremental sales for 5 years 'may' be offered (GIGIPP 2022 para 13.2(i)(a)); no scheme notification found",
+    "Other Umbrella target schemes: Incentives to Green Investments, Training Prospective Employees, Encourage Purchases from Local Suppliers, Employment Subsidy (Schedule A of the Umbrella Scheme)",
+    "Preferential Purchase Incentives for MSE Scheme 2022 (local procurement)"
+  ],
+  "unverifiable": [
+    "Validity of the Umbrella Scheme and its target schemes after 31-03-2026: the notified end date was 30-09-2022. An extension to 31-03-2026 is reported only by digitalgoa.com. The Goa gazette site (goaprintingpress.gov.in) returned 403 and ditc.goa.gov.in had an SSL/503 error, so no later extension could be checked. The official UDP portal still lists the Capital and Interest Subsidy schemes as open for online application.",
+    "GIGIPP 2022 has no explicit end date; it targets a 5-year horizon (likely to about Oct 2027).",
+    "Detailed scheme notifications promised under GIGIPP 2022 (PLI, green incentives) were not found.",
+    "A 2026 aggregator (schemesinindia.in) lists a '25% capital subsidy up to Rs 25 lakh' for Goa MSMEs. No official notification was found and it was ignored."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": []
+}

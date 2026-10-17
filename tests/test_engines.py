@@ -118,11 +118,11 @@ def test_policy_on_sample_group_a():
     assert _scheme(result, "mh-miisp-2025-power-tariff")["status"] == "not_eligible"
     interest = _scheme(result, "mh-miisp-2025-interest")
     assert interest["estimated_benefit"] == pytest.approx(300000) and not interest["in_total"]
-    assert _scheme(result, "mh-miisp-2025-zed")["estimated_benefit"] == pytest.approx(0.5 * 90000 * 0.4)
+    assert _scheme(result, "mh-miisp-2025-zed")["estimated_benefit"] == pytest.approx(0.5 * 72000 * 0.4)  # Gold fee since Sep 2024
     counted = [s for s in result["schemes"] if s["status"] == "eligible" and s["in_total"]]
     assert result["total_estimated_benefit"] == pytest.approx(sum(s["estimated_benefit"] for s in counted))
     assert result["unverified_in_total"] == []
-    assert _scheme(result, "gj-msme-2022-capital")["status"] == "not_eligible"
+    assert not [x for x in result["schemes"] if x["scheme_id"].startswith("gj-") and x["status"] == "eligible"]
 
 
 @pytest.mark.parametrize("zone,ceiling,years", [("B", 0.40, 7), ("C", 0.50, 7), ("D", 0.60, 10), ("D+", 0.70, 10),
@@ -168,12 +168,38 @@ def test_purchases_before_policy_window_do_not_count():
 
 
 def test_unverified_schemes_flagged_in_disclaimer():
+    # Andhra Pradesh figures could only be taken from secondary sources, so they stay unverified.
     assets = [policy.CapitalAsset("plant_machinery", "VMC", "8457", 4e6, date(2026, 6, 1))]
-    result = policy.match(policy.Profile("24", category="small", has_udyam=True), assets)
-    gj = _scheme(result, "gj-msme-2022-capital")
-    assert gj["estimated_benefit"] == pytest.approx(0.25 * 0.75 * 4e6) and gj["assumptions"]
-    assert gj["name"] in result["unverified_in_total"]
+    result = policy.match(policy.Profile("37", category="small", has_udyam=True), assets, today=TODAY)
+    ap = _scheme(result, "ap-medp4-capital-gen")
+    assert ap["estimated_benefit"] == pytest.approx(0.25 * 4e6) and not ap["verified"]
+    assert ap["name"] in result["unverified_in_total"]
     assert "not yet verified" in result["disclaimer"]
+
+
+def test_either_or_benefits_count_once():
+    # Chhattisgarh: SGST refund OR capital subsidy, never both.
+    assets = [policy.CapitalAsset("plant_machinery", "VMC", "8457", 2e7, date(2026, 6, 1))]
+    result = policy.match(policy.Profile("22", category="small", zone="G2", has_udyam=True), assets, today=TODAY)
+    group = [s for s in result["schemes"] if s.get("exclusive_group") == "cg-sgst-or-capital" and s["in_total"]
+             and s["status"] == "eligible"]
+    counted = sum(s["estimated_benefit"] for s in result["schemes"] if s["status"] == "eligible" and s["in_total"])
+    assert len(group) == 2  # general SGST and general capital both qualify...
+    assert result["total_estimated_benefit"] == pytest.approx(counted - min(s["estimated_benefit"] for s in group))
+
+
+def test_lapsed_states_have_no_live_schemes():
+    coverage = policy.rule_grid()["coverage"]
+    for code in ("02", "07", "20", "35"):  # Himachal, Delhi, Jharkhand, Andaman & Nicobar
+        assert coverage[code]["status"] != "current"
+        assert not [s for s in policy.rule_grid()["schemes"] if s["states"] == [code]]
+
+
+def test_conditional_schemes_stay_out_of_total():
+    assets = [policy.CapitalAsset("plant_machinery", "VMC", "8457", 4e6, date(2026, 6, 1))]
+    result = policy.match(policy.Profile("36", category="small", has_udyam=True), assets, today=TODAY)
+    women = _scheme(result, "tg-msme2024-capital-women")
+    assert women["conditions"] and not women["in_total"]
 
 
 def test_calculator():
@@ -301,3 +327,29 @@ def test_gst_purchase_register_template():
     inv, cn = parse_books("gst_template", buf.getvalue())
     assert (inv.invoice_no, inv.invoice_date, inv.cgst) == ("A/1", date(2026, 9, 5), 90)
     assert cn.taxable_value == -100 and cn.sgst == -9
+
+
+def test_every_scheme_evaluates_for_every_state_zone_and_size():
+    """No researched rule may crash the engine or produce a negative or absurd estimate."""
+    grid = policy.rule_grid()
+    assets = [policy.CapitalAsset(c, c, "", 4e6, date(2026, 6, 1)) for c in
+              ("plant_machinery", "testing_equipment", "pollution_control", "solar")]
+    codes = {c for s in grid["schemes"] for c in s["states"] if c != "*"}
+    for code in sorted(codes):
+        zones = [None] + list(grid.get("zones_by_state", {}).get(code, {}).get("zones", {}))
+        for zone in zones:
+            for category in ("micro", "small", "medium"):
+                for loan, duty, units in ((None, None, None), (2e7, 25000, 80000)):
+                    prof = policy.Profile(code, category=category, zone=zone, term_loan_amount=loan,
+                                          monthly_electricity_duty=duty, monthly_power_units=units, has_udyam=True)
+                    result = policy.match(prof, assets, include_ineligible=True, today=TODAY)
+                    for s in result["schemes"]:
+                        assert 0 <= s["estimated_benefit"] <= 5e9, (code, zone, category, s["scheme_id"])
+                    assert result["total_estimated_benefit"] >= 0
+
+
+def test_every_state_has_coverage_status():
+    from aureus.gstin import STATES
+    coverage = policy.rule_grid()["coverage"]
+    missing = [name for code, name in STATES.items() if code not in coverage and code not in ("27", "97")]
+    assert not missing, missing

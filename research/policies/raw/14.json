@@ -1,0 +1,137 @@
+{
+  "state_code": "14",
+  "state": "Manipur",
+  "status": "current",
+  "policy": {
+    "name": "The Industrial and Investment Promotion Policy of Manipur, 2022 (IIPPM 2022)",
+    "order_no": "IP-101/1/2022-TCI-T,C&I (Manipur Gazette Extraordinary No. 522)",
+    "date": "2023-03-21",
+    "valid_from": "2023-03-21",
+    "valid_to": "2027-03-31",
+    "source_url": "https://www.eodbmanipur.mn.gov.in/assets/The%20Industrial%20and%20Investment%20Promotion%20Policy%20of%20Manipur,%202022.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": "Policy refers to 'notified locations' (para 13.1) but no location list is annexed in the gazette text; not district-zoned. Central UNNATI zones: all Manipur districts Zone B (central-ne.json).",
+  "schemes": [
+    {
+      "id": "mn-iippm2022-cis",
+      "name": "IIPPM 2022 Capital Investment Subsidy",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2023-03-21",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.3,
+        "cap": 5000000
+      },
+      "clause": "Para 13.1(i)",
+      "verified": true,
+      "notes": "30% of P&M investment, aggregate ceiling Rs 50 lakh, new units 'in the notified location'; existing units on substantial expansion (>25% of existing building+P&M after 01.04.2022, para 9.12). Sole proprietorships of ST/SC/women/PwD get additional 2.5% on FIXED capital, ceiling Rs 20/30/40 lakh for micro/small/medium (13.1(ii)). Single-instalment disbursal. Only MSMEs in THRUST AREAS (para 8.1 manufacturing: food processing/cold chain, bamboo, packaging, honey, floriculture & MFP, pharma & medical devices, textiles, handicrafts & pottery, green/renewable energy, aromatic & medicinal plants, waste-recycling/compostable plastics, NTFP processing, rubber/wood) commencing commercial production after notification and on/before 31.03.2027 (para 10.1, 10.5). Incentives Eligibility Certificate required (10.6). Benefit reduced by any central/NEC incentive received for the same purpose (para 10.8, 9.14) - interacts with UNNATI."
+    },
+    {
+      "id": "mn-iippm2022-wc-interest",
+      "name": "IIPPM 2022 Interest subsidy on working capital",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2023-03-21",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.03,
+        "annual_cap": null,
+        "years": 10
+      },
+      "clause": "Para 13.1(iii)",
+      "verified": true,
+      "notes": "3% on WORKING CAPITAL loan (not term loan) for 10 years after commercial production, new units in notified locations, and existing units on expansion; no cap stated. Only MSMEs in THRUST AREAS (para 8.1 manufacturing: food processing/cold chain, bamboo, packaging, honey, floriculture & MFP, pharma & medical devices, textiles, handicrafts & pottery, green/renewable energy, aromatic & medicinal plants, waste-recycling/compostable plastics, NTFP processing, rubber/wood) commencing commercial production after notification and on/before 31.03.2027 (para 10.1, 10.5). Incentives Eligibility Certificate required (10.6). Benefit reduced by any central/NEC incentive received for the same purpose (para 10.8, 9.14) - interacts with UNNATI."
+    },
+    {
+      "id": "mn-iippm2022-cert",
+      "name": "IIPPM 2022 Reimbursement of certification registration/renewal fee",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2023-03-21",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 1.0,
+        "cap": 50000
+      },
+      "clause": "Para 13.13",
+      "verified": true,
+      "notes": "Full reimbursement of registration/renewal fees for BIS/ISI, ISO, AGMARK, FPO, FSSAI, MPCO etc., ceiling Rs 50,000 PER ANNUM for 5 years. SC/ST/women/PwD sole proprietors: additional 10% of the amount exceeding the ceiling."
+    },
+    {
+      "id": "mn-iippm2022-qc-equipment",
+      "name": "IIPPM 2022 Quality control testing equipment subsidy",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "testing_equipment"
+      ],
+      "window": {
+        "from": "2023-03-21",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.3,
+        "cap": 500000
+      },
+      "clause": "Para 13.15",
+      "verified": true,
+      "notes": "30% of cost of testing equipment for quality control, max Rs 5 lakh."
+    }
+  ],
+  "other_benefits": [
+    "Power subsidy: reimbursement of power charges for first 5 years from production at 50% (micro & small, 1-50 kW), 23.7% (medium, 25-125 kVA); per-annum ceiling column illegible/blank in gazette scan; only if no other power subsidy availed (para 13.11) - percentage-of-bill, not per-unit.",
+    "Power line drawal (20 kV+) reimbursement up to Rs 15 lakh; DG sets 30% up to Rs 20 lakh; mini solar plant for micro 50% up to Rs 40,000 (para 13.11).",
+    "Insurance premium: 100% on capital investment for 10 years 'as extended by Central Government' (13.1(iv)).",
+    "Transport subsidy (micro & small): 25% for raw material transport >50 km within State and air freight from Kolkata/NER airports, 5 years (13.1(vii)).",
+    "Patent/trademark registration fee: 70%/50%/30% (micro/small/medium) up to Rs 1 lakh (13.12).",
+    "Stamp duty & registration on loan documents: up to Rs 30,000/40,000/50,000 (micro/small/medium) (13.14).",
+    "EMD/security deposit exemption 50% for M&S (100% for SC/ST/women/PwD proprietors) (13.10); 10% price preference (13.17)."
+  ],
+  "unverifiable": [
+    "Gazette PDF is a scanned image; figures read visually from pages 9-16, not text-extracted.",
+    "The 'notified locations' for capital investment and working-capital interest subsidies are not listed in the policy; no operational guidelines found.",
+    "No SGST reimbursement or electricity duty exemption in IIPPM 2022.",
+    "No newer Manipur industrial policy (2024-26) found; policy applies to units commencing production up to 31.03.2027."
+  ],
+  "checked_on": "2026-10-17"
+}

@@ -110,7 +110,7 @@ function renderNav() {
   const sub = document.getElementById('brand-sub');
   sub.textContent = store.user?.role === 'ca' && store.user.firm_name ? `for ${store.user.firm_name}` : 'Fiscal operations & compliance engine';
   if (!store.user) {
-    nav.innerHTML = `<a href="#/calculator">Subsidy calculator</a><a href="#/login">Sign in</a><a class="cta" href="#/signup">Get started</a>`;
+    nav.innerHTML = `<a href="#/calculator">Subsidy calculator</a><a href="#/coverage">State coverage</a><a href="#/login">Sign in</a><a class="cta" href="#/signup">Get started</a>`;
     return;
   }
   nav.innerHTML = `${store.user.role === 'ca' ? '<a href="#/console">Client console</a>' : '<a href="#/home">My business</a>'}
@@ -152,6 +152,23 @@ async function viewLanding() {
       under your firm's name.</p></div>
   </section>
   <footer class="site">AureusRecon · Subsidy estimates use an illustrative rule grid pending verification against official notifications.</footer>`;
+}
+
+async function viewCoverage() {
+  const m = await meta();
+  const rows = Object.entries(m.coverage).filter(([code]) => !['IN', 'NE'].includes(code))
+    .sort((a, b) => (a[1].state || '').localeCompare(b[1].state || ''));
+  const central = ['IN', 'NE'].map((c) => [c, m.coverage[c]]).filter(([, v]) => v);
+  const badgeFor = (c) => c.status !== 'current' ? badge('bad', c.status === 'expired' ? 'No current policy' : 'Not found')
+    : c.verified_schemes === 0 ? badge('warn', 'Unverified') : c.verified_schemes < c.schemes ? badge('warn', 'Partly verified') : badge('ok', 'Verified');
+  const table = (list) => `<table><thead><tr><th>State</th><th>Status</th><th>Policy</th><th class="num">Verified / schemes</th><th>Open questions</th></tr></thead><tbody>
+    ${list.map(([code, c]) => `<tr><td><strong>${esc(c.state || code)}</strong></td><td>${badgeFor(c)}</td><td>${esc(c.policy || '—')}${c.valid_to ? `<br><small>valid to ${fmtDate(c.valid_to)}</small>` : ''}</td>
+      <td class="num">${c.verified_schemes || 0} / ${c.schemes || 0}</td><td><small>${esc((c.gaps || []).slice(0, 2).map((g) => g.length > 160 ? g.slice(0, 160) + '…' : g).join(' · '))}</small></td></tr>`).join('')}</tbody></table>`;
+  app.innerHTML = `<h1>Subsidy rule coverage</h1>
+    <p class="muted">Every state's current industrial or MSME incentive policy, checked against the official document where it could be reached.
+      Verified figures carry the clause they come from; unverified ones are shown with a warning.</p>
+    <div class="card table-wrap">${table(rows)}</div>
+    <h2>Central schemes</h2><div class="card table-wrap">${table(central)}</div>`;
 }
 
 async function viewCalculator() {
@@ -658,10 +675,16 @@ async function showReminder(orgId, gstin) {
 }
 
 async function viewOrgSubsidies(orgId) {
+  await meta();
   const { el } = await orgShell(orgId, 'subsidies');
   const subs = await getSubsidies(orgId);
   const classes = Object.fromEntries((await meta()).asset_classes.map((a) => [a.id, a.label]));
   el.innerHTML = `
+    ${(() => { const c = (store.meta?.coverage || {})[store.org.state_code];
+      if (!c) return '';
+      if (c.status !== 'current') return `<div class="banner danger">${esc(store.org.state)} has no current industrial incentive policy (${esc(c.status)}). Only central schemes are shown. <a href="#/coverage">See coverage</a></div>`;
+      if (!c.verified_schemes) return `<div class="banner warn">${esc(store.org.state)}'s figures could not be checked against the official policy yet. <a href="#/coverage">See coverage</a></div>`;
+      return ''; })()}
     <div class="banner ${subs.unverified_in_total.length ? 'warn' : 'info'}">${subs.unverified_in_total.length ? '<strong>Verify before filing.</strong> ' : ''}${esc(subs.disclaimer)}</div>
     ${subs.zone ? '' : `<div class="banner warn">Add your taluka group in <a href="#/org/${orgId}/settings">Profile</a> to see Maharashtra incentives.</div>`}
     <div class="grid kpis">
@@ -1015,6 +1038,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal
 const routes = [
   [/^\/?$/, () => (store.user ? go(store.user.role === 'ca' ? '#/console' : '#/home') : viewLanding()), false],
   [/^\/calculator$/, viewCalculator, false],
+  [/^\/coverage$/, viewCoverage, false],
   [/^\/login$/, viewLogin, false],
   [/^\/forgot$/, viewForgot, false],
   [/^\/reset$/, (m, p) => viewReset(p), false],

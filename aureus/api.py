@@ -530,6 +530,7 @@ def meta():
                                   "lookup": z.get("lookup"), "source": z.get("source"), "source_url": z.get("source_url")}
                            for code, z in grid.get("zones_by_state", {}).items()},
         "schemes": [{"id": s["id"], "name": s["name"], "states": s["states"], "verified": s["verified"]} for s in grid["schemes"]],
+        "coverage": grid.get("coverage", {}),
         "notice_types": [{"id": k, "title": v["title"]} for k, v in notice.NOTICE_TYPES.items()],
         "purposes": [{"id": k, **v} for k, v in services.PURPOSES.items()],
     }

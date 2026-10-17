@@ -1,0 +1,205 @@
+{
+  "state_code": "32",
+  "state": "Kerala",
+  "status": "current",
+  "policy": {
+    "name": "Kerala Industrial Policy 2023 (incentives operated via K-RIIS; capital subsidy via Entrepreneur Support Scheme (ESS))",
+    "order_no": "Approved by State Cabinet 29-03-2023 (G.O. number not confirmed)",
+    "date": "2023-03-29",
+    "valid_from": "2023-03-29",
+    "valid_to": null,
+    "source_url": "https://chemindia.chemicals.gov.in/Policiespdf/Kerala%20Industial%20Policy,%202023.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "ALL": "Whole state",
+    "BACKWARD": "Backward districts for ESS top-up (secondary sources: Idukki, Wayanad, Kasaragod, Pathanamthitta) - unverified"
+  },
+  "zone_lookup": "Policy 2023 has no zoning. ESS backward-district list only from secondary sources (official ESS G.O. not retrieved).",
+  "schemes": [
+    {
+      "id": "kl-ip2023-capital-ceiling",
+      "name": "Capital subsidy incentive for MSMEs (policy ceiling; delivered via ESS)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2023-03-29",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": {
+          "micro": 0.45,
+          "small": 0.45,
+          "medium": 0.45
+        },
+        "cap": null,
+        "cap_by_zone": {
+          "ALL": {
+            "micro": 4000000,
+            "small": 10000000,
+            "medium": 20000000
+          }
+        }
+      },
+      "clause": "Kerala Industrial Policy 2023, Ch. V Incentives, table item 2 (p.59)",
+      "verified": true,
+      "notes": "Policy text: 'upto 45%' - 45% is a MAXIMUM, not the default rate; actual % depends on ESS category/sector/district. Caps: micro Rs 40 lakh, small Rs 100 lakh, medium Rs 200 lakh. Basis per ESS = fixed capital investment. Policy incentives target units in the 22 priority sectors. MSME definition in policy uses old thresholds (P&M <= 1/10/50 cr). Policy text read from copy hosted by GoI Dept of Chemicals (chemindia.chemicals.gov.in); Kerala govt hosts unreachable."
+    },
+    {
+      "id": "kl-ess-capital",
+      "name": "Entrepreneur Support Scheme (ESS) - investment support (as reported)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2023-03-29",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.15,
+        "cap": 3000000
+      },
+      "clause": "ESS (G.O.(MS) No.156/2012/ID dt 28-12-2012 as amended, incl. Ms.No.118/2021/ID) - not retrieved",
+      "verified": false,
+      "notes": "SECONDARY ONLY (publicservicesmap / sarkariyojana / youthpower aggregators): general 15% of FCI up to Rs 30 lakh; young (18-45), women, SC/ST, NRK 25% up to Rs 40 lakh; +10% (max Rs 10 lakh) for priority sector; +10% (max Rs 10 lakh) in backward districts (Idukki, Wayanad, Kasaragod, Pathanamthitta); overall cap Rs 40 lakh; released in stages (start-up support, investment support, technology support). Conflicts with Policy 2023 caps (small Rs 1 cr, medium Rs 2 cr) - ESS may have been revised; confirm with ESS G.O. on keralaindustry.org / ess.industry.kerala.gov.in."
+    },
+    {
+      "id": "kl-ip2023-interest",
+      "name": "Low interest loans for MSMEs (interest subvention)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2023-03-29",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.06,
+        "annual_cap": null,
+        "years": null
+      },
+      "clause": "Kerala Industrial Policy 2023, Ch. V table item 1",
+      "verified": true,
+      "notes": "Loan at 4% interest, maximum loan Rs 10 lakh, via interest subvention up to 6%. Loan size cap Rs 10 lakh (so subvention <= Rs 60,000/yr); tenure not stated in policy. Implementing scheme (likely KSIDC/KFC) not retrieved."
+    },
+    {
+      "id": "kl-ip2023-ed",
+      "name": "Electricity Duty Exemption for MSMEs",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2023-03-29",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "ALL": 5
+        }
+      },
+      "clause": "Kerala Industrial Policy 2023, Ch. V table item 3",
+      "verified": true,
+      "notes": "100% exemption for 5 years. Enabling notification under Kerala Electricity Duty Act not retrieved."
+    },
+    {
+      "id": "kl-ip2023-quality",
+      "name": "Quality certification incentive",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2023-03-29",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 2500000
+      },
+      "clause": "Kerala Industrial Policy 2023, Ch. V table item 12",
+      "verified": true,
+      "notes": "Refund of 50% of expenses for compulsory marking such as CE, FDA, ISO, BIS; max Rs 25 lakh per unit per annum. All categories."
+    },
+    {
+      "id": "kl-ip2023-sustainability",
+      "name": "Incentives for sustainability and responsible industrialisation",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control",
+        "solar"
+      ],
+      "window": {
+        "from": "2023-03-29",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 2500000
+      },
+      "clause": "Kerala Industrial Policy 2023, Ch. V table item 13",
+      "verified": true,
+      "notes": "25% of P&M/equipment for ETP, grid-power substitution (e.g. solar), rainwater harvesting, ZLD, e-waste/wastewater recycling, energy & water audits; excludes civil works; max Rs 25 lakh during policy period."
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty & registration: up to 100% waiver on lease/purchase in Government and notified private industrial parks; anywhere in State for women, SC/ST, PH, transgender (item 8).",
+    "IPO on SME platform: 50% of expenses up to Rs 1 crore (item 4).",
+    "Trade fair participation: up to 100% of stall charges, max Rs 5 lakh (item 10).",
+    "IPR: 50% up to Rs 30 lakh (item 11).",
+    "IR 4.0: 20% of software/machinery cost up to Rs 25 lakh per unit (item 14).",
+    "R&D with Kerala universities: 20% up to Rs 1 crore (item 15).",
+    "Made in Kerala certification: 50% of cost (item 17).",
+    "PLI top-up: 20% of FCI up to Rs 1 crore for central PLI-shortlisted investors (item 18).",
+    "Net SGST reimbursement and 10% investment subsidy are for Large/Mega only (items 5-6), not MSMEs."
+  ],
+  "unverifiable": [
+    "All Kerala government hosts (keralaindustry.org, industry.kerala.gov.in, ess/kriis portals) unreachable from this environment; ESS G.O. and implementing orders not read.",
+    "Policy tenure is open-ended ('constantly evolving'). Kerala held Assembly elections in 2026 (Governor's policy address May 2026); no successor industrial policy found as of 17-Oct-2026 - only add-on Export Promotion / Logistics / ESG policies (news, UNI) - but re-check.",
+    "No power tariff per-unit subsidy found for MSMEs."
+  ],
+  "checked_on": "2026-10-17"
+}

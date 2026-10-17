@@ -1,0 +1,314 @@
+{
+  "state_code": "29",
+  "state": "Karnataka",
+  "status": "current",
+  "policy": {
+    "name": "Karnataka Industrial Policy 2025-30 (with Operative Guidelines: Package of Incentives and Concessions under IP 2025-30)",
+    "order_no": "G.O. No. CI/123/SPI/2024(e) dated 08-02-2025; Operative Guidelines approved vide Govt letter CI 123 SPI 2024 dated 10-04-2026",
+    "date": "2025-02-08",
+    "valid_from": "2025-02-08",
+    "valid_to": "2030-02-07",
+    "source_url": "https://investkarnataka.co.in/wp-content/uploads/2026/04/Karnataka.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "Z1": "Zone 1 - industrially most backward taluks (most taluks outside Bengaluru region)",
+    "Z2": "Zone 2 - relatively developed taluks (e.g. district HQ taluks such as Mysuru, Mangaluru, Tumakuru, Hubballi, Belagavi, Kolar, Malur, Harohalli, Ramanagara)",
+    "Z3": "Zone 3 - Bengaluru Urban (5 taluks) and Bengaluru Rural (4 taluks); financial incentives in Zone 3 only for Bengaluru Rural district, none for Bengaluru Urban"
+  },
+  "zone_lookup": "Taluk-wise table in Operative Guidelines section 8 'Zonal classification' (pp. 19-23) = Annexure 6 of Industrial Policy 2025-30. Additional top-up for Most/More Backward taluks per Dr. D.M. Nanjundappa Committee: list at Operative Guidelines Annexure 10.29 (p. ~93).",
+  "schemes": [
+    {
+      "id": "ka-ip2025-ms-capital-gen",
+      "name": "Capital (Investment Promotion) Subsidy - Micro & Small, General category",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": [
+        "Z1",
+        "Z2",
+        "Z3"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-02-08",
+        "to": "2030-02-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate_by_zone": {
+          "Z1": {
+            "micro": 0.3,
+            "small": 0.25
+          },
+          "Z2": {
+            "micro": 0.25,
+            "small": 0.2
+          },
+          "Z3": {
+            "micro": 0.1,
+            "small": 0.1
+          }
+        },
+        "cap": null,
+        "cap_by_zone": {
+          "Z1": {
+            "micro": 3000000,
+            "small": 20000000
+          },
+          "Z2": {
+            "micro": 2500000,
+            "small": 15000000
+          },
+          "Z3": {
+            "micro": 1000000,
+            "small": 5000000
+          }
+        }
+      },
+      "clause": "Operative Guidelines 11.1 (p.95); Policy doc MSME incentive table",
+      "verified": true,
+      "notes": "Basis = Value of Fixed Assets (land, building, P&M incl. utilities, erection, electricals; Guidelines def. 9). Leased premises <20 yrs: P&M only. Zone 3 only Bengaluru Rural. Disbursed in 2 instalments. Apply within 12 months of commercial production; production within 3 yrs of DLSWCC/SLSWCC approval. Expansion: only new investment, at least 25% of existing fixed assets. Only differential if other govt capital subsidy availed. Most backward taluks +5% VFA (max Rs 5 lakh micro / Rs 10 lakh small); more backward +3% (max Rs 3 lakh / Rs 5 lakh).",
+      "exclusive_group": "ka-ms-capital"
+    },
+    {
+      "id": "ka-ip2025-ms-capital-spl",
+      "name": "Capital Subsidy - Micro & Small, Special category (SC/ST, Women, Minorities, Physically Challenged, Ex-Servicemen)",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": [
+        "Z1",
+        "Z2",
+        "Z3"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-02-08",
+        "to": "2030-02-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate_by_zone": {
+          "Z1": {
+            "micro": 0.35,
+            "small": 0.3
+          },
+          "Z2": {
+            "micro": 0.3,
+            "small": 0.25
+          },
+          "Z3": {
+            "micro": 0.15,
+            "small": 0.15
+          }
+        },
+        "cap": null,
+        "cap_by_zone": {
+          "Z1": {
+            "micro": 3500000,
+            "small": 22500000
+          },
+          "Z2": {
+            "micro": 3000000,
+            "small": 17500000
+          },
+          "Z3": {
+            "micro": 1500000,
+            "small": 7500000
+          }
+        }
+      },
+      "clause": "Operative Guidelines 11.1 (p.95)",
+      "verified": true,
+      "notes": "Special category = unit exclusively owned by the category (all partners/directors). Same conditions and backward-taluk top-ups as general category.",
+      "conditions": [
+        "Unit wholly owned by special-category entrepreneurs as defined in the policy"
+      ],
+      "exclusive_group": "ka-ms-capital"
+    },
+    {
+      "id": "ka-ip2025-med-capital",
+      "name": "Base Subsidy option A - Capital Subsidy for Medium enterprises",
+      "categories": [
+        "medium"
+      ],
+      "zones": [
+        "Z1",
+        "Z2",
+        "Z3"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-02-08",
+        "to": "2030-02-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate_by_zone": {
+          "Z1": 0.25,
+          "Z2": 0.2,
+          "Z3": 0.1
+        },
+        "cap": null,
+        "cap_by_zone": {
+          "Z1": 100000000,
+          "Z2": 80000000,
+          "Z3": 40000000
+        }
+      },
+      "clause": "Operative Guidelines 11.2.1 (p.96)",
+      "verified": true,
+      "notes": "Mutually exclusive with PLI option (11.2.2: 2.5%/2.0%/1.0% of net sales turnover for 7 yrs capped at 60%/60%/30% of VFA) - choice fixed when filing. Disbursed in 4 equal annual instalments. Most backward taluk +5% VFA (max Rs 50 lakh), more backward +3% (max Rs 25 lakh). Incentives only for new investments for medium (term q.vi). Guidelines' MSME definition still quotes old thresholds (medium P&M <= Rs 50 cr) but clause (o)/(p) says classification follows MSMED Act as revised.",
+      "conditions": [
+        "Chosen instead of the turnover-linked (PLI) option"
+      ]
+    },
+    {
+      "id": "ka-ip2025-ed",
+      "name": "Exemption from Tax on Electricity Tariff (electricity duty) for MSMEs",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "Z1",
+        "Z2",
+        "Z3"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2025-02-08",
+        "to": "2030-02-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "Z1": 7,
+          "Z2": 6,
+          "Z3": 0
+        }
+      },
+      "clause": "Operative Guidelines 11.6 (p.102)",
+      "verified": true,
+      "notes": "Special category: Z1 8 yrs, Z2 7 yrs, Z3 4 yrs. 100% exemption. Guidelines note: no certificate to be issued under IP 2025-30 until Energy Department issues concurrence notification (term e) - check status before claiming.",
+      "conditions": [
+        "Applies once the Energy Department notifies the exemption"
+      ]
+    },
+    {
+      "id": "ka-ip2025-power",
+      "name": "Power Subsidy for Micro & Small Enterprises",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": [
+        "Z1",
+        "Z2"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2025-02-08",
+        "to": "2030-02-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "per_unit": 1.0,
+        "years": 3,
+        "cap": null
+      },
+      "clause": "Operative Guidelines 11.7 (p.102-103); Policy MSME table",
+      "verified": true,
+      "notes": "Reimbursement of Rs 1.00 per unit consumed for 3 years, Zones 1 and 2 only (all entrepreneur categories); Zone 3 nil. Claims half-yearly (June/December)."
+    },
+    {
+      "id": "ka-ip2025-quality-cert",
+      "name": "Quality Certification incentive (ISO, BIS, FSSAI-AGMARK, ECOMARK, ZED, ISI, FPO, BEE, other)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2025-02-08",
+        "to": "2030-02-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 500000
+      },
+      "clause": "Industrial Policy 2025-30 'Quality Certification' table (p.48); Operative Guidelines section 13 (p.144-)",
+      "verified": true,
+      "notes": "50% of cost of application, total cap Rs 5,00,000 per entity (across certifications). One-time per certification type; claim within certificate validity; administered by MD, KCTU. Export certifications (CE, CCC, GMP, HACCP, SEDEX etc.) carry the same 50% / Rs 5 lakh per entity terms (Guidelines section 15)."
+    },
+    {
+      "id": "ka-ip2025-sustainability",
+      "name": "Sustainability-linked incentive for MSMEs (ETP/ZLD/APC/energy efficiency equipment)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2025-02-08",
+        "to": "2030-02-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 5000000
+      },
+      "clause": "Operative Guidelines 11.8 (p.103-104)",
+      "verified": true,
+      "notes": "50% of equipment cost up to Rs 50 lakh each for ETP/CETP/waste mgmt, ZLD, air pollution control, electrification of low-temp thermal processes/Li-ion BESS; energy efficiency 50% of certification cost up to Rs 50 lakh; EV conversion of vehicles 10% up to Rs 10 lakh. Overall capped at 10% of VFA. These costs excluded from VFA for base subsidy."
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty: 100% exemption (Zones 1-2; Zone 3 nil, special category 75%) on loan and land deeds; concessional registration Rs 1 per Rs 1000 (Guidelines 11.3/11.4). Currently granted as per IP 2020-25 / reimbursement until Karnataka Stamp Act amended.",
+    "Land conversion fee: 100% reimbursement after commercial production in Zones 1-2 (Zone 3 nil; special category 75%) (Guidelines 11.5).",
+    "Medium enterprise PLI option: 2.5%/2.0%/1.0% of net sales turnover (Z1/Z2/Z3-Bengaluru Rural) for 7 years, capped at 60%/60%/30% of VFA (Guidelines 11.2.2).",
+    "Export certification support: 50% of cost, cap Rs 5 lakh per entity (Guidelines 15)."
+  ],
+  "unverifiable": [
+    "No interest subsidy and no SGST reimbursement for MSMEs found in IP 2025-30 or its operative guidelines.",
+    "Electricity tax exemption and stamp duty exemption under IP 2025-30 depend on Energy/Revenue Department notifications; guidelines (Apr 2026) say not yet issued - could not confirm issuance by 17-Oct-2026.",
+    "Original G.O. CI/123/SPI/2024(e) dt 08-02-2025 itself not downloaded (kum.karnataka.gov.in unreachable from this environment); figures taken from the official policy document and operative guidelines on investkarnataka.co.in (Govt of Karnataka investment portal). Policy doc: https://investkarnataka.co.in/wp-content/uploads/2025/02/IndustrialPolicy2025_PrintPagesSingle_.pdf",
+    "valid_to computed as five years from 08-02-2025 ('five years or till a new policy is announced')."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "ka-ip2025-ms-capital-gen: either/or group 'ka-ms-capital'",
+    "ka-ip2025-ms-capital-spl: conditions added",
+    "ka-ip2025-ms-capital-spl: either/or group 'ka-ms-capital'",
+    "ka-ip2025-med-capital: conditions added",
+    "ka-ip2025-ed: conditions added"
+  ]
+}

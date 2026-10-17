@@ -1,0 +1,360 @@
+{
+  "state_code": "33",
+  "state": "Tamil Nadu",
+  "status": "current",
+  "policy": {
+    "name": "Tamil Nadu Micro, Small and Medium Enterprises Policy 2021 (Annexure I incentive schemes), as operated per MSME Department Policy Note 2025-26",
+    "order_no": "G.O.(Ms) No.11, MSME Department, dated 16-02-2021 (number per TANSIDCO G.O. listing; order text not opened)",
+    "date": "2021-02-16",
+    "valid_from": "2021-02-16",
+    "valid_to": null,
+    "source_url": "https://storage.investingintamilnadu.com/Guidance/Uploads/Others/msme_policy_2021.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "BB": "254 industrially backward blocks (Annexure II) and all Industrial Estates promoted by Government / agencies (SIPCOT, TANSIDCO etc.)",
+    "REST": "Other blocks (non-backward, outside government industrial estates)"
+  },
+  "zone_lookup": "MSME Policy 2021 Annexure II 'List of Backward Blocks in the State' (p.34-39). Agro-based & food processing small/medium units are treated as eligible in all 388 blocks. Thrust sectors: Annexure V (p.42).",
+  "schemes": [
+    {
+      "id": "tn-msme2021-cs-micro",
+      "name": "Capital subsidy for micro manufacturing enterprises",
+      "categories": [
+        "micro"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 2500000
+      },
+      "clause": "MSME Policy 2021 Annexure I item 4.1; Policy Note 2025-26 para 2.3.1",
+      "verified": true,
+      "notes": "25% of plant & machinery value, max Rs 25 lakh, anywhere in TN. New units, and existing units undertaking substantial expansion/diversification. Ineligible activities: Annexure III. Claim within 1 year of commencement of production (DIC)."
+    },
+    {
+      "id": "tn-msme2021-cs-micro-addl",
+      "name": "Additional capital subsidy for micro enterprises",
+      "categories": [
+        "micro"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.1,
+        "cap": 500000
+      },
+      "clause": "Annexure I item 4.2; Policy Note 2025-26 para 2.3.1",
+      "verified": true,
+      "notes": "Additional 10% on P&M, max Rs 5 lakh, on top of item 4.1. New units, and existing units undertaking substantial expansion/diversification. Ineligible activities: Annexure III. Claim within 1 year of commencement of production (DIC)."
+    },
+    {
+      "id": "tn-msme2021-cs-sm",
+      "name": "Capital subsidy for small and medium enterprises (backward blocks / industrial estates)",
+      "categories": [
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "BB"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 15000000
+      },
+      "clause": "Annexure I item 4.3; Policy Note 2025-26 para 2.3.1",
+      "verified": true,
+      "notes": "25% of P&M, max Rs 150 lakh, paid in three instalments. Only in 254 backward blocks / government industrial estates, except agro-based & food processing units (all 388 blocks). New units, and existing units undertaking substantial expansion/diversification. Ineligible activities: Annexure III. Claim within 1 year of commencement of production (DIC).",
+      "conditions": [
+        "Unit in one of the 254 backward blocks or a government industrial estate (agro/food: any block)"
+      ],
+      "exclusive_group": "tn-sm-capital"
+    },
+    {
+      "id": "tn-msme2021-cs-thrust",
+      "name": "Special capital subsidy for thrust sector MSMEs",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 15000000
+      },
+      "clause": "Annexure I item 4.6; Annexure V (thrust sectors); Policy Note 2025-26 para 2.3.1",
+      "verified": true,
+      "notes": "Thrust-sector units (Annexure V) anywhere in the State; 25% of P&M, max Rs 150 lakh in 3 instalments. Use instead of 4.1/4.3 (not cumulative, presumed).",
+      "conditions": [
+        "Thrust-sector unit (Annexure V)"
+      ],
+      "exclusive_group": "tn-sm-capital"
+    },
+    {
+      "id": "tn-msme2021-cs-special-cat",
+      "name": "Additional capital subsidy - women / SC / ST / differently-abled / transgender entrepreneurs",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.05,
+        "cap": 500000
+      },
+      "clause": "Annexure I item 4.4.2; Policy Note 2025-26 para 2.3.1",
+      "verified": true,
+      "notes": "Top-up 5% of P&M, max Rs 5 lakh. Micro: anywhere; small/medium: backward blocks/industrial estates or agro/food anywhere.",
+      "conditions": [
+        "Special-category entrepreneur; small/medium units only in backward blocks or estates"
+      ]
+    },
+    {
+      "id": "tn-msme2021-cs-cleaner",
+      "name": "Additional capital subsidy for cleaner and environment-friendly technologies",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 1000000
+      },
+      "clause": "Annexure I item 4.4.3; Policy Note 2025-26 para 2.3.1",
+      "verified": true,
+      "notes": "25% of P&M/equipment installed for cleaner technologies, max Rs 10 lakh. Same location rules as capital subsidy (small/medium in BB or agro/food)."
+    },
+    {
+      "id": "tn-msme2021-cs-scaleup",
+      "name": "Additional capital subsidy for scaling up",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.05,
+        "cap": 2500000
+      },
+      "clause": "Annexure I item 4.4.5; Policy Note 2025-26 para 2.3.1",
+      "verified": true,
+      "notes": "Existing micro/small units graduating to a higher category via expansion/diversification: extra 5% of P&M, max Rs 25 lakh.",
+      "conditions": [
+        "Existing micro/small unit moving up a size category through expansion"
+      ]
+    },
+    {
+      "id": "tn-msme2021-cs-ev",
+      "name": "Additional special capital subsidy for EV component & charging infrastructure manufacturing",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.2,
+        "cap": 1000000
+      },
+      "clause": "Annexure I item 4.4.4",
+      "verified": true,
+      "notes": "20% additional special capital subsidy, additional cap Rs 10 lakh, anywhere in TN. Not listed in Policy Note 2025-26 - confirm still operative.",
+      "conditions": [
+        "Electric-vehicle related manufacturing; confirm the scheme is still operative"
+      ]
+    },
+    {
+      "id": "tn-msme2021-beis-tech",
+      "name": "Back-ended interest subsidy - technology upgradation term loans",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": null,
+        "years": 5
+      },
+      "clause": "Annexure I item 5.1; Policy Note 2025-26 para 2.3.4",
+      "verified": true,
+      "notes": "5% interest subsidy on term loans up to Rs 500 lakh for technology upgradation/modernisation, 5 years, TOTAL cap Rs 25 lakh per enterprise (not annual). Policy 2021 says all new/existing enterprises; Policy Note 2025-26 says MSEs. Claimed quarterly.",
+      "conditions": [
+        "Term loan for technology upgradation or modernisation"
+      ],
+      "exclusive_group": "tn-beis"
+    },
+    {
+      "id": "tn-msme2021-beis-cgtmse",
+      "name": "Back-ended interest subsidy - CGTMSE term loans",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": null,
+        "years": 5
+      },
+      "clause": "Annexure I item 5.2; Policy Note 2025-26 para 2.3.4",
+      "verified": true,
+      "notes": "5% on term loans up to Rs 200 lakh under CGTMSE, 5 years, TOTAL cap Rs 20 lakh per enterprise. Alternative to 5.1 ('or').",
+      "conditions": [
+        "Term loan covered by CGTMSE"
+      ],
+      "exclusive_group": "tn-beis"
+    },
+    {
+      "id": "tn-msme2021-qcert",
+      "name": "Quality Certification (Q-CERT) reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2021-02-16",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 1.0,
+        "cap": 200000
+      },
+      "clause": "Annexure I item 10.2; Policy Note 2025-26 para 2.3.6",
+      "verified": true,
+      "notes": "100% of certification + consultancy charges (ISO 9001/14001, HACCP, ISO 22000, GHP/GMP, BIS, ZED etc.): cap Rs 2 lakh per enterprise for national certifications, Rs 10 lakh for international certifications. Renewal of international certs: 25% up to Rs 1 lakh. Excludes travel/hotel/surveillance."
+    }
+  ],
+  "other_benefits": [
+    "Low Tension Power Tariff (LTPT) subsidy: 20% of power charges for Tariff IIIB LT micro manufacturing units for first 36 months (item 4.5; PN 2.3.3) - percentage of bill, not per unit.",
+    "Payroll subsidy: employer EPF contribution for 3 years, max Rs 24,000/employee/yr, if >20 employees (item 4.4.1).",
+    "Generator subsidy: 25% of generator cost (up to 320 KVA), max Rs 5 lakh, micro units on rural feeders (item 4.7).",
+    "Stamp duty: 100% exemption on mortgage/pledge documents for micro (6.3); 50% rebate on stamp duty & registration in TANSIDCO/govt/private estates (7.5); 50% reimbursement on land purchase in backward blocks for MSEs (7.6).",
+    "PEACE energy audit: 75% of audit cost up to Rs 1 lakh; 50% of implementation up to Rs 10 lakh (10.1).",
+    "Patent: 75% of filing cost up to Rs 3 lakh per patent; trademark/GI 50% up to Rs 25,000 (3.1-3.2).",
+    "SME IPO: 20% of expenses up to Rs 5 lakh (item 2).",
+    "NEEDS (first-generation entrepreneurs): 25% of project cost up to Rs 50 lakh (policy) + 3% interest subvention (6.2)."
+  ],
+  "unverifiable": [
+    "No SGST reimbursement and no electricity duty exemption for MSMEs in the MSME Policy 2021 (those exist only under TN Industrial Policy for large projects).",
+    "G.O.(Ms) No.11 dt 16-02-2021 not opened (tn.gov.in / tansidco.tn.gov.in hosts unreachable); policy PDF and Policy Note 2025-26 read from Guidance Tamil Nadu (state investment agency) storage.",
+    "Governor's address (June 2026) and revised Budget 2026-27 (Aug 2026) say a new industrial policy will be unveiled; not released as of 17-Oct-2026 per available sources - re-check for a replacement MSME policy.",
+    "MSME Policy 2021 has no end date ('valid from the date of notification')."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "tn-msme2021-cs-sm: conditions added",
+    "tn-msme2021-cs-sm: either/or group 'tn-sm-capital'",
+    "tn-msme2021-cs-thrust: conditions added",
+    "tn-msme2021-cs-thrust: either/or group 'tn-sm-capital'",
+    "tn-msme2021-cs-special-cat: conditions added",
+    "tn-msme2021-cs-scaleup: conditions added",
+    "tn-msme2021-cs-ev: conditions added",
+    "tn-msme2021-beis-tech: conditions added",
+    "tn-msme2021-beis-tech: either/or group 'tn-beis'",
+    "tn-msme2021-beis-cgtmse: conditions added",
+    "tn-msme2021-beis-cgtmse: either/or group 'tn-beis'"
+  ]
+}

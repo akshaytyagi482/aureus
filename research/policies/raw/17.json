@@ -1,0 +1,117 @@
+{
+  "state_code": "17",
+  "state": "Meghalaya",
+  "status": "current",
+  "policy": {
+    "name": "Meghalaya Industrial and Investment Promotion Policy (MIIPP), 2024, as amended 2025; registration extended to 31.03.2027",
+    "order_no": "No.IND.15/2024/82 dated 14.03.2024; Amendment No.IND.15/2026/Pt/147 dated 09.12.2025 (Gazette Extraordinary No.206, 10.12.2025); Extension No IND.15/2024/Pt.I/5 dated 10.09.2026",
+    "date": "2024-03-14",
+    "valid_from": "2022-12-21",
+    "valid_to": "2034-12-20",
+    "source_url": "https://megindustry.gov.in/policy/MIIPP-2024.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "priority": "Priority Sector units (clause 2.4 as amended 2025: incl. item 21 'Manufacturing (other than negative sectors)', textiles, agri-allied, bamboo, bio-fuels, automobiles/EVSE, ESDM + original items 1-16)",
+    "non_priority": "Sectors not listed as Priority"
+  },
+  "zone_lookup": "Not geographic. Sector class per clause 2.4 of MIIPP 2024 as amended by Gazette No.206 of 10.12.2025 (amendment item 2); negative list Annexure A.",
+  "schemes": [
+    {
+      "id": "ml-miipp2024-scii",
+      "name": "MIIPP 2024 State Capital Investment Incentive",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2022-12-21",
+        "to": "2027-03-31"
+      },
+      "min_investment": 1000000,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.3,
+        "cap": 100000000
+      },
+      "clause": "Para 3.4.1(ii); eligibility 3.1.2-3.1.5 as amended",
+      "verified": true,
+      "notes": "30% of P&M cost; cap Rs 10 crore Priority Sector, Rs 8 crore non-priority. New and expanding units, once per unit, one unit per applicant; physical verification. Min investment: manufacturing Rs 1 crore P&M (3.1.2); micro Rs 10 lakh in P&M + factory building (3.1.4 as amended 2025; building counts as P&M for micro, 3.1.5). Amendment 2025 (No.IND.15/2026/Pt/147, 09.12.2025) added 'Manufacturing (other than negative sectors)' to Priority Sectors (clause 2.4, item 21), so practically all eligible manufacturing units get Priority rates. Per amended para 5.1(ii) (Amendment 2025): where UNNATI 2024 or other GoI scheme overlaps, only the DIFFERENCE between State and GoI incentive is eligible. Since UNNATI CII is 30% (Zone A) / 50% (Zone B), state top-up is nil for most units; mainly useful where UNNATI cap (Rs 5/7.5 cr) is exceeded or unit is not UNNATI-registered. Registration window extended to 31.03.2027 (Notification No IND.15/2024/Pt.I/5 dated 10.09.2026). Max benefit per unit Rs 100 crore across all components."
+    },
+    {
+      "id": "ml-miipp2024-sisi",
+      "name": "MIIPP 2024 State Interest Subvention Incentive",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2022-12-21",
+        "to": "2027-03-31"
+      },
+      "min_investment": 1000000,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": null,
+        "years": 7
+      },
+      "clause": "Para 3.4.2(ii)",
+      "verified": true,
+      "notes": "5% p.a. Priority Sector (4% non-priority) for max 7 consecutive years on term loan for P&M; loan principal up to Rs 250 crore; on disbursed amount; SCB/RBI-registered FIs; disbursement after commercial production. Per amended para 5.1(ii) (Amendment 2025): where UNNATI 2024 or other GoI scheme overlaps, only the DIFFERENCE between State and GoI incentive is eligible. (UNNATI CIS 3% Zone A / 5% Zone B => state top-up 2 pts in Zone A districts, nil in Zone B)."
+    },
+    {
+      "id": "ml-miipp2024-sgst",
+      "name": "MIIPP 2024 SGST reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-12-21",
+        "to": "2027-03-31"
+      },
+      "min_investment": 1000000,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "priority": 1.5,
+          "non_priority": 1.0
+        },
+        "years_by_zone": {
+          "priority": 15,
+          "non_priority": 10
+        }
+      },
+      "clause": "Para 3.4.3",
+      "verified": true,
+      "notes": "Keys are SECTOR classes, not zones. NEW units only: 100% of net SGST (SGST paid less ITC), excl. exports, for 15 yrs (priority) / 10 yrs (non-priority) from commercial production or till policy validity (20.12.2034), ceiling 150% / 100% of eligible P&M value; paid at max 1/10th of total entitlement per FY with carry-forward. If SGST reimbursed under UNNATI MSLI, only balance claimable. Amendment 2025 added 99% MVAT/CST remission for 7 yrs (non-GST goods)."
+    }
+  ],
+  "other_benefits": [
+    "Special category (PwD etc.) top-up: micro +10% on factory building & P&M; small +5% of P&M up to Rs 50 lakh (para 3.4.4).",
+    "Transport subsidy (M&S): actual intra-state transport cost up to Rs 15 lakh/yr for 4 yrs (priority) / Rs 10 lakh for 3 yrs (para 3.4.5).",
+    "Green: rainwater harvesting 50% up to Rs 2 lakh (M&S); wastewater recycling 50% up to Rs 5 lakh (medium); water audit 75% up to Rs 1 lakh; zero discharge 50% up to Rs 5 lakh (medium) (para 3.4.6).",
+    "Power: DG/RE sets for M&S 50% conventional up to Rs 10 lakh / 75% RE up to Rs 50 lakh (as amended 2025); 11kV line drawal 100% up to Rs 10 lakh; service connection 50% up to Rs 2 lakh (para 3.4.7).",
+    "EPF: 100% employer contribution for 3 yrs (+1 yr women), domicile employees, max Rs 1,800/month (para 3.4.8).",
+    "No electricity-duty exemption, per-unit power tariff subsidy or certification reimbursement found in MIIPP 2024."
+  ],
+  "unverifiable": [
+    "Original Priority Sector items 1-16 of clause 2.4 are in a graphic in the PDF and could not be text-extracted."
+  ],
+  "checked_on": "2026-10-17"
+}

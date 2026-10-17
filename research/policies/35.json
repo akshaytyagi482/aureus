@@ -1,0 +1,30 @@
+{
+  "state_code": "35",
+  "state": "Andaman and Nicobar Islands",
+  "status": "expired",
+  "policy": {
+    "name": "Lakshadweep and Andaman & Nicobar Islands Industrial Development Scheme (LANIDS), 2018 - central scheme, last applicable incentive scheme found",
+    "order_no": "Gazette of India notification (DPIIT/MHA) LANIDS 2018, as amended (registration window extended to 31-03-2022)",
+    "date": "2018-04-01",
+    "valid_from": "2018-04-01",
+    "valid_to": "2022-03-31",
+    "source_url": "https://chemindia.chemicals.gov.in/Policiespdf/LakshadweepandAndamanNicobarIslandIndustrialDevelopmetScheme,2018.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [],
+  "other_benefits": [
+    "Expired LANIDS 2018 (for reference only): capital investment incentive 30% of P&M up to Rs 5 crore; interest incentive 3% on working capital for 5 years; 100% insurance premium; central share of CGST/IGST reimbursed for 5 years; transport and employment incentives (paras 6.1-6.7). Registration closed 31-03-2022; committed liabilities only up to 31-03-2027.",
+    "A&N UT Capital Investment Subsidy for MSEs (12th Plan, 2012-17): 25% (South/Middle/North Andaman) and 50% (Nicobar) of fixed investment, ran only to 31-03-2017 (per secondary summaries; the official andssw1.and.nic.in page was unreachable).",
+    "Industrial Estate (Allotment & Management) Policy 2025: lease-rent discounts of 50% for the first 15 years in Little Andaman, North & Middle Andaman and Nicobar, and 25% for years 16-25 (Directorate of Industries leaflet). Land benefit only.",
+    "Transport subsidy for raw materials and finished goods is listed on industries.andamannicobar.gov.in/IncentivesforIndustries.php without terms or validity."
+  ],
+  "unverifiable": [
+    "No current (Oct 2026) UT-level industrial or MSME incentive policy for A&N was found on industries.andamannicobar.gov.in. Its 'Incentives Package' link is a dead '#' link, and the site was last updated 2025-02-12. The older MSME page (andssw1.and.nic.in/industries/msme) returned 503.",
+    "The MSME page reportedly says units can get subsidy 'to the maximum tune of Rs 100 lakh on fixed capital investment' (undated, seen only in a search snippet). Its current status could not be confirmed.",
+    "RAMP 2026 interventions (e.g. Notification No. 242/2026 for tourism MSMEs) exist but are not manufacturing capital/opex incentives and were not retrieved."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": []
+}

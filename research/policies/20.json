@@ -1,0 +1,26 @@
+{
+  "state_code": "20",
+  "state": "Jharkhand",
+  "status": "expired",
+  "policy": {
+    "name": "Jharkhand Industrial and Investment Promotion Policy 2021 (JIIPP 2021) - EXPIRED 31.03.2026; successor JIIPP 2026 still in draft",
+    "order_no": "Industries Department Notification No. 06/U.Ni./Vividh(Au.Ni.)-07/2021-552, Jharkhand Gazette Extraordinary No. 351",
+    "date": "2021-07-09",
+    "valid_from": "2021-04-01",
+    "valid_to": "2026-03-31",
+    "source_url": "https://chemindia.chemicals.gov.in/Policiespdf/Jharkhand%20Industrial%20and%20Investment%20Policy%202021.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [],
+  "other_benefits": [],
+  "unverifiable": [
+    "JIIPP 2021 'Policy Period' (gazette p.53) says it remains operational for 5 years, 01.04.2021 to 31.03.2026, and Annexure I(1) confirms 'in force for 5 years up to 31.03.2026'. A 'New Industrial Unit' must start commercial production within five years from 01.04.2021 (Annexure I(6)). No gazette notification or cabinet decision extending JIIPP 2021 beyond 31.03.2026 was found (searched English and Hindi; cm.jharkhand.gov.in cabinet decisions not fully reviewed).",
+    "The successor 'Jharkhand Industrial Investment Promotion Policy (JIIPP) 2026' was released as a DRAFT for stakeholder comments on the Jharkhand Single Window portal (consultation 8-9 July 2026). Drishti IAS (11 Sep 2026) says the state 'plans to relaunch' it, with no cabinet approval or gazette notification seen as of 2026-10-17. Draft headline terms per secondary sources only (NOT in force, NOT verified): MSME capital subsidy 20% of FCI up to Rs 15 crore (+5% SC/ST/women/differently-abled); SGST 100% for 7 years then 40% for 3 years; 50% electricity tariff reimbursement for 5 years; 100% electricity duty for 5 years; three-zone district classification.",
+    "For reference only (expired regime; relevant to units that started production by 31.03.2026 and are still claiming), the JIIPP 2021 MSME terms read from the gazette: CPIS capital subsidy 25% of fixed capital investment, +5% for SC/ST/women/differently-abled, paid 50% in year 1 and 50% in year 3 (CPIS (a),(d),(e), p.29-30). Net SGST: 100% for 5 years, ceiling 100% of FCI (SGST (a), p.31). Interest subsidy: 5% p.a. for 5 years, caps micro Rs 15 lakh / small Rs 50 lakh / medium Rs 1 crore (p.32). Quality certification: 100% up to Rs 10 lakh (p.30). Captive power ED reimbursement for 5 years (p.32). Early-bird +5% capital subsidy for units within 2 years of notification (p.32).",
+    "Re-check after the JIIPP 2026 notification. A retroactive effective date (e.g. 01.04.2026) is possible but unconfirmed."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": []
+}

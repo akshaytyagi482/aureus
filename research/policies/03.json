@@ -1,0 +1,183 @@
+{
+  "state_code": "03",
+  "state": "Punjab",
+  "status": "current",
+  "policy": {
+    "name": "Industrial and Business Development Policy, 2026 (IBDP-2026)",
+    "order_no": "Dept of Industries & Commerce Notification No. PIU/Industrial & Business Development Policy-2026/898 (Punjab Govt Gazette Extraordinary, 8 March 2026, pp. 1391-1453)",
+    "date": "2026-03-08",
+    "valid_from": "2026-03-08",
+    "valid_to": null,
+    "source_url": "https://www.investindia.gov.in/s3fs-public/2026-03/punjab_industrial_policy_2026.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "border": "Border Districts: Pathankot, Gurdaspur, Amritsar, Tarn Taran, Ferozepur, Fazilka (cl. 4.3.1)",
+    "kandi": "Kandi Areas notified vide letter No. 1462-SMAC-1(AC)-73/33147 dated 31-10-1973, as amended (cl. 4.3.2)",
+    "general": "All remaining districts/areas (cl. 4.3.3)"
+  },
+  "zone_lookup": "Clause 4.3 Regional Classification (Gazette p. 1404-1405). Border districts listed in full; Kandi areas per 1973 notification (not reproduced). Units in Priority Sectors (cl. 4.4: EV, agri & food processing, IT/ITeS/GCC, ESDM & semiconductors, defence & aerospace, agro-waste to energy, textiles NIC Div 13 (dyeing only with ZLD), auto & components, sports goods) get the same 125% ceiling as border/Kandi.",
+  "schemes": [
+    {
+      "id": "pb-ibdp-2026-capital",
+      "name": "Capital Subsidy (new units and existing units undertaking expansion)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2026-03-08",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.2,
+        "cap": 100000000
+      },
+      "clause": "Cl. 5.2.2(A) (Gazette pp. 1409-1410); FCI definition cl. 8.2",
+      "verified": true,
+      "notes": "20% of eligible FCI (land, building, P&M per DSOG 3.3-3.5), max Rs 10 crore, disbursed in equal annual instalments over the unit's chosen eligibility period (10-15 years, cl. 5.1.2) and only after adjusting other incentives within the annual ceiling. Existing units doing modernisation only (cl. 5.2.2(B)): 20% of eligible P&M investment, max Rs 10 crore, in 10 equal annual instalments, once every 5 years. Expansion = >=25% of original FCI and >=25% capacity increase (8.1.13). MSMEs must be ZED-registered with at least Bronze at I-CAF approval for ANY post-production incentive (cl. 5.1.6). Overall ceiling all incentives: 100% of FCI (general), 125% of FCI (border/Kandi/priority sector), max Rs 500 crore (5.1.1). Negative list Annexure I."
+    },
+    {
+      "id": "pb-ibdp-2026-sgst",
+      "name": "Investment Subsidy by way of Reimbursement of Net SGST",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2026-03-08",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "general": 1.0,
+          "border": 1.25,
+          "kandi": 1.25
+        },
+        "years_by_zone": {
+          "general": 10,
+          "border": 10,
+          "kandi": 10
+        },
+        "share_of_net_sgst_reimbursed": 0.75
+      },
+      "clause": "Cl. 5.2.4 (Gazette p. 1411); ceilings cl. 5.1.1-5.1.3 (pp. 1406-1407)",
+      "verified": true,
+      "notes": "75% of Net SGST reimbursed over the eligibility period (unit chooses 10, 11, 12, 13, 14 or 15 years once at I-CAF; years_by_zone shows the minimum 10). rate_by_zone = OVERALL ceiling of ALL fiscal incentives as fraction of eligible FCI (100% general MSME; 125% border/Kandi and priority-sector units), max Rs 500 crore, spread as an equal annual ceiling (ceiling / chosen years, after deducting stamp duty & pre-production incentives). Unused annual ceiling lapses. Expansion: only on incremental net sales over the higher of 3-yr or 12-month average. ZED Bronze mandatory for MSMEs (5.1.6)."
+    },
+    {
+      "id": "pb-ibdp-2026-ed",
+      "name": "Exemption of Electricity Duty",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2026-03-08",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "ALL": 10
+        }
+      },
+      "clause": "Cl. 5.2.3 (Gazette pp. 1410-1411)",
+      "verified": true,
+      "notes": "100% ED exemption for the eligibility period chosen (10-15 years; 10 shown) from DoCP, subject to the annual ceiling (cl. 5.1.3). Expansion units: only on incremental consumption over the higher of 3-yr/12-month average. Only electricity duty - IDF, Social Security Fund and other levies not exempted."
+    },
+    {
+      "id": "pb-ibdp-2026-cert",
+      "name": "Reimbursement of expenses for Quality, Management System and Environment Certifications",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2026-03-08",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 1.0,
+        "cap": 2000000
+      },
+      "clause": "Cl. 5.2.15 (Gazette p. 1418)",
+      "verified": true,
+      "notes": "100% of actual expenses, max Rs 20 lakh per unit for one or more certifications together, once during policy validity. Also available to existing units (5.3). Separate ZED top-up (cl. 5.2.12): one-time Rs 5 lakh for first 100 units achieving ZED Silver; Rs 10 lakh for first 50 achieving Gold (total max Rs 10 lakh)."
+    },
+    {
+      "id": "pb-ibdp-2026-zld",
+      "name": "Capital subsidy for Zero Liquid Discharge (standalone existing units)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2026-03-08",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.2,
+        "cap": 100000000
+      },
+      "clause": "Cl. 5.2.8(B)(ii) (Gazette p. 1414)",
+      "verified": true,
+      "notes": "Existing units installing ZLD: 20% of total project cost, max Rs 10 crore, in 10 equal annual instalments. For new/expansion units ZLD and R&D/testing facility cost is simply counted in eligible FCI (5.2.8(A), (B)(i)).",
+      "conditions": [
+        "Existing unit installing zero liquid discharge (ZLD)"
+      ]
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty: 100% exemption/reimbursement on purchase/lease of land and buildings for new and expansion units (5.2.1)",
+    "Employment Generation Subsidy: Rs 3,000 (male) / Rs 4,000 (female/SC/OBC/BC/PwD) per Punjab-resident employee per month for 5 years; needs FCI >= Rs 25 crore and >= 50 jobs (5.2.5)",
+    "Trade fairs: MSME 50% of stall rent up to Rs 5 lakh (international) / Rs 3 lakh (national); ODOP 75% up to Rs 7.5/5 lakh (5.2.6)",
+    "Freight subsidy for exporters: 1% of FOB, max Rs 30 lakh/yr for 5 years (5.2.7)",
+    "CGTMSE guarantee fee 100% reimbursed, max Rs 3 lakh/unit/yr for 7 years (MSEs) (5.2.10)",
+    "NSE-Emerge listing: 25% of public issue expenses up to Rs 10 lakh (5.2.11)",
+    "Energy/water/environment/steam/safety audits: 75% up to Rs 3 lakh per audit type, once (5.2.13)",
+    "Patents: 75% up to Rs 10 lakh domestic / Rs 20 lakh international (5.2.14)",
+    "Digital marketing/e-commerce onboarding: 50% up to Rs 50,000 (ODOP Rs 75,000), first 1,000 units (5.2.16)",
+    "Paddy-straw boilers: 50% capital subsidy with caps Rs 2.5-7.5 crore (5.2.9); canal water charge exemption (5.2.19)",
+    "Power: ToD tariff with Rs 2/unit off-peak rebate proposed subject to PSERC approval (6.7.11) - not a fixed per-unit subsidy"
+  ],
+  "unverifiable": [
+    "Policy has no fixed end date (cl. 4.1.1: in force from notification until amended/withdrawn); valid_to left null. Previous IBDP-2022 (17-10-2022) is superseded for new CAFs; IBDP-2022 units without disbursed post-production incentives could migrate within 90 days (4.1.7-4.1.8).",
+    "No term-loan interest subsidy found in the main IBDP-2026 text; secondary sources (KIP Financial) mention an interest subsidy scheme in the 'Detailed Schemes & Operational Guidelines 2026' (DSOG) or sectoral policies (e.g. textiles) - DSOG not obtained (pbindustries.gov.in / investpunjab.gov.in unreachable from this environment).",
+    "Gazette PDF is image-only; figures were read from rendered page images of the official gazette copy hosted by Invest India (govt). 24 Sectoral Policies 2026 (Notification No. PIU/IBDP-2026/Sectoral Policies/907, 8-3-2026) may give higher sector-specific rates/ceilings - not extracted."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "pb-ibdp-2026-zld: conditions added"
+  ]
+}

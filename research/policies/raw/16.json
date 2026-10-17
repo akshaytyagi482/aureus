@@ -1,0 +1,192 @@
+{
+  "state_code": "16",
+  "state": "Tripura",
+  "status": "current",
+  "policy": {
+    "name": "Tripura Industrial Investment Promotion Incentive Scheme (TIIPIS), 2022 (continued under Tripura Industrial Investment Policy (TIIP) 2024, notified 07.10.2024)",
+    "order_no": null,
+    "date": null,
+    "valid_from": "2022-04-01",
+    "valid_to": "2027-03-31",
+    "source_url": "https://industries.tripura.gov.in/state-scheme-details",
+    "language": "en"
+  },
+  "zones": {
+    "THRUST": "Thrust sector industries (list at https://industries.tripura.gov.in/thrust-sector)",
+    "NON_THRUST": "All other eligible industries"
+  },
+  "zone_lookup": "Sector-based, not geographic: Thrust sector list on the Dept of Industries & Commerce 'Thrust Sector' page / TIIPIS 2022 annexure (not read).",
+  "schemes": [
+    {
+      "id": "tr-tiipis2022-cis-nonthrust",
+      "name": "TIIPIS 2022 State Capital Investment Subsidy - non-thrust MSME",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "NON_THRUST"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2022-04-01",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.3,
+        "cap": 10000000
+      },
+      "clause": "TIIPIS 2022 (clause not seen)",
+      "verified": false,
+      "notes": "30% of FIXED CAPITAL INVESTMENT (land, building, P&M), ceiling Rs 100 lakh per enterprise. Reported additional 5% for ST/SC/PH/women-owned enterprises. UNVERIFIED: figures taken from search-engine extracts of the official pages https://industries.tripura.gov.in/state-scheme-details and https://industries.tripura.gov.in/thrust-sector (Dept of Industries & Commerce, Tripura); the pages and the scheme notification could not be opened from this environment (connection reset/503), so text was not read directly. Applies to units commencing commercial production 01.04.2022-31.03.2027."
+    },
+    {
+      "id": "tr-tiipis2022-cis-thrust",
+      "name": "TIIPIS 2022 State Capital Investment Subsidy - thrust sector MSME",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "THRUST"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2022-04-01",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.4,
+        "cap": 12500000
+      },
+      "clause": "TIIPIS 2022 (clause not seen)",
+      "verified": false,
+      "notes": "40% of fixed capital investment, ceiling Rs 125 lakh. UNVERIFIED: figures taken from search-engine extracts of the official pages https://industries.tripura.gov.in/state-scheme-details and https://industries.tripura.gov.in/thrust-sector (Dept of Industries & Commerce, Tripura); the pages and the scheme notification could not be opened from this environment (connection reset/503), so text was not read directly. Applies to units commencing commercial production 01.04.2022-31.03.2027."
+    },
+    {
+      "id": "tr-tiipis2022-interest-nonthrust",
+      "name": "TIIPIS 2022 Partial reimbursement of term-loan interest - non-thrust",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "NON_THRUST"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2022-04-01",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.04,
+        "annual_cap": 500000,
+        "years": null
+      },
+      "clause": "TIIPIS 2022 (clause not seen)",
+      "verified": false,
+      "notes": "'4% of interest paid on term loan, max Rs 5 lakh per annum' - wording ambiguous (4 percentage points vs 4% of interest); duration not seen. UNVERIFIED: figures taken from search-engine extracts of the official pages https://industries.tripura.gov.in/state-scheme-details and https://industries.tripura.gov.in/thrust-sector (Dept of Industries & Commerce, Tripura); the pages and the scheme notification could not be opened from this environment (connection reset/503), so text was not read directly. Applies to units commencing commercial production 01.04.2022-31.03.2027."
+    },
+    {
+      "id": "tr-tiipis2022-interest-thrust",
+      "name": "TIIPIS 2022 Partial reimbursement of term-loan interest - thrust",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "THRUST"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2022-04-01",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": 1200000,
+        "years": null
+      },
+      "clause": "TIIPIS 2022 (clause not seen)",
+      "verified": false,
+      "notes": "5%, max Rs 12 lakh per annum; same ambiguity. UNVERIFIED: figures taken from search-engine extracts of the official pages https://industries.tripura.gov.in/state-scheme-details and https://industries.tripura.gov.in/thrust-sector (Dept of Industries & Commerce, Tripura); the pages and the scheme notification could not be opened from this environment (connection reset/503), so text was not read directly. Applies to units commencing commercial production 01.04.2022-31.03.2027."
+    },
+    {
+      "id": "tr-tiipis2022-power-above20hp",
+      "name": "TIIPIS 2022 Power subsidy (connected load above 20 HP)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-04-01",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "per_unit": 5.0,
+        "years": null,
+        "cap": null
+      },
+      "clause": "TIIPIS 2022 (clause not seen)",
+      "verified": false,
+      "notes": "Rs 5.00 per unit, no upper ceiling, units with connected load above 20 HP; duration not seen. Units up to 20 HP: 25% of power charges paid, max Rs 15 lakh/yr (Rs 25 lakh thrust). UNVERIFIED: figures taken from search-engine extracts of the official pages https://industries.tripura.gov.in/state-scheme-details and https://industries.tripura.gov.in/thrust-sector (Dept of Industries & Commerce, Tripura); the pages and the scheme notification could not be opened from this environment (connection reset/503), so text was not read directly. Applies to units commencing commercial production 01.04.2022-31.03.2027."
+    },
+    {
+      "id": "tr-tiipis2022-cert",
+      "name": "TIIPIS 2022 Reimbursement of standard certification fees",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-04-01",
+        "to": "2027-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 1.0,
+        "cap": null
+      },
+      "clause": "TIIPIS 2022 (clause not seen)",
+      "verified": false,
+      "notes": "100% one-time reimbursement of fees/charges for standard certifications (ISO 9000/14000/18000, BIS, BEE, FSSAI, AGMARK, organic etc.); cap not seen. UNVERIFIED: figures taken from search-engine extracts of the official pages https://industries.tripura.gov.in/state-scheme-details and https://industries.tripura.gov.in/thrust-sector (Dept of Industries & Commerce, Tripura); the pages and the scheme notification could not be opened from this environment (connection reset/503), so text was not read directly. Applies to units commencing commercial production 01.04.2022-31.03.2027."
+    }
+  ],
+  "other_benefits": [
+    "UNVERIFIED: SGST reimbursement 100% of SGST, ceiling Rs 80 lakh (non-thrust) / Rs 125 lakh (thrust) PER ANNUM - per-annum cap, not a % of investment, so not encoded as sgst_refund_ceiling.",
+    "UNVERIFIED: transport subsidy raised to 50% (news, April 2022).",
+    "UNVERIFIED: infrastructure developers 30% of capital investment up to Rs 500 lakh (>=30 acres)."
+  ],
+  "unverifiable": [
+    "All Tripura government hosts (industries.tripura.gov.in incl. the TIIP 2024 notification PDF) reset connections or returned 503 from this environment throughout the session; nothing could be read from a primary source. All schemes verified=false.",
+    "TIIPIS 2022 notification number/date and clause numbers unknown; durations of interest and power subsidies unknown."
+  ],
+  "checked_on": "2026-10-17"
+}

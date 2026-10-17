@@ -1,0 +1,227 @@
+{
+  "state_code": "21",
+  "state": "Odisha",
+  "status": "current",
+  "policy": {
+    "name": "Odisha MSME Development Policy, 2022",
+    "order_no": "No. MSME-MS&I-MSME2-0015-2022-9678/MSME dated 28.12.2022 (1st amendment No.8795/MSME dated 08.12.2023)",
+    "date": "2022-12-28",
+    "valid_from": "2022-11-30",
+    "valid_to": null,
+    "source_url": "https://epch.in/sites/default/files/policies/odisha-MSME-Policy-2022.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "IBD": "Industrially Backward Districts: Kalahandi, Nuapada, Bolangir, Subarnapur, Koraput, Malkangiri, Rayagada, Nabarangpur, Kandhamal, Gajapati, Mayurbhanj",
+    "OTHER": "All other districts"
+  },
+  "zone_lookup": "Annexure-I definition 15 (Industrially Backward Districts). IBD only matters for the additional 5% CIS in para 7.3.1(c).",
+  "schemes": [
+    {
+      "id": "od-msme2022-cis",
+      "name": "Odisha MSME Policy 2022 Capital Investment Subsidy (general)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2022-11-30",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 20000000
+      },
+      "clause": "Para 7.3.1(a)",
+      "verified": true,
+      "notes": "Only enterprises with P&M investment up to Rs 10 crore (new, or existing undertaking expansion/modernisation/diversification). 25% of P&M (invested till commencement of production), max Rs 2 crore. SC/ST/PwD/women/technical-degree-or-diploma entrepreneurs (>=51% stake): 30%, max Rs 2.5 crore (7.3.1(b)). Anchor enterprises 30% max Rs 4 crore (7.3.1(e)). New E-vehicle component/charging units with P&M up to Rs 50 crore: 30% max Rs 3 crore (7.3.2). Production must start within 3 years of first fixed capital investment (9.3). No similar incentive under any other State/GoI policy (9.2). CAUTION: 1st Amendment Notification No.8795/MSME dated 08.12.2023 amends paras 6(g), 7.1, 7.2 and 7.3.1(c) - its text could not be downloaded (ct.odisha.gov.in / msme.odisha.gov.in unreachable); figures here are from the original 28.12.2022 notification."
+    },
+    {
+      "id": "od-msme2022-cis-addl-backward",
+      "name": "Odisha MSME Policy 2022 Additional CIS (backward districts / IDCO estates / focus sectors)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "IBD"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2022-11-30",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.05,
+        "cap": 2000000
+      },
+      "clause": "Para 7.3.1(c)",
+      "verified": true,
+      "notes": "Additional 5% of P&M, max Rs 20 lakh, over and above 7.3.1(a)/(b), for units (P&M <= Rs 10 crore) that are: (i) in Industrially Backward Districts, or (ii) in designated IDCO estates/areas along Biju Expressway, or (iii) in auto & components, plastics & polymers, steel & stainless steel, defence, aluminium, pharma, medical equipment, apparel & textile. CAUTION: 1st Amendment Notification No.8795/MSME dated 08.12.2023 amends paras 6(g), 7.1, 7.2 and 7.3.1(c) - its text could not be downloaded (ct.odisha.gov.in / msme.odisha.gov.in unreachable); figures here are from the original 28.12.2022 notification.",
+      "conditions": [
+        "Unit in a backward area notified in the policy"
+      ]
+    },
+    {
+      "id": "od-msme2022-cis-addl-green",
+      "name": "Odisha MSME Policy 2022 Additional CIS for non-polluting measures",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control",
+        "solar"
+      ],
+      "window": {
+        "from": "2022-11-30",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.05,
+        "cap": 2500000
+      },
+      "clause": "Para 7.3.1(d)",
+      "verified": true,
+      "notes": "Additional 5% of investment in technical civil works and P&M for non-polluting measures (WWTP, ETP, waste recycling, rooftop RE, CEMS, rainwater harvesting, green buildings etc.), max Rs 25 lakh, P&M <= Rs 10 crore."
+    },
+    {
+      "id": "od-msme2022-interest",
+      "name": "Odisha MSME Policy 2022 Interest Subsidy",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-11-30",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.5,
+        "annual_cap": null,
+        "years": 5,
+        "rate_basis": "share_of_interest"
+      },
+      "clause": "Para 7.4",
+      "verified": true,
+      "notes": "RATE IS A SHARE OF INTEREST, NOT PERCENTAGE POINTS: reimbursement of 50% of interest paid on term loan from public FIs/banks, 5 years from commencement of production, TOTAL cap Rs 1 crore. New enterprises with P&M up to Rs 50 crore only."
+    },
+    {
+      "id": "od-msme2022-ed",
+      "name": "Odisha MSME Policy 2022 Electricity duty exemption",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-11-30",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "ALL": 5
+        }
+      },
+      "clause": "Para 7.5",
+      "verified": true,
+      "notes": "New enterprises with P&M up to Rs 50 crore: exemption from electricity duty up to contract demand of 750 kVA for 5 years from commencement of production."
+    },
+    {
+      "id": "od-msme2022-sgst",
+      "name": "Odisha MSME Policy 2022 Net SGST reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-11-30",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "ALL": 1.0
+        },
+        "years_by_zone": {
+          "ALL": 3
+        }
+      },
+      "clause": "Para 7.6.1",
+      "verified": true,
+      "notes": "75% of net SGST paid in cash (after ITC), 3 years from commencement of production, limited to 100% of cost of P&M (ceiling base is P&M, not fixed capital). New and E/M/D enterprises with P&M up to Rs 50 crore. Pioneer enterprises (first five units in a new product line, Annex I def. 4): 100% of net SGST for 5 years, limited to 200% of P&M (7.6.2)."
+    },
+    {
+      "id": "od-msme2022-quality",
+      "name": "Odisha MSME Policy 2022 Quality certification subsidy",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-11-30",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 1.0,
+        "cap": 500000
+      },
+      "clause": "Para 7.8",
+      "verified": true,
+      "notes": "100% of quality certification charges (national/international bodies) incl. renewal for next 2 years (3 years total), total max Rs 5 lakh. ZED (7.7): 80% of balance cost after GoI support for ZED certification; plus one-time 50% of P&M/testing equipment cost to move up a ZED level, caps Rs 2 lakh (Bronze) / 3 lakh (Silver) / 5 lakh (Gold)."
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty: 100% (P&M <= Rs 10 cr) / 75% (Rs 10-50 cr) on land/shed transfer from Govt/IDCO/private estates (para 7.1; amended by 8795/MSME - not seen).",
+    "Land conversion premium exemption: 100% up to 5 acres (P&M <= Rs 10 cr) / 75% up to 25 acres (para 7.2).",
+    "Employment cost: 75% (men) / 100% (women) of employer ESI+EPF, 5 yrs (P&M <= 10 cr) or 3 yrs (10-50 cr) (para 7.9).",
+    "Technology purchase from NRDC etc.: 50% up to Rs 20 lakh (7.10); SME exchange listing 20% up to Rs 10 lakh (7.11); water audit 75% up to Rs 1 lakh (7.12); energy audit 75% up to Rs 5 lakh (7.13); patents (7.14)."
+  ],
+  "unverifiable": [
+    "Text read from the signed notification PDF (MSME Dept, Govt of Odisha) as hosted by EPCH (epch.in), because all *.odisha.gov.in hosts (msme, ct, labour, cuttack, diodisha) reset/refused connections from this environment. Consolidated official copy: https://msme.odisha.gov.in/sites/default/files/2024-01/Odisha%20MSME%20Development%20Policy-2022_3.pdf (not readable here).",
+    "1st Amendment 8795/MSME (Dec 2023) text not read - may change CIS 7.3.1(c), stamp duty, land conversion and eligibility 6(g).",
+    "Policy has no stated end date (effective 30.11.2022, para 9.8); no successor found as of 2026-10-17."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "od-msme2022-cis-addl-backward: conditions added",
+    "od-msme2022-interest: rate is a share of the interest bill"
+  ]
+}

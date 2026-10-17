@@ -1,0 +1,163 @@
+{
+  "state_code": "09",
+  "state": "Uttar Pradesh",
+  "status": "current",
+  "policy": {
+    "name": "Uttar Pradesh Micro, Small and Medium Enterprises Promotion Policy - 2022",
+    "order_no": "Government Order dated 28.09.2022 (Dept. of MSME & Export Promotion); GO number not printed on the English translation",
+    "date": "2022-09-28",
+    "valid_from": "2022-09-28",
+    "valid_to": "2027-09-27",
+    "source_url": "https://msme1connect.up.gov.in/pdf/Policies/UP%20MSME-Policy-2022.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "BP": "Bundelkhand and Purvanchal regions",
+    "MP": "Madhyanchal and Paschimanchal regions (Gautam Buddha Nagar and Ghaziabad are in Paschimanchal; they differ only for stamp duty)"
+  },
+  "zone_lookup": "The MSME Policy 2022 (para 5.3.3, 5.3.4) uses the four regions but has no district annexure. The same regions are used in the UP Industrial Investment & Employment Promotion Policy 2022, which also has no district list. Look up the region from the district's revenue division: Bundelkhand is the Jhansi and Chitrakoot divisions. The Purvanchal/Madhyanchal/Paschimanchal split by division was NOT confirmed from an official document (see unverifiable).",
+  "schemes": [
+    {
+      "id": "up-msme-2022-capital",
+      "name": "Investment Promotion Assistance (capital subsidy) on fixed capital investment",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment",
+        "pollution_control",
+        "solar"
+      ],
+      "window": {
+        "from": "2022-09-28",
+        "to": "2027-09-27"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate_by_zone": {
+          "BP": {
+            "micro": 0.25,
+            "small": 0.2,
+            "medium": 0.15
+          },
+          "MP": {
+            "micro": 0.2,
+            "small": 0.15,
+            "medium": 0.1
+          }
+        },
+        "cap": 40000000
+      },
+      "clause": "Para 5.3.4 (table), 5.2.4.1 (sic), 5.2.4.2 (sic), 5.3.4.3; definitions in para 4",
+      "verified": true,
+      "notes": "Applies to new MSMEs. Expansion/diversification units get the same facilities if gross block AND production capacity both rise by at least 25% (para 5.8.2). The base is plant, machinery, equipment and related building; land is excluded. The building component is limited to 10% of fixed capital investment (para 4). P&M includes captive/non-conventional power, pollution control plant, water purification, DG sets and boilers (para 4). SC/ST/women entrepreneurs (at least 51% share) get +2 percentage points (para 5.2.4.2/5.3.5.3). Paid in 2 equal instalments: the first on partial progress (e.g. building completion), the second at 50% commercial production. Total assistance under the policy cannot exceed the fixed capital investment (para 5.3.8). Eligible investment period from the date of application: micro 2 years, small 3, medium 4; commercial production must start within it (para 7.3). Only one policy may be used per benefit head (para 7.4). Excluded: tobacco/pan masala, alcohol/aerated drinks, firecrackers, plastic carry bags under 40 micron (para 7.7)."
+    },
+    {
+      "id": "up-msme-2022-interest",
+      "name": "Capital interest subsidy for new micro enterprises",
+      "categories": [
+        "micro"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-09-28",
+        "to": "2027-09-27"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.5,
+        "rate_basis": "fraction_of_interest_paid",
+        "annual_cap": null,
+        "total_cap": 2500000,
+        "years": 5
+      },
+      "clause": "Para 5.3.5, 5.3.5.1-5.3.5.4",
+      "verified": true,
+      "notes": "rate is 50% OF THE INTEREST paid, not percentage points of the loan. The cap is Rs 25 lakh per unit over 5 years; there is no separate annual cap. SC/ST/women units (at least 51% share) get 60%. Claimed annually after the interest is fully paid. Land cost is excluded from the loan base. New micro units only."
+    },
+    {
+      "id": "up-msme-2022-cert",
+      "name": "Quality certification reimbursement (ZED, WHO-GMP, Hallmark, BIS/NABCB-accredited certifications)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2022-09-28",
+        "to": "2027-09-27"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": {
+          "micro": 0.75,
+          "small": 0.5,
+          "medium": 0.25
+        },
+        "cap": 500000
+      },
+      "clause": "Para 5.5.3 (table, row 'Cost of certification or approval, cost of certification or approval by third party testing')",
+      "verified": true,
+      "notes": "The cap is Rs 5 lakh for all sizes. Other rows of the same table use the same rates (75/50/25%): testing lab setup, equipment and calibration capped at Rs 5 lakh; IT system acquisition at Rs 2 lakh; mandatory employee qualification/training at Rs 0.5 lakh."
+    },
+    {
+      "id": "up-msme-2022-cleantech",
+      "name": "Clean production technology / pollution control equipment reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2022-09-28",
+        "to": "2027-09-27"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.4,
+        "cap": 2000000
+      },
+      "clause": "Para 5.9.4",
+      "verified": true,
+      "notes": "Covers 40% of P&M spending on clean production (raw material substitution, water/energy economy, pollution control equipment), up to Rs 20 lakh. Para 5.9.8: existing units are eligible; new units that install pollution control at commissioning get IPA under 5.3.4 instead. Related items: ZLD equipment at 50% up to Rs 75 lakh (5.9.2); green/energy/water audit fee at 75% up to Rs 50,000 plus recommended equipment at 50% up to Rs 20 lakh (5.9.5); environment management lab at 50% up to Rs 10 lakh (5.9.7)."
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty exemption: 100% in Purvanchal & Bundelkhand; 75% in Madhyanchal & Paschimanchal except Gautam Buddha Nagar and Ghaziabad (50%); 100% for women entrepreneurs anywhere (para 5.3.3)",
+    "CGTMSE one-time guarantee fee borne by the state for collateral-free loans up to Rs 2 crore (para 5.3.2)",
+    "100% reimbursement of the employer's EPF share for 5 years for new MSMEs (para 5.4.1)",
+    "SME IPO / stock exchange fund raising: 20% of expenses, max Rs 5 lakh (para 5.3.6)",
+    "Mandi fee waiver for 5 years for new food processing units with P&M of Rs 5 crore or more (para 5.3.7)",
+    "Patent/GI: 75% of documentation cost up to Rs 10 lakh, plus attorney fee up to Rs 50,000 (national) / Rs 2 lakh (international) (para 5.5.5)",
+    "ERP: 75% up to Rs 1 lakh; ICT: 75% up to Rs 5 lakh (para 5.5.6)",
+    "IGBC green rating consultancy: 50% up to Rs 2.5 lakh (para 5.9.6)",
+    "Private MSME parks/flatted factories: 50% interest reimbursement up to Rs 2 crore/year for 7 years, plus 100% stamp duty on land (para 5.1.6)",
+    "CETP/common infrastructure: 50% up to Rs 10 crore; common boiler: up to Rs 50 lakh (para 5.9.1, 5.9.3)"
+  ],
+  "unverifiable": [
+    "No SGST reimbursement, electricity duty exemption or per-unit power tariff subsidy for MSMEs exists in the MSME Policy 2022. It states that incentives are de-linked from net GST (Invest UP highlights). These may exist for larger units under the UP Industrial Investment & Employment Promotion Policy 2022, which is outside this MSME scheme.",
+    "District-to-region mapping (Purvanchal/Madhyanchal/Paschimanchal) is not annexed in the MSME policy or IIEPP 2022, and no official district list was found.",
+    "The GO number of the 28.09.2022 Hindi order was not found. The source is the official English translation, which says the Hindi version prevails.",
+    "Validity is 5 years from promulgation or until a new policy (para 7.2); valid_to 2027-09-27 is derived from this. No replacement MSME policy notified before 2026-10-17 was found. An ICAI handbook (secondary) mentions a 'UP MSME Policy 2025-2030', but no official document for it was found.",
+    "Operational rules/GOs (niyamavali) for IPA and interest subsidy, which may add conditions, were not reviewed."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": []
+}

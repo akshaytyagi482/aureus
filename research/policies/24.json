@@ -1,0 +1,193 @@
+{
+  "state_code": "24",
+  "state": "Gujarat",
+  "status": "current",
+  "policy": {
+    "name": "Viksit Gujarat Industrial Policy 2026 (Industries Commissionerate / Industries and Mines Department, Government of Gujarat)",
+    "order_no": null,
+    "date": "2026-06-15",
+    "valid_from": "2026-06-01",
+    "valid_to": "2031-05-31",
+    "source_url": "https://indextb.com/files/2026/6/698c2aec-e449-46b5-b3fe-efc6d391e5e2_Viksit-Gujarat-Industrial-Policy2026_new.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "A": "Category-A talukas (relatively less industrially developed; higher incentives)",
+    "B": "Category-B talukas (more industrially developed)"
+  },
+  "zone_lookup": "Taluka classification GR of the Industries & Mines Dept (Oct 2026), Annexure-A: 268 talukas, 130 in Category A and 138 in Category B (per press reports). The Annexure was NOT retrieved; the IC site ic.gujarat.gov.in was unreachable. The older 2020-policy list (taluka category.pdf on indextb.com) does NOT apply.",
+  "schemes": [
+    {
+      "id": "gj-vgip2026-msme-capital",
+      "name": "MSME Capital Subsidy (Component-1, on term loan)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "A",
+        "B"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2026-06-01",
+        "to": "2031-05-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate_by_zone": {
+          "A": 0.35,
+          "B": 0.25
+        },
+        "cap": null,
+        "cap_by_zone": null,
+        "overall_ceiling_pct_of_efci_by_zone": {
+          "A": 0.45,
+          "B": 0.35
+        },
+        "disbursal": {
+          "micro": "in 1 year",
+          "small": "over 5 years",
+          "medium": "over 5 years"
+        }
+      },
+      "clause": "Section 19 'Nudging MSMEs to Go Global', table 'Incentives for MSMEs', p.35",
+      "verified": true,
+      "notes": "Rate is % of eligible fixed capital investment (eFCI); table heading says 'Capital Subsidy on Term Loan', so a term loan appears to be required. No rupee cap is given in the policy. Components 1-3 can be combined, but the total is capped at 45% of eFCI (Cat A) or 35% (Cat B). SC/ST entrepreneurs (Dr. Babasaheb Ambedkar / Bhagwan Birsa Munda schemes) and persons with disabilities get +5% on the overall ceiling (p.36). Selected thrust sectors (sports goods, toys, footwear, robots, drones) get 35%/30% of eFCI over 5 years for MSMEs, within an overall ceiling of 50% (A) / 45% (B) (Section 21, p.39). The detailed MSME scheme GR (reported dated 2026-09-25, no. IMD/WRT/e-file/9/2026/2630/CH per adaptassociates.com) could not be retrieved."
+    },
+    {
+      "id": "gj-vgip2026-msme-interest",
+      "name": "MSME Interest Subsidy (Component-2)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "A",
+        "B"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2026-06-01",
+        "to": "2031-05-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.07,
+        "annual_cap": null,
+        "years": 5,
+        "total_cap_pct_of_efci": 0.1
+      },
+      "clause": "Section 19, table 'Incentives for MSMEs', p.35",
+      "verified": true,
+      "notes": "7% on the term loan for 5 years, total capped at 10% of eFCI. Same in Category A and B. The overall eFCI ceiling applies (see capital scheme). The policy gives +1% interest subsidy for women entrepreneurs (Section 13, p.28) and for startups (+1%, up to 9%, Section 12, p.27). Press reports also give +1% for first-generation entrepreneurs; that is not verified. Press reports say NBFC loans are excluded (from the unretrieved GR)."
+    },
+    {
+      "id": "gj-vgip2026-msme-power",
+      "name": "MSME Power Tariff Subsidy (Component-3)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "A",
+        "B"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2026-06-01",
+        "to": "2031-05-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "per_unit_by_zone": {
+          "A": 2.0,
+          "B": 1.0
+        },
+        "per_unit": null,
+        "years": 5,
+        "cap": null,
+        "total_cap_pct_of_efci": 0.25
+      },
+      "clause": "Section 19, table 'Incentives for MSMEs', p.35",
+      "verified": true,
+      "notes": "Rs 2/unit (Cat A) or Rs 1/unit (Cat B) for 5 years, total capped at 25% of eFCI. The overall eFCI ceiling applies. Press reports mention higher annual limits for micro units in the early years (GR detail, unverified)."
+    },
+    {
+      "id": "gj-vgip2026-ed",
+      "name": "Electricity Duty Exemption",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2026-06-01",
+        "to": "2031-05-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "ALL": null
+        }
+      },
+      "clause": "Section 20, p.39 ('In addition, MSMEs, Large, Mega and Ultra-Mega Units will be eligible for ... 100% Electricity Duty Exemption as per Gujarat Electricity Duty Act 1958')",
+      "verified": true,
+      "notes": "100% exemption is stated, but the policy document gives no duration. The years must come from the GR or Electricity Duty notification, which was not retrieved."
+    },
+    {
+      "id": "gj-vgip2026-intl-cert",
+      "name": "International certification reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2026-06-01",
+        "to": "2031-05-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.25,
+        "cap": 1000000,
+        "max_certifications": 5
+      },
+      "clause": "Section 15 'Promotion of Research & Development', p.31",
+      "verified": true,
+      "notes": "25% of international certification cost (CE, WHO-GMP, US FDA, EU-GMP, ISO etc.), up to Rs 10 lakh per certificate and a maximum of 5 certifications in the policy period. The text sits in the R&D section and does not say it is MSME-only. The MSME GR reportedly provides a separate quality-certification assistance (50% of fees + testing equipment, combined max Rs 10 lakh; ZED assistance also mentioned). That figure is from deshgujarat.com (2026-10-09), so it is NOT verified."
+    }
+  ],
+  "other_benefits": [
+    "EPF reimbursement: 100% of employer contribution for 5 years for MSMEs, up to Rs 1,800/month (male), Rs 2,500 (female), Rs 3,000 (specially abled) (Section 20, p.39)",
+    "Women entrepreneurs: rental assistance 75% of rent up to Rs 3 lakh p.a. for 5 years (Section 13, p.28)",
+    "MSMEs may also avail quality/ZED certification, ERP, ICT, technology acquisition, patent, energy/water saving, SME exchange listing, power connection charge, MSE rent and market development assistance (p.36; amounts are in the MSME GR, not retrieved)",
+    "Thrust-sector units: stamp duty and registration fee reimbursement and other additional benefits (p.39)",
+    "Startups: sustenance allowance Rs 25,000/month, seed support up to Rs 50 lakh total (Section 12, p.27)"
+  ],
+  "unverifiable": [
+    "Detailed MSME scheme GR under VGIP 2026 (reported GR dated 2026-09-25, IMD/WRT/e-file/9/2026/2630/CH, operative 2026-06-01 to 2031-05-31): ic.gujarat.gov.in, imd.gujarat.gov.in and gujaratindia.gov.in all refused connections (SSL_ERROR_SYSCALL / reset / 503). It holds the exact caps, disbursal, eligible-asset rules and the micro early-year power caps.",
+    "Taluka Category A/B list (Annexure-A of the Oct 2026 classification GR): not retrieved, so a unit's zone cannot be looked up yet.",
+    "Electricity duty exemption duration.",
+    "MSME quality certification and ZED assistance amounts in the GR (press: 50% up to Rs 10 lakh combined).",
+    "Policy PDF is image-only (no text layer); figures were read visually from rendered pages 35, 36, 39 and 31.",
+    "Aatmanirbhar Gujarat Scheme for MSMEs (GR MIS-102022-1271(1)-I dated 2022-10-05, window to 2027-10-04) appears superseded by the VGIP 2026 MSME scheme for units from 2026-06-01. Not confirmed from a GR."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": []
+}

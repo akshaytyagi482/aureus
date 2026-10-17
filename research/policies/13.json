@@ -1,0 +1,171 @@
+{
+  "state_code": "13",
+  "state": "Nagaland",
+  "status": "current",
+  "policy": {
+    "name": "Nagaland Trade, Investment and Industrial Policy (NTIIP), 2025 with General Operational Guidelines",
+    "order_no": null,
+    "date": "2025-05-08",
+    "valid_from": "2025-05-08",
+    "valid_to": "2030-05-07",
+    "source_url": "https://industry.nagaland.gov.in/wp-content/uploads/2026/08/NTIIP.pdf_compressed.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [
+    {
+      "id": "nl-ntiip2025-scii",
+      "name": "NTIIP 2025 State Capital Investment Incentive (SCII)",
+      "categories": [
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-05-08",
+        "to": "2030-05-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.3,
+        "cap": 100000000
+      },
+      "clause": "Policy para 6.1.B; Guidelines para 8.2",
+      "verified": true,
+      "notes": "SMALL and MEDIUM only (micro not covered by SCII). 30% of P&M cost, max Rs 10 crore. New units or substantial expansion (>=25% addl P&M), registered under NTIIP 2025 portal. TOP-UP ONLY: if UNNATI 2024 CII (50%, Rs 7.5 cr in Nagaland, all districts Zone B) or similar central incentive is received, SCII limited to the difference - in practice UNNATI 50% exceeds 30%, so SCII usually yields nil unless unit is ineligible for UNNATI. Overall cap per unit across all NTIIP incentives Rs 10 crore (para 7.3)."
+    },
+    {
+      "id": "nl-ntiip2025-women-cis",
+      "name": "NTIIP 2025 Capital subsidy for women entrepreneurs",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-05-08",
+        "to": "2030-05-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.1,
+        "cap": 1000000
+      },
+      "clause": "Policy para 6.10; Guidelines para 8.14",
+      "verified": true,
+      "notes": "Only units with >=60% ownership by woman/women from the State. 10% of new P&M, max Rs 10 lakh. Same 10%/Rs 10 lakh for differently-abled entrepreneurs (para 6.11 / 8.15).",
+      "conditions": [
+        "At least 60% owned by women from Nagaland"
+      ]
+    },
+    {
+      "id": "nl-ntiip2025-scisi",
+      "name": "NTIIP 2025 State Capital Interest Subvention Incentive (SCISI)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-05-08",
+        "to": "2030-05-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": null,
+        "years": 5
+      },
+      "clause": "Policy para 6.2; Guidelines para 8.6",
+      "verified": true,
+      "notes": "5% for 5 years on loans DISBURSED up to Rs 1 crore principal (P&M), thrust sectors only, notified banks/FIs; computed from commercial production; annual claim within 6 months of FY end. Not for units assisted with state soft loans (6.1.1-6.1.3). Top-up only over UNNATI CIS (5% in Zone B = all Nagaland), so usually nil for UNNATI-registered units."
+    },
+    {
+      "id": "nl-ntiip2025-sgst",
+      "name": "NTIIP 2025 State GST reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2025-05-08",
+        "to": "2030-05-07"
+      },
+      "min_investment": 5000000,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "ALL": null
+        },
+        "years_by_zone": {
+          "ALL": 5
+        }
+      },
+      "clause": "Policy para 6.3; Guidelines para 8.7",
+      "verified": true,
+      "notes": "100% of net SGST paid for 5 years from commercial production, new units with GSTIN and minimum investment Rs 50 lakh. Text says 'on the value of investment made in P&M' but states NO percentage ceiling - rate_by_zone left null (cap undefined; assume up to 100% of P&M only if guidelines clarify). Overall NTIIP cap Rs 10 crore per unit; overlap with UNNATI MSLI => only difference claimable (para 7.3)."
+    },
+    {
+      "id": "nl-ntiip2025-quality",
+      "name": "NTIIP 2025 Assistance for quality certification",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2025-05-08",
+        "to": "2030-05-07"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 100000
+      },
+      "clause": "Policy para 6.6; Guidelines para 8.10",
+      "verified": true,
+      "notes": "50% of certification cost (ISO 9001/14001/22000/45001, HACCP, GMP, CE, BIS, AGMARK, FSSAI, organic etc.) max Rs 1 lakh per unit. Policy also states 100% of cost of ZED certification (all three stages) - separate, uncapped in text."
+    }
+  ],
+  "other_benefits": [
+    "Power tariff subsidy: 25% reimbursement of actual power tariff for 5 years, max Rs 5 lakh per annum, units with installed capacity >=100 kVA/134 HP (para 6.13 / 8.17) - percentage-of-bill, not per-unit.",
+    "Soft loans @6% p.a.: tech upgradation (micro Rs 10 lakh, small Rs 50 lakh), new units in thrust areas (micro Rs 20 lakh, small Rs 1 crore), retail/service Rs 10 lakh (paras 6.1.1-6.1.3).",
+    "Stamp duty: 50% exemption on loan/mortgage instruments for 5 years (para 6.12).",
+    "Power line drawal: reimbursement up to Rs 10 lakh one-time (para 6.7).",
+    "100% EOU: 20% capital subsidy up to Rs 1 crore (para 6.9).",
+    "Transport: 50% of freight outside State up to Rs 50 lakh/yr for 5 years (para 6.15).",
+    "Brand building 50% up to Rs 5 lakh; 100% of IP/GI/patent filing cost (para 6.14); trade fairs 50% up to Rs 50,000/event (para 6.5)."
+  ],
+  "unverifiable": [
+    "Notification number not found in the published PDF; dates (notified 08.05.2025, Gazette 13.06.2025) from DIC annual report as quoted by Morung Express. Validity 'five years from notification' -> valid_to derived.",
+    "SGST reimbursement ceiling (% of investment) not stated.",
+    "Thrust sector list (policy para 4) governs SCISI eligibility; not transcribed."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "nl-ntiip2025-women-cis: conditions added"
+  ]
+}

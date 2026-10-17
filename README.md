@@ -95,29 +95,29 @@ A purchase-invoice line counts as a capital asset when two things hold:
 
 Each scheme in `schemes.json` declares its states, enterprise categories, sectors, asset classes, investment window and minimum spend. Maharashtra schemes also declare the eligible zones. The benefit formula is one of: capital subsidy, SGST-refund ceiling, electricity-duty exemption, ₹/unit power tariff subsidy, interest subsidy, or certification support. Caps apply throughout. Benefits that draw on the same zone ceiling are shown but not added to the headline total, so it never double-counts.
 
-**Verified (17 Oct 2026):**
+**Coverage: every state and union territory (checked 17 Oct 2026).** See [docs/STATE_COVERAGE.md](docs/STATE_COVERAGE.md) or the app's *State coverage* page.
 
-| Source | Section |
+| | States / UTs |
 |---|---|
-| Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025 ([PDF](https://industry.maharashtra.gov.in/sites/default/files/2025-12/202512311332497910.pdf)) | MSME section 4.1.1(A), Table 4, and the Annexure I taluka groups |
-| [MSME ZED scheme guidelines](https://dcmsme.gov.in/CLCS_TUS_Scheme/ZED_Scheme/Scheme_Guidelines.aspx) | Key Benefits (fees and subsidy rates) |
+| All schemes verified against the official policy | 20 |
+| Partly verified | 4 (Bihar, Kerala, Puducherry, Rajasthan) |
+| Current policy, but no official text reachable (figures unverified, shown with a warning) | 7 (Andhra Pradesh, Jammu and Kashmir, Madhya Pradesh, Mizoram, Tripura, Uttarakhand, West Bengal) |
+| No current policy (lapsed or not found; only central schemes apply) | 5 (Andaman and Nicobar Islands, Chandigarh, Delhi, Himachal Pradesh, Jharkhand) |
 
-Every verified scheme carries `source_document`, `clause` and `verified_on`, which the UI and the printed application show.
+174 schemes in total, 137 verified. Central schemes (ZED at the September 2024 fees, PMEGP, SC/ST capital subsidy, UNNATI for the North-East) are included.
 
-| Maharashtra taluka group | A | B | C | D | D+ | Vidarbha/Marathwada etc. | No-industry / aspirational |
-|---|---|---|---|---|---|---|---|
-| SGST-refund ceiling (% of FCI) | 30% | 40% | 50% | 60% | 70% | 80% | 100% |
-| Incentive period (years) | 5 | 7 | 7 | 10 | 10 | 10 | 10 |
-| Electricity duty exemption | – | – | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Power tariff ₹1/unit, 3 yrs | – | – | – | ✓ | ✓ | ✓ | ✓ |
+**How a state is added or re-checked:**
+1. **Research.** A researcher reads the official policy and writes a file in the format set by `research/BRIEF.md`. The raw file goes in `research/policies/raw/` unchanged, as evidence.
+2. **Curation.** `research/curate.py` applies the documented adjustments: conditions the app can't check (ownership, sector lists), either/or groups, investment slabs, interest floors, and benefits it can't compute. Every change is written into the curated file's `curation` list.
+3. **Merge.** `tools/merge_policies.py` validates every rule and merges it into `aureus/data/schemes.json`. It refuses unknown benefit types, impossible rates, undefined zones, bad dates, and verified figures without a source. It also regenerates the coverage table.
+4. **Safety net.** A test runs every scheme against every state, zone and business size, so no rule can crash the engine or produce an absurd figure.
 
-PSI-2019 is not in the grid. MIISP 2025 replaced it for new investment from 31 Dec 2025, and PSI-2019 put MSMEs in Group A (e.g. Pune City, Haveli in PMR) outside the scheme altogether.
+**How amounts are shown:**
+- **Headline total.** Only benefits the unit clearly qualifies for are added up. Either/or benefits count once, at the larger amount.
+- **Kept out of the total:** schemes with eligibility conditions (shown with the condition), first-year interest figures, and "up to" certification reimbursements.
+- **Ceilings.** SGST refunds are shown as "up to" the policy's ceiling, because the actual payout depends on tax paid.
 
-**Still open in Maharashtra:**
-- The rules on what counts as eligible fixed capital investment, on expansion units and on cut-off dates are left to a separate implementing scheme order, which I could not find.
-- Ceilings use only the capital purchases found in the books. Building and other fixed assets would raise them.
-
-> ⚠️ **Gujarat, Tamil Nadu, Karnataka and Uttar Pradesh are still illustrative** (`"verified": false`). The UI warns whenever an unverified scheme is counted.
+Maharashtra was verified by hand earlier and stays in the rule grid as it was. One correction from that work: the ZED fees were cut in September 2024 to ₹8,000 / ₹32,000 / ₹72,000, and the estimates now use the Gold fee.
 
 ### Notice Copilot
 
@@ -169,7 +169,7 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 
 ## What is production-ready vs. what needs work
 
-**Built and tested** (62 tests against PostgreSQL 16, plus a browser run through every screen):
+**Built and tested** (67 tests against PostgreSQL 16, plus a browser run through every screen):
 - ingestion parsers and the reconciliation engine
 - paisa-level matching
 - the policy maths
@@ -184,5 +184,5 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 
 **Not built yet:**
 - **Licensed GSTR-2B feed.** Pulling GSTR-2B automatically requires a GSP licence or a GST Suvidha Provider partner (the PRD mentions Account Aggregators). Until then the user downloads the JSON from the portal and uploads it; the parser reads the portal's own format.
-- **Verified scheme data for states other than Maharashtra.** See the warning above.
+- **Official texts that couldn't be reached.** Seven states have current policies whose official text couldn't be reached from the research environment (see the coverage table). Their figures are shown with a warning until someone in India downloads the official text.
 - **Production hardening** still to do: a KMS-held master key, database backup policy, email verification at signup, and invitations for users who don't yet have an account. Done already: login lockout, password reset and change, and a daily job for Zoho sync, deadline alerts and consent-expiry warnings.

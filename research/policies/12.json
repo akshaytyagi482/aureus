@@ -1,0 +1,236 @@
+{
+  "state_code": "12",
+  "state": "Arunachal Pradesh",
+  "status": "current",
+  "policy": {
+    "name": "Arunachal Pradesh Industrial Development and Investment Policy, 2025 (APIDIP 2025)",
+    "order_no": "No. DOI-13/5/2024 (Arunachal Pradesh Gazette Extraordinary No. 118, Vol. XXXII, 09.04.2025)",
+    "date": "2025-04-02",
+    "valid_from": "2025-04-01",
+    "valid_to": null,
+    "source_url": "https://indarun.gov.in/pdf/Arunachal%20Pradesh%20Industrial%20Development%20and%20Investment%20Policy,%202025.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [
+    {
+      "id": "ar-apidip2025-cii-upto25l",
+      "name": "APIDIP 2025 Capital Investment Incentive (P&M Rs 5-25 lakh)",
+      "categories": [
+        "micro"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-04-01",
+        "to": "2028-04-01"
+      },
+      "min_investment": 500000,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 1500000
+      },
+      "clause": "Para 7.2(1)",
+      "verified": true,
+      "notes": "Only for P&M investment between Rs 5 lakh and Rs 25 lakh. 50% of P&M; +10% of the computed subsidy for Priority Sector units and +10% for units with >=50% (or 5) skilled workforce APST/permanent residents, all within the Rs 15 lakh cap. New units and substantial expansion (once). New P&M at arm's length; physical verification mandatory. Priority Sectors = Annexure-III (food processing, NTFP/bamboo/cane/medicinal/tea/coffee, textiles/handloom/handicraft, ODOP, GI products, EV charging, pharmaceuticals, waste-to-wealth, tourism etc.).",
+      "exclusive_group": "ar-cii-slab",
+      "max_investment": 2500000
+    },
+    {
+      "id": "ar-apidip2025-cii-25to50l",
+      "name": "APIDIP 2025 Capital Investment Incentive (P&M above Rs 25 lakh up to Rs 50 lakh)",
+      "categories": [
+        "micro"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-04-01",
+        "to": "2028-04-01"
+      },
+      "min_investment": 2500000,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 3000000
+      },
+      "clause": "Para 7.2(2)",
+      "verified": true,
+      "notes": "Only for P&M investment above Rs 25 lakh and up to Rs 50 lakh. 50% of P&M; +10% of computed subsidy for Priority Sector and +10% for >=50% (or 10) local skilled workforce, within the Rs 30 lakh cap. NO state capital subsidy for P&M above Rs 50 lakh (use central UNNATI CII). Priority Sectors = Annexure-III (food processing, NTFP/bamboo/cane/medicinal/tea/coffee, textiles/handloom/handicraft, ODOP, GI products, EV charging, pharmaceuticals, waste-to-wealth, tourism etc.).",
+      "exclusive_group": "ar-cii-slab",
+      "max_investment": 5000000
+    },
+    {
+      "id": "ar-apidip2025-cis-upto25l",
+      "name": "APIDIP 2025 Capital Interest Subvention (P&M Rs 5-25 lakh)",
+      "categories": [
+        "micro"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-04-01",
+        "to": "2028-04-01"
+      },
+      "min_investment": 500000,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.06,
+        "annual_cap": null,
+        "years": 5,
+        "floor": 0.02
+      },
+      "clause": "Para 7.3(2)",
+      "verified": true,
+      "notes": "6% p.a. (8% for Priority Sector) on term loan for P&M, 5 consecutive years; TOTAL cap Rs 10 lakh over 5 years (Rs 15 lakh Priority Sector). Unit must bear at least 2% interest (subvention reduced accordingly). On disbursed amount; SCB/RBI-registered FI loans only; disbursement after commercial production. New units and substantial expansion.",
+      "exclusive_group": "ar-cis-slab"
+    },
+    {
+      "id": "ar-apidip2025-cis-above25l",
+      "name": "APIDIP 2025 Capital Interest Subvention (P&M above Rs 25 lakh)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2025-04-01",
+        "to": "2028-04-01"
+      },
+      "min_investment": 2500001,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": null,
+        "years": 5,
+        "floor": 0.02
+      },
+      "clause": "Para 7.3(3)",
+      "verified": true,
+      "notes": "5% p.a. (6% Priority Sector), 5 consecutive years; TOTAL cap Rs 20 lakh over 5 years (Rs 25 lakh Priority Sector). Unit bears minimum 2% interest. Same conditions as 7.3(2).",
+      "exclusive_group": "ar-cis-slab"
+    },
+    {
+      "id": "ar-apidip2025-power",
+      "name": "APIDIP 2025 Power subsidy (MSME)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2025-04-01",
+        "to": "2028-04-01"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "per_unit": 2.0,
+        "years": 5,
+        "cap": 7500000
+      },
+      "clause": "Para 7.6(1)",
+      "verified": true,
+      "notes": "Rs 2.00/unit for 5 years from commercial production; cap Rs 75 lakh PER ANNUM and total <=100% of P&M cost. Only 11kV/33kV connections from Dept of Power, Arunachal. Front-ended remission in power bill. New units / substantial expansion."
+    },
+    {
+      "id": "ar-apidip2025-sgst",
+      "name": "APIDIP 2025 Net SGST reimbursement",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2025-04-01",
+        "to": "2028-04-01"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "micro": 2.5,
+          "small": 2.0,
+          "medium": 1.8
+        },
+        "years_by_zone": {
+          "micro": 7,
+          "small": 7,
+          "medium": 7
+        }
+      },
+      "clause": "Para 7.7",
+      "verified": true,
+      "notes": "Keys are ENTERPRISE CATEGORIES (no zoning). 100% of net SGST (gross SGST less ITC) for 7 years from commercial production; ceiling 250%/200%/180% of eligible investment. Production must stay >=70% of preceding 5-yr average for next 5 years. No similar benefit under any other scheme (para 5.1(4)) - interacts with UNNATI MSLI. New units / substantial expansion."
+    },
+    {
+      "id": "ar-apidip2025-quality",
+      "name": "APIDIP 2025 Quality certification & testing equipment",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "testing_equipment"
+      ],
+      "window": {
+        "from": "2025-04-01",
+        "to": "2028-04-01"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.35,
+        "cap": 500000
+      },
+      "clause": "Para 7.10",
+      "verified": true,
+      "notes": "35% of cost of in-house testing equipment and quality certification (GMP, ISO, BIS, BEE, AGMARK, ZED etc.), max Rs 5 lakh; sanctioned after certificate obtained. New and existing units."
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty & registration fee: 100% reimbursement for land in Govt industrial estates/parks (para 7.1).",
+    "VAT: 99% exemption for 7 years (para 7.8).",
+    "Green energy (10-2000 kW RE): 50% of cost up to Rs 25 lakh; wastewater recycling 50% up to Rs 2 lakh; pollution control devices 50% up to Rs 10 lakh (para 7.5).",
+    "Common Facility Centre use: 50% up to Rs 1 lakh/yr for 3 years (para 7.9).",
+    "DPR consultancy for underprivileged: 95% up to Rs 1 lakh (para 7.11); air freight 50%; export transport 60% (paras 7.12+).",
+    "APIDIP 2025 Working Capital Interest Subvention: working-capital interest subsidy (not a term loan). WORKING CAPITAL loan (not term loan). 5% p.a. for 5 years from registration; unit bears min 1%; total cap Rs 50 lakh over 5 years and <=100% of P&M investment. New and existing GST-registered units."
+  ],
+  "unverifiable": [
+    "Policy in force 'until further orders'; registration period 3 years from notification (para 5.6) i.e. to about 01.04.2028 unless extended - window.to is derived, not stated.",
+    "Operational guidelines (para 5.7) not found; claim procedures not captured.",
+    "Para 5.5: units already registered under the 2020 policy cannot claim under 2025 policy."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "ar-apidip2025-cii-upto25l: either/or group 'ar-cii-slab'",
+    "ar-apidip2025-cii-upto25l: slab applies only to P&M of Rs 5-25 lakh",
+    "ar-apidip2025-cii-25to50l: either/or group 'ar-cii-slab'",
+    "ar-apidip2025-cii-25to50l: slab applies only to P&M of Rs 25-50 lakh",
+    "ar-apidip2025-cis-upto25l: either/or group 'ar-cis-slab'",
+    "ar-apidip2025-cis-upto25l: unit must bear at least 2% interest",
+    "ar-apidip2025-cis-above25l: either/or group 'ar-cis-slab'",
+    "ar-apidip2025-cis-above25l: unit must bear at least 2% interest",
+    "ar-apidip2025-wc-interest: moved to other_benefits (working-capital interest subsidy (not a term loan))"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "state_code": "07",
+  "state": "Delhi",
+  "status": "expired",
+  "policy": {"name": "Delhi Industrial Policy 2026 (approved by Delhi Cabinet, NOT yet notified); previous: Industrial Policy for Delhi 2010-2021", "order_no": null, "date": "2026-10-14", "valid_from": null, "valid_to": null,
+             "source_url": null, "language": "en"},
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [
+    {
+      "id": "dl-ip-2026-modernisation",
+      "name": "Delhi Industrial Policy 2026 - Technological modernisation incentive (Mukhyamantri Udyamshree Yojana) [pending notification]",
+      "categories": ["micro","small","medium"],
+      "zones": null,
+      "asset_classes": ["plant_machinery"],
+      "window": {"from": "2026-04-01", "to": "2031-03-31"},
+      "min_investment": 0,
+      "benefit": {"type": "capital_subsidy", "basis": "eligible_cost", "rate": 0.25, "cap": 50000000},
+      "clause": "Not available - figures from press reports of the 14-10-2026 Cabinet decision",
+      "verified": false,
+      "notes": "NOT IN FORCE until notified. 25% of modernisation investment, cap Rs 5 crore (Rs 7 crore for women-led enterprises) per The Tribune 15-10-2026. Rs 1,000 crore earmarked for Mukhyamantri Udyamshree Yojana FY2026-27 to 2030-31 (window shown = that budget period, not a notified operative window). Further support for energy efficiency, rooftop solar and apprentice stipends - no figures reported. Eligibility/asset definitions unknown."
+    }
+  ],
+  "other_benefits": [
+    "Draft Delhi Industrial Policy 2025-35 (released for comments mid-2025, per press/ICAI) proposed: 50% of FCI capital subsidy (cap Rs 50 crore, over 5 years) for frontier sectors, 6% interest subvention for 5 years, 100% SGST reimbursement for 5 years, patent cost up to Rs 5 lakh - DRAFT ONLY; final 2026 text may differ",
+    "Invest Delhi agency and Delhi Udyog Mitra portal to administer the 2026 policy (press)"
+  ],
+  "unverifiable": [
+    "No notified state industrial/MSME incentive policy in force for Delhi on 17-10-2026: the Industrial Policy for Delhi 2010-2021 has lapsed; the Delhi Industrial Policy 2026 (10-year) was approved by the Cabinet on 14-10-2026 (ANI 14-10-2026, Tribune 15-10-2026) but no gazette notification or official text was found.",
+    "industries.delhi.gov.in / delhi.gov.in unreachable from this environment; no official document read. Re-check for the notification and operational guidelines in the coming weeks.",
+    "Delhi has historically given no SGST reimbursement, electricity duty exemption or per-unit power subsidy to MSMEs; none confirmed in the 2026 policy."
+  ],
+  "checked_on": "2026-10-17"
+}

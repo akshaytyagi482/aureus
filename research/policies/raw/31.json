@@ -1,0 +1,55 @@
+{
+  "state_code": "31",
+  "state": "Lakshadweep",
+  "status": "current",
+  "policy": {
+    "name": "Revised Guidelines for 25% Capital Investment Subsidy Scheme to Micro and Small Entrepreneurial Units (Department of Industries, UT of Lakshadweep)",
+    "order_no": null,
+    "date": null,
+    "valid_from": null,
+    "valid_to": null,
+    "source_url": "https://cdn.s3waas.gov.in/s358238e9ae2dd305d79c2ebc8c1883422/uploads/2019/08/2019082183.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [
+    {
+      "id": "lk-ciss-capital",
+      "name": "25% Capital Investment Subsidy Scheme (CISS) for Micro & Small units",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery",
+        "building"
+      ],
+      "window": {
+        "from": null,
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 625000
+      },
+      "clause": "Revised Guidelines para 8(ii)-(iii); definitions para 4(b),(d)",
+      "verified": true,
+      "notes": "25% of total enterprise cost (land, machinery and construction), up to Rs 6.25 lakh. Only NEW units with P&M + building investment below Rs 25 lakh; expansion/modernisation not eligible. Second-hand machinery is excluded; only tax-paid (GST) bills count, limited to UTL approved rates. Units that got subsidy from LDCL, LKVIB, Coir/Coconut Board, NABARD etc. for the same purpose are excluded. Annual application calls; the latest found is File No. LD-19/3/2024-IND-TECH-UT-LKS for FY 2023-24 (deadline 12-02-2024). Guidelines PDF uploaded Aug 2019; the document itself is undated."
+    }
+  ],
+  "other_benefits": [
+    "LANIDS 2018 (central; Lakshadweep and A&N): registration closed 31-03-2022, so expired for new units (30% P&M capital incentive up to Rs 5 crore, 3% working-capital interest, GST central-share reimbursement, transport incentive).",
+    "RAMP Strategic Investment Plan (2026) proposes capital-equipment subsidies for deep-sea fishing, coconut packaging and boat fabrication, plus transport subsidy. These are proposals, not notified schemes."
+  ],
+  "unverifiable": [
+    "No UT industrial policy exists (UT declared a 'No industrial Area'); the CISS guideline is the only UT MSME incentive found.",
+    "CISS has no stated validity. Calls for FY 2024-25 / 2025-26 could not be confirmed (lakshadweep.gov.in pages intermittently reset connections). The scheme is treated as current because it is an annual standing scheme with no end date.",
+    "No interest subsidy, SGST refund, electricity duty or power tariff incentive found for Lakshadweep."
+  ],
+  "checked_on": "2026-10-17"
+}

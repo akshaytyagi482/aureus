@@ -1,0 +1,193 @@
+{
+  "state_code": "18",
+  "state": "Assam",
+  "status": "current",
+  "policy": {
+    "name": "Industrial and Investment Policy of Assam, 2019 (IIPA 2019), extended from 01.09.2024 until further notification; Amendment 2023 (mega projects only)",
+    "order_no": "No.CI.137/2017/661; extension ECF No.506470/118 dated 11.09.2024; amendment eFile No.261091/37 dated 17.02.2023",
+    "date": "2019-07-30",
+    "valid_from": "2019-09-01",
+    "valid_to": null,
+    "source_url": "https://aiidc.assam.gov.in/sites/default/files/swf_utility_folder/departments/industries_com_oid_4/portlet/level_2/final_industrial_and_investment_policy_of_assam_2019.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "general": "Units in areas other than special parks",
+    "park": "Units in Plastic Park, Bamboo Park, Food Park, Tea Park and other parks developed by or in collaboration with State/Central Government"
+  },
+  "zone_lookup": "Not district-based. 'park' applies if the unit is located in a State/Central Government (or collaborative) Plastic/Bamboo/Food/Tea or other industrial park (para 13.1 table).",
+  "schemes": [
+    {
+      "id": "as-iipa2019-sgst-micro",
+      "name": "IIPA 2019 SGST reimbursement - Micro",
+      "categories": [
+        "micro"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2019-09-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "general": 2.0,
+          "park": 2.5
+        },
+        "years_by_zone": {
+          "general": 15,
+          "park": 15
+        }
+      },
+      "clause": "Para 13.1",
+      "verified": true,
+      "notes": "100% of SGST paid through debit in electronic cash ledger (s.49(1) Assam GST Act) for 15 years, ceiling = % of Fixed Capital Investment (P&M + land & building directly connected with manufacturing, para 12(e)). New units commencing commercial production during policy validity. Must continue production >=75% of preceding 5-yr average for next 5 years or refund. Eligibility Certificate required (apply within 6 months, para 15). Negative list Annexure I. Policy originally 5 years from 01.09.2019; extended from 01.09.2024 'until further notifications' (ECF No.506470/118, 11.09.2024)."
+    },
+    {
+      "id": "as-iipa2019-sgst-small",
+      "name": "IIPA 2019 SGST reimbursement - Small",
+      "categories": [
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2019-09-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "general": 1.5,
+          "park": 1.8
+        },
+        "years_by_zone": {
+          "general": 15,
+          "park": 15
+        }
+      },
+      "clause": "Para 13.1",
+      "verified": true,
+      "notes": "As for micro; ceiling 150% (general) / 180% (park) of FCI."
+    },
+    {
+      "id": "as-iipa2019-sgst-medium",
+      "name": "IIPA 2019 SGST reimbursement - Medium",
+      "categories": [
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2019-09-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "general": 1.5,
+          "park": 1.5
+        },
+        "years_by_zone": {
+          "general": 15,
+          "park": 15
+        }
+      },
+      "clause": "Para 13.1",
+      "verified": true,
+      "notes": "Medium & Large: 150% of FCI in both general and park locations."
+    },
+    {
+      "id": "as-iipa2019-power",
+      "name": "IIPA 2019 Power subsidy",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2019-09-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "per_unit": 2.0,
+        "years": 5,
+        "cap": 5000000
+      },
+      "clause": "Para 14.1",
+      "verified": true,
+      "notes": "Rs 2.00 per unit consumed for 5 years from commercial production; cap Rs 50 lakh PER ANNUM and not exceeding 100% of P&M investment (whichever less). APDCL connection only (no open access/captive). Aggregate of all para-14 incentives capped at 100% of FCI (excl. SGST)."
+    },
+    {
+      "id": "as-iipa2019-cert",
+      "name": "IIPA 2019 Technology transfer & quality certification (BIS/ISO/FSSAI/ZED etc.)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2019-09-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.75,
+        "cap": 1000000
+      },
+      "clause": "Para 14.4",
+      "verified": true,
+      "notes": "Fees for BIS/ISO/FSSAI/AGMARK/HALLMARK/SILK MARK/ZED certification and technology transfer/know-how: 75% up to Rs 10 lakh per unit."
+    },
+    {
+      "id": "as-iipa2019-wc-interest",
+      "name": "IIPA 2019 Interest subsidy on WORKING CAPITAL loan",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2019-09-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.02,
+        "annual_cap": null,
+        "years": 5
+      },
+      "clause": "Para 14.5",
+      "verified": true,
+      "notes": "2% on outstanding WORKING CAPITAL loan (not term loan) for 5 years, subject to a ceiling of Rs 50 lakh (text does not say per annum; treat as total) and not exceeding 100% of P&M investment. Bank/FI loans only."
+    }
+  ],
+  "other_benefits": [
+    "No state capital investment subsidy for MSMEs under IIPA 2019 (Annexure II only lists the central NEIDS 2017 capital subsidy); see central UNNATI 2024 (central-ne.json).",
+    "DG set subsidy: 50% of generating set cost up to Rs 20 lakh (para 14.2).",
+    "Stamp duty: 100% reimbursement up to Rs 25 lakh, not for agricultural land / urban manufacturing land (para 14.3).",
+    "SME exchange listing: 30% of public issue expenses up to Rs 5 lakh (para 14.6).",
+    "Effluent treatment plant: 50% of capital cost up to Rs 25 lakh (para 14.7).",
+    "Employment: one-time Rs 10,000 per local youth employed (para 14.10(a)).",
+    "Mega projects (>= Rs 100 crore, 200 jobs): customised package (Amendment 2023, para 14.9)."
+  ],
+  "unverifiable": [
+    "Could not confirm whether a successor Assam industrial policy has been notified in 2025-26; none found, and the 2024 extension is 'until further notifications'.",
+    "Operational guidelines (aiidc.assam.gov.in operational_guidelines_of_industrial_and_investment_policy_2019.pdf) not read; claim periods/forms not captured."
+  ],
+  "checked_on": "2026-10-17"
+}

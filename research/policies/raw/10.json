@@ -1,0 +1,85 @@
+{
+  "state_code": "10",
+  "state": "Bihar",
+  "status": "current",
+  "policy": {
+    "name": "Bihar Industrial Investment Promotion Policy, 2016 (as continued by the Bihar Industrial Investment Promotion Package 2025, BIIPP-2025)",
+    "order_no": "BIIPP 2016 Resolution, Department of Industries (number not printed in compendium); BIIPP-2025 approved by Cabinet 2025-08-26 (resolution number not obtained)",
+    "date": "2016-08-31",
+    "valid_from": "2016-09-01",
+    "valid_to": "2026-12-31",
+    "source_url": "https://betastate.bihar.gov.in/file_2/FileUpload/2026/May/08-May-2026/40/Publication/c2722fce-33ba-4144-8f4e-e7c69558a4a3.pdf",
+    "language": "en"
+  },
+  "zones": null,
+  "zone_lookup": "BIIPP-2025 Options 2 and 3 use Region A / Region B caps, but those apply only to Large/Mega/Super-Mega units (project cost above Rs 50 crore), per the MoFPI compendium (secondary). MSME incentives depend instead on the SECTOR tier: High Priority (BIIPP 2016 'Policy for High Priority Sectors', compendium p.62 onwards), Priority (BIIPP 2016 chapter 3, pp.7-27: food processing, tourism, small machine manufacturing, textiles, plastic & rubber, renewable energy, healthcare, leather, technical education, etc.), or Non-priority (all others; negative list in Annexure II, p.60).",
+  "schemes": [
+    {
+      "id": "br-biipp-interest",
+      "name": "Interest Subvention on term loan (BIIPP 2016 / BIIPP-2025 Option 1)",
+      "categories": ["micro", "small", "medium"],
+      "zones": null,
+      "asset_classes": ["plant_machinery"],
+      "window": {"from": "2016-09-01", "to": "2026-12-31"},
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": {"micro": 0.12, "small": 0.12, "medium": 0.10},
+        "annual_cap": null,
+        "years": 5,
+        "overall_cap_pct_project_cost_by_sector": {"high_priority": 0.50, "priority": 0.30, "non_priority": 0.15},
+        "overall_cap_rs_by_sector": {"high_priority": 400000000, "priority": 200000000, "non_priority": 200000000}
+      },
+      "clause": "BIIPP 2016 para 6.2 'Interest Subvention' (a)-(e), para 6.1(x); SC/ST para 6.4.2-6.4.3; women etc. para 6.5.2-6.5.3; BIIPP-2025 Option 1 caps (secondary)",
+      "verified": false,
+      "notes": "Partly verified. From the official BIIPP 2016 text: the subvention is 10% p.a., or the actual term-loan rate if lower, and 12% for micro and small units (para 6.2). It is paid in instalments linked to repayment and needs a term loan from a scheduled bank/RBI-SEBI-approved FI. Incentives end 5 years after commercial production starts (6.1(x)). The approved project cost caps land at 10% of other investment (6.1(vi)). Expansion/modernisation qualifies only with at least 50% capacity increase, on incremental project cost (6.1(xvii)). SC/ST, women, differently-abled, war widows, acid-attack victims and third gender: 13.8% for micro/small, 11.5% otherwise. The ORIGINAL 2016 caps were 30% (priority) / 15% (non-priority) of approved project cost, max Rs 10 crore (Rs 11.5 crore and 34.5%/17.25% for SC/ST/women). The caps in this record (50%/30%/15%; Rs 40/20/20 crore) are the BIIPP-2025 Option 1 values. They come ONLY from the MoFPI 'Compendium of state-specific schemes and incentives for food processing industry' (secondary) and the official BIIPP-2025 brochure (headline 'max up to 40 cr'). Rates are percentage points on the term loan, not a share of interest."
+    },
+    {
+      "id": "br-biipp-sgst",
+      "name": "Tax related incentive - reimbursement of net SGST (BIIPP 2016 as adapted to GST / BIIPP-2025 Option 1)",
+      "categories": ["micro", "small", "medium"],
+      "zones": null,
+      "asset_classes": [],
+      "window": {"from": "2016-09-01", "to": "2026-12-31"},
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "sgst_share_by_sector": {"high_priority": 1.0, "priority": 0.8, "non_priority": 0.8},
+        "rate_by_zone": {"high_priority": 1.0, "priority": 1.0, "non_priority": 0.7},
+        "years_by_zone": {"high_priority": 5, "priority": 5, "non_priority": 5},
+        "msme_additional_ceiling_2016": {"micro": 0.30, "small": 0.30}
+      },
+      "clause": "BIIPP 2016 para 6.2 'Tax related incentive' (a)-(e); BIIPP-2025 Option 1 table (secondary)",
+      "verified": false,
+      "notes": "The keys of rate_by_zone/years_by_zone are SECTOR tiers, not geographic zones. rate_by_zone is the overall ceiling as a share of approved project cost; sgst_share_by_sector is the share of net SGST reimbursed. Official 2016 text (pre-GST, VAT/CST/Entry Tax) gives: 80% reimbursement of net tax for 5 years; ceiling 70% (non-priority) / 100% (priority) of approved project cost; new MICRO and SMALL units get an ADDITIONAL 30% of project cost on the ceiling (6.2(b)). SC/ST/women etc. get 92% and ceilings of 80.5%/115% (6.4.4, 6.5.4). Para 6.2(e) said benefits would be 'suitably modified' under GST. The GST-era figures in this record (100% for High Priority, 80% otherwise; ceilings 100%/100%/70%) are from the MoFPI compendium (secondary). Whether the +30% micro/small top-up survives under BIIPP-2025 was not confirmed. Options 2 (100% net SGST up to 300% of project cost over 14 years) and 3 (capital subsidy up to 30%) apply only to projects above Rs 50 crore, so not to typical MSMEs."
+    },
+    {
+      "id": "br-biipp-ed",
+      "name": "Electricity duty reimbursement",
+      "categories": ["micro", "small", "medium"],
+      "zones": null,
+      "asset_classes": [],
+      "window": {"from": "2016-09-01", "to": "2026-12-31"},
+      "min_investment": 0,
+      "benefit": {"type": "electricity_duty_exemption", "years_by_zone": {"ALL": 5}},
+      "clause": "BIIPP 2016 para 6.2 'Tax related incentive' (f)",
+      "verified": true,
+      "notes": "100% reimbursement of electricity duty on power consumed, including captive power, for 5 years from commercial production. It counts within the overall tax-incentive ceiling. Not available on captive power exported to entities other than BSPHCL. New units only. Continuation under BIIPP-2025 is assumed (the package is a continuation of the 2016 policy), but this was not seen in the 2025 resolution."
+    }
+  ],
+  "other_benefits": [
+    "Stamp duty/registration: 100% reimbursement on first lease/sale/transfer of industrial land/shed for new units; no stamp duty on IDA/BIADA-allotted land (BIIPP 2016 para 6.2)",
+    "Land conversion fee: 100% reimbursement after commercial production (para 6.2)",
+    "BIIPP-2025 land: free land (Rs 1 token) only for Rs 100 crore+/1000 jobs, Rs 1000 crore+ or Fortune 500 units; others get 50% off BIADA land rate (official brochure)",
+    "BIIPP-2025 (brochure): export incentive for 14 years up to Rs 40 lakh/yr; skill development up to Rs 20,000/worker; employment incentive (textile up to Rs 5000/month/employee, others up to Rs 2000/month/employee via ESI/EPF reimbursement); environmental protection 25% up to Rs 1 crore; renewable energy usage 20% up to Rs 1 crore; patent registration and quality certification support (amounts not given)",
+    "Preferential purchase: 15% purchase preference for Bihar MSMEs within L1+15% (BIIPP 2016 ch.7)"
+  ],
+  "unverifiable": [
+    "The BIIPP-2025 resolution text (Cabinet 2025-08-26) was not obtained. state.bihar.gov.in returned TLS errors and HTTP 503. Only the 1-page official brochure (betastate.bihar.gov.in, Feb 2026) was read. MSME-specific caps under Option 1 come from the MoFPI compendium (secondary).",
+    "Validity: BIIPP-2025 was originally valid to 2026-03-31, then reportedly to 2026-06-30, then extended by Cabinet (around 2026-07-01) to 2026-12-31 or until the Industrial Investment Promotion Policy-2026 takes effect, whichever is earlier (indianmasterminds.com, patnapress.com; news only). The extension order was not seen. No notification of a new IIPP-2026 before 2026-10-17 was found. RE-CHECK after 2026-12-31.",
+    "The GST-era amendment of the BIIPP 2016 tax incentive (VAT to SGST) was not located in an official document.",
+    "Certification reimbursement: the BIIPP-2025 brochure lists 'Quality Certification Support' without rates or caps.",
+    "No per-unit power tariff subsidy or general MSME capital subsidy was found. Capital subsidy (Option 3) is for projects above Rs 50 crore only."
+  ],
+  "checked_on": "2026-10-17"
+}

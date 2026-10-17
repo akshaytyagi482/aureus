@@ -1,0 +1,22 @@
+{
+  "state_code": "04",
+  "state": "Chandigarh",
+  "status": "not_found",
+  "policy": {"name": "None in force with fiscal MSME incentives (Chandigarh Industrial Policy 2015 is facilitation-oriented; new Chandigarh Industrial Policy under drafting since July 2026)", "order_no": null, "date": null, "valid_from": null, "valid_to": null,
+             "source_url": null, "language": "en"},
+  "zones": null,
+  "zone_lookup": null,
+  "schemes": [],
+  "other_benefits": [
+    "Chandigarh Industrial Policy 2015: single-window/time-bound services, 20% procurement preference for local MSEs - no capital/interest/SGST/ED incentives reported (press, 2015)",
+    "Chandigarh Startup Policy 2025 notified 29-04-2025 (startups only; Rs 10 crore annual corpus) - not an MSME manufacturing incentive",
+    "Rental subsidy scheme and interest subvention scheme for MSMEs (MSME Financing Campaign) were 'finalised' and expected to be notified by 31-05-2026 (Tribune, 28-05-2026); no notification or figures found",
+    "Proposed in the new draft industrial policy (Tribune, 27-07-2026): partial reimbursement of certification/testing/export-licence costs for units spending up to Rs 10 lakh; possible concessions on electricity charges and statutory levies - not notified"
+  ],
+  "unverifiable": [
+    "No current UT Chandigarh industrial/MSME policy with computable fiscal incentives (capital subsidy, SGST, interest, electricity duty, power tariff, certification) could be found as of 17-10-2026.",
+    "chandigarh.gov.in and the UT Industries Department site were unreachable from this environment, so the status of the rental-subsidy and interest-subvention schemes (due by 31-05-2026) could not be checked against an official notification.",
+    "Chandigarh units may access central schemes only (e.g. PMEGP, CGTMSE, ZED, DGFT export interest subvention) - not covered here."
+  ],
+  "checked_on": "2026-10-17"
+}

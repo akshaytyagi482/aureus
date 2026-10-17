@@ -1,0 +1,171 @@
+{
+  "state_code": "NE",
+  "state": "North-Eastern Region (central scheme, DPIIT)",
+  "status": "current",
+  "policy": {
+    "name": "Uttar Poorva Transformative Industrialization Scheme (UNNATI), 2024",
+    "order_no": "DPIIT Notification F. No. P-44015/1/2023-DBA-II",
+    "date": "2024-03-09",
+    "valid_from": "2024-03-09",
+    "valid_to": "2034-03-08",
+    "source_url": "https://industries.sikkim.gov.in/circulardoc/circulardoc-tRi6TSdDL1Noyt943kVdfl8tBqaLwNvcbKaCQToe.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "A": "Industrially Advanced Districts: Assam - Kamrup Metropolitan, Kamrup, Jorhat, Nalbari, Nagaon; Meghalaya - East Khasi Hills, West Jaintia Hills, West Garo Hills; Sikkim - Gangtok, Pakyong",
+    "B": "Industrially Backward Districts: all other districts of the 8 NE states (all of Arunachal Pradesh, Manipur, Mizoram, Nagaland, Tripura; remaining districts of Assam, Meghalaya, Sikkim)"
+  },
+  "zone_lookup": "Annexure I 'State Wise List of Zone Bifurcation' (pages 52-55) of the UNNATI 2024 Handbook published by Dept of Industries & Commerce, Nagaland (based on NER Districts SDG Index; Steering Committee may amend). Notification definition (xv).",
+  "schemes": [
+    {
+      "id": "ne-unnati-cii",
+      "name": "UNNATI 2024 Capital Investment Incentive (CII)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-03-09",
+        "to": "2026-09-30"
+      },
+      "min_investment": 10000000,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate_by_zone": {
+          "A": 0.3,
+          "B": 0.5
+        },
+        "cap": null,
+        "cap_by_zone": {
+          "A": 50000000,
+          "B": 75000000
+        }
+      },
+      "clause": "Notification para 11.1.1 (b),(c); eligibility paras 8.2-8.5, 8.8",
+      "verified": true,
+      "notes": "New and substantial-expansion (>=25% addl P&M) units, manufacturing. Min P&M Rs 1 crore; for micro units min Rs 50 lakh and building construction cost counts as P&M (para 8.4-8.5). Cap Rs 10 crore where GST not applicable. Only P&M invoiced on/after 09.03.2024, new, arm's-length. One unit per applicant per state; once per scheme. Overall cap Rs 250 crore per unit across all components. Registration window was 09.03.2024-31.03.2026 (para 5), reported extended to 30.09.2026 (Sikkim Govt news 14-May-2026, quoting DPIIT); as of 2026-10-17 window is closed unless further extended - only already-registered units can claim. Commercial production within 4 years of registration. Negative list: Annexure II (tobacco/pan masala, refinery products, cement, plastic bags <20 micron, arms etc). Notification para 7.3(b): 'New Unit' = registered on/after 09.03.2024 but not later than 30.09.2026; para 5: registration till 31.03.2026; para 6: applications disposed by 30.09.2026.",
+      "conditions": [
+        "Registered under UNNATI before registration closed (31 Mar 2026; a 30 Sep 2026 extension is reported)"
+      ]
+    },
+    {
+      "id": "ne-unnati-cis-a",
+      "name": "UNNATI 2024 Capital Interest Subvention - Zone A",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "A"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-03-09",
+        "to": "2026-09-30"
+      },
+      "min_investment": 10000000,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.03,
+        "annual_cap": null,
+        "years": 7
+      },
+      "clause": "Notification para 11.1.2 (a)",
+      "verified": true,
+      "notes": "3 percentage points p.a. on term loan for eligible P&M, max 7 consecutive years; on disbursed amount; loan principal capped at Rs 250 crore; only Scheduled Commercial Banks / RBI-registered FIs; disbursement after commercial production. New and expanding units.",
+      "conditions": [
+        "Registered under UNNATI before registration closed (31 Mar 2026; a 30 Sep 2026 extension is reported)"
+      ]
+    },
+    {
+      "id": "ne-unnati-cis-b",
+      "name": "UNNATI 2024 Capital Interest Subvention - Zone B",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": [
+        "B"
+      ],
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-03-09",
+        "to": "2026-09-30"
+      },
+      "min_investment": 10000000,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": null,
+        "years": 7
+      },
+      "clause": "Notification para 11.1.2 (b)",
+      "verified": true,
+      "notes": "5 percentage points p.a., max 7 consecutive years; same conditions as Zone A.",
+      "conditions": [
+        "Registered under UNNATI before registration closed (31 Mar 2026; a 30 Sep 2026 extension is reported)"
+      ]
+    },
+    {
+      "id": "ne-unnati-msli",
+      "name": "UNNATI 2024 Manufacturing & Services Linked Incentive (MSLI)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery"
+      ],
+      "window": {
+        "from": "2024-03-09",
+        "to": "2026-09-30"
+      },
+      "min_investment": 10000000,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "A": 0.75,
+          "B": 1.0
+        },
+        "years_by_zone": {
+          "A": 10,
+          "B": 10
+        }
+      },
+      "clause": "Notification para 11.1.3",
+      "verified": true,
+      "notes": "NEW units only. Incentive = 100% of NET GST paid (gross GST cash paid less ITC; i.e. CGST+SGST/IGST, not SGST only), excluding GST on exports, for max 10 years from commercial production or till scheme validity (08.03.2034) whichever earlier. Total ceiling 75% (Zone A) / 100% (Zone B) of eligible P&M value; paid at max 1/10th of total eligible per FY with carry-forward.",
+      "conditions": [
+        "Registered under UNNATI before registration closed (31 Mar 2026; a 30 Sep 2026 extension is reported)"
+      ]
+    }
+  ],
+  "other_benefits": [],
+  "unverifiable": [
+    "unnati.dpiit.gov.in and dpiit.gov.in could not be read (connection reset / JS-only page). Notification text verified from the DPIIT notification copy F. No. P-44015/1/2023-DBA-II ('to be published in Gazette of India') hosted by Sikkim Commerce & Industries Dept (source_url); zone list from the Nagaland Govt UNNATI Handbook Annexure I (https://industry.nagaland.gov.in/wp-content/uploads/2025/06/Handbook-on-UNNATI_.pdf).",
+    "Registration-window extension to 30.09.2026 is only from a Sikkim Govt news item (sikkim.gov.in, 14-May-2026); no DPIIT amendment notification seen. Any extension beyond 30.09.2026 not found.",
+    "Zone list may have been amended by the Steering Committee after June 2025."
+  ],
+  "notes": "Central scheme covering the 8 NE states, GST state codes: 12 Arunachal Pradesh, 18 Assam, 14 Manipur, 17 Meghalaya, 15 Mizoram, 13 Nagaland, 11 Sikkim, 16 Tripura. Stacks with state policies subject to state rules on cumulative benefits.",
+  "checked_on": "2026-10-17",
+  "curation": [
+    "ne-unnati-cii: conditions added",
+    "ne-unnati-cis-a: conditions added",
+    "ne-unnati-cis-b: conditions added",
+    "ne-unnati-msli: conditions added"
+  ]
+}

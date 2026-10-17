@@ -169,13 +169,15 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
     eligible_cost = round(sum(a.value for a in qualifying), 2)
 
     estimate, basis_text, assumptions = 0.0, "", []
-    rate = _rate(benefit["rate"] if "rate" in benefit else _zone_value(benefit.get("rate_by_zone"), zone, profile.category),
-                 profile.category)
+    rate = _rate(benefit["rate"] if benefit.get("rate") is not None
+                 else _zone_value(benefit.get("rate_by_zone"), zone, profile.category), profile.category)
     years = benefit.get("years") or _zone_value(benefit.get("years_by_zone"), zone, profile.category)
     cap = _rate(benefit.get("cap") or benefit.get("cap_by_category") or _zone_value(benefit.get("cap_by_zone"), zone, profile.category),
                 profile.category)
     where = f" ({zone_label})" if zone and _needs_zone(scheme) else ""
 
+    if scheme.get("max_investment") and eligible_cost > scheme["max_investment"]:
+        reasons.append(f"Only for investment up to {inr(scheme['max_investment'], 0)}")
     if kind in ("capital_subsidy", "sgst_refund_ceiling"):
         if not qualifying:
             reasons.append("No qualifying capital purchases inside the scheme window")
@@ -199,13 +201,19 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
         estimate = eligible_cost * rate
         basis_text = (f"Up to {rate:.0%} of {inr(eligible_cost, 0)} capital investment{where}, refunded from SGST"
                       + (f" over {years} years" if years else ""))
+    elif kind == "electricity_duty_exemption" and years == 0 and not reasons:
+        reasons.append(f"No electricity duty exemption{where or ' for your unit'}")
+    elif kind == "electricity_duty_exemption" and years is None and not reasons:
+        missing.append("exemption period (the policy leaves it to a separate order)")
     elif kind == "electricity_duty_exemption" and years:
         if profile.monthly_electricity_duty:
             estimate = profile.monthly_electricity_duty * 12 * years
             basis_text = f"{inr(profile.monthly_electricity_duty, 0)}/month electricity duty waived for {years} years{where}"
         else:
             missing.append("monthly electricity duty (shown on your electricity bill)")
-    elif kind == "power_tariff_per_unit":
+    elif kind == "power_tariff_per_unit" and not years and not reasons:
+        missing.append("subsidy period (the policy leaves it to a separate order)")
+    elif kind == "power_tariff_per_unit" and years:
         if profile.monthly_power_units:
             per_unit = benefit.get("per_unit") or _zone_value(benefit.get("per_unit_by_zone"), zone, profile.category) or 0
             estimate = profile.monthly_power_units * 12 * years * per_unit
@@ -214,10 +222,18 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
             missing.append("monthly electricity consumption in units (kWh)")
     elif kind == "interest_subsidy" and rate is not None:
         if profile.term_loan_amount:
-            if benefit.get("rate_basis", "").startswith("share"):
+            basis = benefit.get("rate_basis", "")
+            if basis.startswith(("share", "fraction")):
                 estimate = profile.term_loan_amount * ASSUMED_LOAN_RATE * rate
                 assumptions.append(f"Assumed a {ASSUMED_LOAN_RATE:.0%} interest rate on the term loan")
                 what = f"{rate:.0%} of the interest on a {inr(profile.term_loan_amount, 0)} term loan"
+            elif benefit.get("floor"):
+                # The unit bears the first `floor` of interest; the subsidy covers the rest, up to `rate`.
+                points = min(rate, max(ASSUMED_LOAN_RATE - benefit["floor"], 0))
+                estimate = profile.term_loan_amount * points
+                assumptions.append(f"Assumed a {ASSUMED_LOAN_RATE:.0%} interest rate; you bear the first "
+                                   f"{benefit['floor']:.0%}")
+                what = f"{points:.0%} a year on a {inr(profile.term_loan_amount, 0)} term loan"
             else:
                 estimate = profile.term_loan_amount * rate
                 what = f"Up to {rate:.2%} a year on a {inr(profile.term_loan_amount, 0)} term loan".replace(".00%", "%")
@@ -244,8 +260,15 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
             estimate = cap
             basis_text = f"Up to {inr(cap, 0)} of certification costs reimbursed" + (f" ({rate:.0%})" if rate else "")
 
+    pct_cap = benefit.get("total_cap_pct_of_efci")
+    if pct_cap:
+        # Some policies cap a benefit at a share of the unit's whole capital investment.
+        total_capital = sum(a.value for a in assets if start <= a.invoice_date <= end)
+        pct_limit = pct_cap * total_capital
+        cap = min(cap, pct_limit) if cap else pct_limit
+        assumptions.append(f"Capped at {pct_cap:.0%} of the capital investment found in your books")
     capped = False
-    if cap and estimate > cap:
+    if cap is not None and estimate > cap:
         estimate, capped = float(cap), True
     if not profile.has_udyam:
         missing.append("Udyam registration number (required to apply)")

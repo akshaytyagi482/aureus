@@ -1,0 +1,264 @@
+{
+  "state_code": "34",
+  "state": "Puducherry",
+  "status": "current",
+  "policy": {
+    "name": "Puducherry New Industrial Policy 2016, implemented through schemes 'Motivation of Entrepreneurs to Start Industries and Fiscal Assistance to capital intensive industries' (G.O. Ms. No. 2/Ind.&Com./A6/2017) and '... Various incentives' (G.O. Ms. No. 4/Ind.&Com./A6/2017)",
+    "order_no": "G.O. Ms. No. 7/2016/Ind.A dated 04-10-2016 (policy); G.O. Ms. No. 2/Ind.&Com./A6/2017 and G.O. Ms. No. 4/Ind.&Com./A6/2017 dated 02-05-2017 (schemes, Gazette Part II No. 33 dated 06-06-2017)",
+    "date": "2016-10-04",
+    "valid_from": "2017-04-01",
+    "valid_to": null,
+    "source_url": "https://styandptg.py.gov.in/2017/June/EXTRAORDINARYPART-II/1/33-PART-II%20No%2033%20dated%206-6-2017.pdf",
+    "language": "en"
+  },
+  "zones": {
+    "PY_KKL": "Puducherry and Karaikal regions",
+    "MAHE_YANAM": "Mahe and Yanam regions"
+  },
+  "zone_lookup": "By region of the UT where the unit is located (stated in each clause; no annexure).",
+  "schemes": [
+    {
+      "id": "py-ip2016-capital-ms",
+      "name": "Capital Investment Subsidy - Micro & Small (new and existing industries)",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment"
+      ],
+      "window": {
+        "from": "2017-04-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.4,
+        "cap": 4000000
+      },
+      "clause": "G.O. Ms. No. 2/2017 para 3.1(a); Industrial Policy 2016 'Incentives' item 1",
+      "verified": true,
+      "notes": "40% of investment on land, building, plant & machinery (P&M incl. electrification, testing equipment, tools, jigs, moulds). Excludes transport/erection, capitalised interest, pre-operative, vehicles, office equipment; no second-hand machinery or previously used buildings. Investments on/after 01-04-2017. Apply within 1 year of commercial production. >=60% local (UT) employment required. No double subsidy for same investment. Further investments after first claim eligible up to ceiling. Still being sanctioned (e.g. G.O.Rt.No.15/DI&C dt 09-01-2025, Rs 40 lakh to a unit).",
+      "exclusive_group": "py-capital"
+    },
+    {
+      "id": "py-ip2016-capital-med",
+      "name": "Capital Investment Subsidy - Medium (and Large)",
+      "categories": [
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment"
+      ],
+      "window": {
+        "from": "2017-04-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.35,
+        "cap": 3500000
+      },
+      "clause": "G.O. Ms. No. 2/2017 para 3.1(b)",
+      "verified": true,
+      "notes": "Same conditions as micro/small.",
+      "exclusive_group": "py-capital"
+    },
+    {
+      "id": "py-ip2016-capital-wscst",
+      "name": "Capital Investment Subsidy - Women / SC / ST entrepreneurs",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment"
+      ],
+      "window": {
+        "from": "2017-04-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.45,
+        "cap": 7500000
+      },
+      "clause": "G.O. Ms. No. 2/2017 para 3.1(c), 3.1.1-3.1.2",
+      "verified": true,
+      "notes": "Unit must be fully owned by the category (all partners/shareholders/directors). In lieu of (not in addition to) the general rate.",
+      "conditions": [
+        "Unit wholly owned by women or SC/ST entrepreneurs"
+      ],
+      "exclusive_group": "py-capital"
+    },
+    {
+      "id": "py-ip2016-pollution",
+      "name": "Subsidy to Pollution Control Equipment",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2017-04-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.25,
+        "cap": 500000
+      },
+      "clause": "G.O. Ms. No. 2/2017 para 3.3",
+      "verified": true,
+      "notes": "Requires consent to operate from Pondicherry Pollution Control Committee."
+    },
+    {
+      "id": "py-ip2016-interest",
+      "name": "Interest Subsidy (new industries)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2017-04-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.25,
+        "annual_cap": 500000,
+        "years": 5,
+        "rate_basis": "share_of_interest"
+      },
+      "clause": "G.O. Ms. No. 4/2017 para 2.1; Industrial Policy 2016 item 3",
+      "verified": true,
+      "notes": "25% OF THE ANNUAL INTEREST AMOUNT PAID (not percentage points) on loans for fixed assets and working capital, from date of commercial production; max Rs 5 lakh/yr; 5 years Puducherry & Karaikal, 7 years Mahe & Yanam. Needs No Due Certificate; paid through FI."
+    },
+    {
+      "id": "py-ip2016-sgst",
+      "name": "Net VAT/SGST reimbursement (new industries)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2017-04-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "sgst_refund_ceiling",
+        "rate_by_zone": {
+          "PY_KKL": null,
+          "MAHE_YANAM": null
+        },
+        "years_by_zone": {
+          "PY_KKL": 5,
+          "MAHE_YANAM": 7
+        }
+      },
+      "clause": "Industrial Policy 2016, 'Incentives' item 2 (p.37)",
+      "verified": false,
+      "notes": "Policy text: 100% of net VAT/SGST paid reimbursed for micro & small, 75% for medium, 5 yrs (Puducherry/Karaikal) / 7 yrs (Mahe/Yanam). rate_by_zone is null because the policy states NO ceiling linked to fixed capital investment (share of net SGST reimbursed: micro/small 1.0, medium 0.75). Figure is in the policy document (copy hosted on investindia.gov.in), but no implementing G.O./scheme was found (the 2017 implementing G.O.s 2, 3, 4 of 2017 omit it), so operational status unconfirmed."
+    },
+    {
+      "id": "py-ip2016-power",
+      "name": "Power Subsidy (fixed power cost reimbursement)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2017-04-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "per_unit": 0.5,
+        "years": 5,
+        "cap": null
+      },
+      "clause": "Industrial Policy 2016, 'Incentives' item 6 (p.38)",
+      "verified": false,
+      "notes": "Rs 0.50 per unit for 5 years (Puducherry/Karaikal) and 7 years (Mahe/Yanam). In policy document only; no implementing G.O. found (not in G.O. Ms. No. 2 or 4 of 2017) - operational status unconfirmed."
+    },
+    {
+      "id": "py-ip2016-quality",
+      "name": "Subsidy for Quality Certification",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2017-04-01",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.5,
+        "cap": 200000
+      },
+      "clause": "G.O. Ms. No. 4/2017 para 2.4",
+      "verified": true,
+      "notes": "Up to 3 certifications, 50% of cost, ceiling Rs 2 lakh per unit; fees of QCI-approved certification agency only; renewals not eligible."
+    }
+  ],
+  "other_benefits": [
+    "Generator subsidy: 50% of cost, ceiling Rs 5 lakh per unit (G.O. Ms. No. 4/2017 para 2.2).",
+    "Employment incentive: 20% of wages of PF-covered workers up to Rs 5 lakh/yr for 5 yrs (7 yrs Mahe/Yanam), min 10 direct employees & 60% local (para 2.3).",
+    "Stamp duty: 100% reimbursement on purchase/lease/mortgage/hypothecation of land/shed/building, max Rs 25 lakh per unit (G.O. Ms. No. 5/Ind.&Com./T-8/2025-26 dt 11-08-2025, Gazette Part II No. 65 dt 18-08-2025).",
+    "Technology acquisition: 50% grant up to Rs 10 lakh (G.O. 2/2017 para 3.4).",
+    "IPR: 50% up to Rs 2 lakh domestic / Rs 5 lakh international patent (G.O. 4/2017 para 2.5).",
+    "Market development (international trade fair): 50% up to Rs 5 lakh (para 2.6).",
+    "Energy/water audit: 50% up to Rs 25,000 (para 2.7).",
+    "Infrastructure subsidy for IT/ITES buildings: 30% up to Rs 1 crore (G.O. 2/2017 para 3.2)."
+  ],
+  "unverifiable": [
+    "Industrial Policy 2016 has no expiry date ('Validity of the Policy' section only provides for periodic review); still referenced as operative in Jan-2025 subsidy sanctions and the Aug-2025 stamp duty gazette. No newer Puducherry industrial policy found as of 17-Oct-2026.",
+    "SGST reimbursement and Rs 0.50/unit power subsidy appear only in the policy document; implementing G.O.s not found (industry.py.gov.in G.O. page unreachable from this environment).",
+    "No electricity duty exemption found.",
+    "Policy document read from copy on static.investindia.gov.in (Invest India, GoI); scheme G.O.s read from official Puducherry Gazette (styandptg.py.gov.in)."
+  ],
+  "checked_on": "2026-10-17",
+  "curation": [
+    "py-ip2016-capital-ms: either/or group 'py-capital'",
+    "py-ip2016-capital-med: either/or group 'py-capital'",
+    "py-ip2016-capital-wscst: conditions added",
+    "py-ip2016-capital-wscst: either/or group 'py-capital'",
+    "py-ip2016-interest: rate is a share of the interest bill"
+  ]
+}

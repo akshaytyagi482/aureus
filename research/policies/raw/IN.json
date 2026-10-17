@@ -1,0 +1,150 @@
+{
+  "state_code": "IN",
+  "state": "India (Central Government schemes)",
+  "status": "current",
+  "policy": {
+    "name": "Composite: Government of India schemes giving manufacturing MSMEs a computable cash benefit (Ministry of MSME + Department of Commerce/DGFT Export Promotion Mission). Each scheme's own source is given in its notes.",
+    "order_no": null,
+    "date": null,
+    "valid_from": null,
+    "valid_to": null,
+    "source_url": "https://dcmsme.gov.in/CLCS_TUS_Scheme/ZED_Scheme/Scheme_Guidelines.aspx",
+    "language": "en"
+  },
+  "zones": {
+    "pmegp_urban_general": "PMEGP: general-category applicant, urban area (area under a Municipality)",
+    "pmegp_rural_general": "PMEGP: general-category applicant, rural area (area under Panchayati Raj institutions)",
+    "pmegp_urban_special": "PMEGP: special-category applicant (SC, ST, OBC, women, transgender, physically disabled, NER, aspirational district, border district), urban area",
+    "pmegp_rural_special": "PMEGP: special-category applicant, rural area"
+  },
+  "zone_lookup": "These zones apply only to PMEGP. Rural means an area under Panchayati Raj institutions and urban means an area under a Municipality (PIB release 30 May 2022, PRID 1829437). Special category depends on the applicant's social category or the district (NER, aspirational, border). The ZED additional subsidy for NER, Himalayan, LWE, island or aspirational-district units is recorded in that scheme's notes.",
+  "schemes": [
+    {
+      "id": "in-zed-certification",
+      "name": "MSME Sustainable (ZED) Certification Scheme: subsidy on the cost of ZED certification",
+      "categories": ["micro", "small", "medium"],
+      "zones": null,
+      "asset_classes": [],
+      "window": {"from": "2022-04-01", "to": "2026-03-31"},
+      "min_investment": 0,
+      "benefit": {
+        "type": "certification_topup",
+        "rate": {"micro": 0.8, "small": 0.6, "medium": 0.5},
+        "cap": null,
+        "fee_by_level": {"bronze": 8000, "silver": 32000, "gold": 72000},
+        "surveillance_fee_by_level": {"bronze": 2000, "silver": 10000, "gold": 20000},
+        "surveillance_rate": {"bronze": 1.0, "silver_gold": {"micro": 0.8, "small": 0.6, "medium": 0.5}},
+        "women_owned_rate": 1.0,
+        "joining_reward": 10000
+      },
+      "clause": "Guidelines 2022 cl. 3.4.4 (cost), 3.4.5 (subsidy), 3.4.7 (surveillance); Addendum-1 dated Nov 2023 (women 100%, w.e.f. 11.11.2023); Addendum-2 dated 17.09.2024 (revised fees and surveillance, w.e.f. 18.09.2024)",
+      "verified": true,
+      "notes": "CHANGED from the figures we had before: Addendum-2 (No. 4/1/CLCS-TUS/PMAC/ZED-C/2020-21-Part(1), 17.09.2024, w.e.f. 18.09.2024) cut certification fees to Bronze Rs 8,000, Silver Rs 32,000 and Gold Rs 72,000. These fees include verification, assessment, certification, monitoring and taxes. The old fees of 10,000/40,000/90,000 are superseded. Bronze now also has a surveillance assessment at Rs 2,000 with 100% subsidy, and the Rs 2,000 balance of the joining reward covers it. Silver and Gold have 2 surveillance assessments, at Rs 10,000 and Rs 20,000, subsidised at 80/60/50%. The subsidy is 80/60/50% for micro/small/medium. Women-owned MSMEs get 100% (Addendum-1, w.e.f. 11.11.2023), and the extra 10% and 5% do not apply to them. Other units get an extra 10% if SC/ST-owned or located in NER, Himalayan, LWE, island territory or aspirational district, plus an extra 5% if they are part of SFURTI or MSE-CDP. The joining reward of Rs 10,000 is available once after the ZED Pledge and is valid for 1 year. The certificate is valid for 3 years. VALIDITY: Guidelines 2022 say 'valid till March 31, 2026'. On 12.03.2026 PIB said the scheme evaluation was 'under process'. The PIB Budget 2026-27 note and Ministry statements reported in Aug 2026 describe ZED as ongoing, but no official extension notice beyond 31.03.2026 was found. Sources: https://dcmsme.gov.in/Guidelines_MSME%20Sustainable(ZED)%20Certification%20Scheme.pdf ; https://dcmsme.gov.in/Addendum_1_Subsidy%20for%20Women%20Owned%20MSMEs%20under%20ZED.pdf ; https://dcmsme.gov.in/Addendum_2_Guidelines%20ZED%202.0.pdf . The dcmsme guideline web page still shows the OLD fees and is stale."
+    },
+    {
+      "id": "in-zed-testing-cert",
+      "name": "ZED scheme: financial assistance for testing, management-system or product certification (NABL/NABCB/BIS)",
+      "categories": ["micro", "small", "medium"],
+      "zones": null,
+      "asset_classes": [],
+      "window": {"from": "2022-04-01", "to": "2026-03-31"},
+      "min_investment": 0,
+      "benefit": {"type": "certification_topup", "rate": 0.75, "cap": 50000},
+      "clause": "Guidelines 2022, 'Financial Assistance in Testing/System/Product Certification' (pp. 12, 14, 16), as amended by Addendum-2 item 4 (17.09.2024)",
+      "verified": true,
+      "notes": "The unit must hold ZED certification at Bronze level or higher. The subsidy is 75% of the cost, up to a maximum of Rs 50,000. Testing must be at a NABL-accredited lab, system certification through a NABCB-accredited body, and product certification through BIS. Certifications from government agencies also qualify. Since 18.09.2024 the subsidy applies to multiple certifications obtained after the ZED registration date, prospectively only; earlier it covered one per level. The guidelines do not say whether the Rs 50,000 cap is per certification or per level; read as per certification. Scheme validity is the same caveat as in-zed-certification."
+    },
+    {
+      "id": "in-zed-zero-effect-tech",
+      "name": "ZED scheme: technology upgradation support for zero-effect solutions (pollution control/cleaner technology)",
+      "categories": ["micro", "small", "medium"],
+      "zones": null,
+      "asset_classes": ["pollution_control"],
+      "window": {"from": "2022-04-01", "to": "2026-03-31"},
+      "min_investment": 0,
+      "benefit": {"type": "capital_subsidy", "basis": "eligible_cost", "rate": {"micro": 0.8, "small": 0.6, "medium": 0.5}, "cap": 300000},
+      "clause": "Guidelines 2022 cl. 3.5 Handholding through Consultancy (p. 17)",
+      "verified": true,
+      "notes": "Open only to units with at least Bronze certification. The overall provision is up to Rs 5 lakh per MSME: up to Rs 2 lakh for handholding by consultants and up to Rs 3 lakh for technology upgradation towards zero-effect solutions, pollution control or cleaner technology. Both are subsidised at 80/60/50%, plus the extra 10% for women/SC/ST/NER/aspirational units and 5% for SFURTI/MSE-CDP units. The text does not say whether Rs 3 lakh caps the eligible cost or the subsidy; it is treated here as a cap on the subsidy. The amount needs the consultant's recommendation, MSME-DI verification and PMAC approval, so it is discretionary and the app should show it as 'up to'. Validity caveat as in-zed-certification."
+    },
+    {
+      "id": "in-pmegp-margin-money",
+      "name": "Prime Minister's Employment Generation Programme (PMEGP): margin money subsidy for new micro enterprises",
+      "categories": ["micro"],
+      "zones": ["pmegp_urban_general", "pmegp_rural_general", "pmegp_urban_special", "pmegp_rural_special"],
+      "asset_classes": ["plant_machinery"],
+      "window": {"from": "2021-04-01", "to": "2026-03-31"},
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate_by_zone": {"pmegp_urban_general": 0.15, "pmegp_rural_general": 0.25, "pmegp_urban_special": 0.25, "pmegp_rural_special": 0.35},
+        "cap": null,
+        "cap_by_zone": {"pmegp_urban_general": 750000, "pmegp_rural_general": 1250000, "pmegp_urban_special": 1250000, "pmegp_rural_special": 1750000}
+      },
+      "clause": "PIB release 30.05.2022 (PRID 1829437), CCEA approval of continuation for 2021-22 to 2025-26",
+      "verified": true,
+      "notes": "Only for NEW micro enterprises in the non-farm sector, financed by a bank loan; the subsidy is on project cost. The maximum project cost is Rs 50 lakh for manufacturing (Rs 20 lakh for service). The cap_by_zone values are NOT stated in the source: each is the rate times the Rs 50 lakh maximum project cost. Special category covers SC, ST, OBC, women, transgender, physically disabled, NER, aspirational and border district applicants. The subsidy is not for existing or expanding units. A second-loan upgrade component exists for existing PMEGP units but was not verified because the KVIC guideline PDF returned 502. STATUS: the approved period ended 31.03.2026 and no 16th Finance Commission continuation order was found. However, the Ministry of MSME's Lok Sabha answer to Unstarred Q.725 of 23.07.2026 describes PMEGP as a scheme 'being administered', in the present tense, and the PIB Budget 2026-27 note lists it, so treat it as operating but with continuation not formally documented. Sources: https://www.pib.gov.in/PressReleasePage.aspx?PRID=1829437 ; https://sansad.in/getFile/lsapps/loksabhaquestions/annex/188/AU725_tWW6w1.pdf"
+    },
+    {
+      "id": "in-sclcss-scst",
+      "name": "Special Credit Linked Capital Subsidy Scheme (SCLCSS), National SC-ST Hub: SC/ST-owned MSEs",
+      "categories": ["micro", "small"],
+      "zones": null,
+      "asset_classes": ["plant_machinery"],
+      "window": {"from": "2016-10-18", "to": "2026-03-31"},
+      "min_investment": 0,
+      "benefit": {"type": "capital_subsidy", "basis": "eligible_cost", "rate": 0.25, "cap": 2500000},
+      "clause": "Lok Sabha Unstarred Q.725 answered 23.07.2026 by MoS (MSME), part (a)",
+      "verified": true,
+      "notes": "Only for SC/ST-owned micro and small enterprises, new or existing, manufacturing or service. The subsidy is 25% of the cost of new plant, machinery and equipment, up to Rs 25 lakh, according to the Ministry's answer to Lok Sabha Q.725 (23.07.2026). Purchases must be financed by institutional credit; this comes from bank pages and was not seen in a primary document. Window: the start date of 2016-10-18 (launch of the National SC-ST Hub) and the end date of 31.03.2026 come from the Bank of India scheme page, not a primary source. The Lok Sabha answer of July 2026 describes the scheme in the present tense, but no extension order was found. Source: https://sansad.in/getFile/lsapps/loksabhaquestions/annex/188/AU725_tWW6w1.pdf"
+    },
+    {
+      "id": "in-epm-export-credit-is",
+      "name": "Export Promotion Mission - Niryat Protsahan: Interest Subvention for Pre- and Post-Shipment Export Credit",
+      "categories": ["micro", "small", "medium"],
+      "zones": null,
+      "asset_classes": [],
+      "window": {"from": "2026-01-02", "to": "2031-03-31"},
+      "min_investment": 0,
+      "benefit": {"type": "interest_subsidy", "rate": 0.0275, "annual_cap": 5000000, "years": null},
+      "clause": "DGFT Trade Notice 20/2025-26 dated 02.01.2026, para 2 and Appendix-A para 2; amended by TN 22/2025-26, 33/2025-26, 01/2026-27, 03/2026-27, 13/2026-27, 17/2026-27",
+      "verified": true,
+      "notes": "This covers WORKING-CAPITAL export credit (pre-shipment and post-shipment rupee credit), not term loans. The subvention is 2.75% a year, up to Rs 50 lakh per MSME exporter (per IEC) per financial year. The bank passes it on upfront. It is open to MSME manufacturer and merchant exporters with an IEC and a Udyam registration, only for exports under the notified HSN 6-digit positive list (Annexure-II of TN 20/2025-26). Chapter 72 (steel) lines were added for micro and small units by TN 01/2026-27. The facility must be sanctioned on or after 02.01.2026. From FY 2026-27 a UIN must be generated within 15 days of disbursal (TN 03/2026-27 and 13/2026-27). Deemed exports and accounts that turn NPA are excluded. It runs as a pilot. The implementing agency moved from RBI to EXIM Bank w.e.f. 01.04.2026 (TN 17/2026-27, 07.08.2026). An additional incentive for new geographies is promised but not yet notified. The window end of 2031-03-31 is the EPM period (FY 2025-26 to 2030-31) from the PIB backgrounder of 24 Feb 2026. A related intervention gives the same 2.75% on export factoring cost, up to Rs 50 lakh per IEC. Sources: https://content.dgft.gov.in/Website/dgftprod/fcb26df9-f496-4c26-a4b5-0aaa924d1f39/Trade%20Notice-Interest%20Subvention-signed.pdf ; https://content.dgft.gov.in/Website/dgftprod/0ba8138f-3784-4cdb-81b1-8ec1a1ff738d/TN%2017-2026-27%20%20Interest%20subvention.pdf ; https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/feb/doc2026224799801.pdf"
+    },
+    {
+      "id": "in-epm-trace-certification",
+      "name": "Export Promotion Mission - Niryat Disha: TRACE (Trade Regulations, Accreditation and Compliance Enablement) reimbursement of export certification and testing costs",
+      "categories": ["micro", "small", "medium"],
+      "zones": null,
+      "asset_classes": [],
+      "window": {"from": "2026-02-20", "to": "2031-03-31"},
+      "min_investment": 0,
+      "benefit": {"type": "certification_topup", "rate": {"micro": 0.95, "small": 0.95, "medium": 0.8}, "cap": 5000000},
+      "clause": "DGFT Trade Notice 26/2025-26 dated 20.02.2026 (TRACE guidelines), as amended by Trade Notice 09/2026-27 dated 01.07.2026 (Operational Guidelines para 2(b), 2(c))",
+      "verified": true,
+      "notes": "Open to MSME exporters with an IEC and Udyam registration, for international testing, inspection and certification on the notified list (Annexure-I of TN 09/2026-27, e.g. CE, FDA, ISO, SABER/SASO, BRCGS, FSSC 22000, HACCP, SMETA). Under the current rule (TN 09/2026-27) micro and small units get up to 95%, and medium units up to 80%, of the actual cost net of taxes, duties and cess, or the notified per-item ceiling, whichever is lower. The cap is Rs 50 lakh per IEC per FY, with higher amounts possible case by case. Before 01.07.2026 the rates were 60% (Positive List) and 75% (Priority List), capped at Rs 25 lakh; the PIB Feb 2026 backgrounder still shows these old figures. Payment comes in 2 parts: 50% after certification and 50% after exports linked to the certification. The second half lapses, and the first may be recovered, if exports are not shown within 2 years. Only costs incurred on or after the start of the scheme count. The per-certification ceilings are in the annexure and were not transcribed. Sources: https://content.dgft.gov.in/Website/dgftprod/0be8afe2-5844-4585-b7c3-44ba93a483c9/TRACE%20Guidelines%2020Feb2026.pdf ; https://content.dgft.gov.in/Website/dgftprod/f79c64e4-4aa0-461d-82a2-833d33444641/Trade%20Notice%20No.09%202026-%20Amendment%20to%20TRACE%20Guidelines.pdf"
+    }
+  ],
+  "other_benefits": [
+    "MSME Competitive (LEAN) Scheme: Basic level free. Intermediate level costs up to Rs 1.2 lakh + taxes and Advanced level up to Rs 2.4 lakh + taxes, with GoI paying 90% (up to Rs 1,08,000 / Rs 2,16,000). An extra 5% goes to SFURTI, women, SC/ST and NER units, and another 5% to units joining via an OEM or industry association. Source: Lean Guidelines 07.10.2022, sec. 9.0. Same 31.03.2026 validity caveat as ZED.",
+    "PMFME (Ministry of Food Processing Industries): 35% credit-linked capital subsidy for micro FOOD-PROCESSING enterprises, cited in Lok Sabha Q.725 of 23.07.2026. Sector-specific; the per-unit cap (commonly Rs 10 lakh) was not verified.",
+    "CGTMSE credit guarantee: ceiling raised to Rs 10 crore (PIB Budget 2026-27 note). This is a guarantee, not a cash benefit.",
+    "Budget 2025-26 Mutual Credit Guarantee Scheme for MSMEs (equipment loans): a guarantee, not cash, and not verified from a primary document.",
+    "Budget 2026-27 SME Growth Fund of Rs 10,000 crore (equity through an AIF, reported Cabinet-approved Oct 2026) and Rs 2,000 crore top-up to the Self-Reliant India Fund: equity, not a computable subsidy.",
+    "EPM collateral support for export credit: CGTMSE guarantee of 85% (micro/small) or 65% (medium) up to Rs 10 crore per exporter. A guarantee, not cash.",
+    "MSE-CDP: grants for cluster common facilities and infrastructure through SPVs or state agencies, with no individual-unit cash benefit, so excluded.",
+    "PM Vishwakarma: for artisans, not factories, so excluded per instructions.",
+    "EXPIRED - Credit Linked Capital Subsidy Scheme (CLCS-TUS; 15% on up to Rs 1 crore of P&M): in operation only until 31.03.2020. MoMSME circular of 12.08.2021 says no new applications (reported by KNN India, 17.08.2021). Some 2026 web guides still wrongly show it as active.",
+    "EXPIRED - Interest Subvention Scheme for Incremental Credit to MSMEs (2%): ended 31.03.2021 (same MoMSME circular, 12.08.2021).",
+    "EXPIRED/REPLACED - Interest Equalisation Scheme for pre/post-shipment credit: ended 31.12.2024 and replaced by the EPM interest subvention (in-epm-export-credit-is)."
+  ],
+  "unverifiable": [
+    "ZED, LEAN and the wider MSME Champions Scheme: guidelines say they are valid until 31.03.2026. PIB of 12.03.2026 says evaluation is under process. No official order extending them into the 16th Finance Commission cycle (2026-31) was found, though Ministry statements in Aug 2026 describe ZED as ongoing (seen only in news reports, e.g. DD India, 04.08.2026).",
+    "PMEGP: no continuation order beyond 2025-26 was found; operation in 2026-27 is inferred from the Lok Sabha answer of 23.07.2026. The KVIC PMEGP Guidelines 2022 PDF (kviconline.gov.in) returned HTTP 502, so the second-loan/upgrade component and the beneficiary-contribution rules were not verified.",
+    "SCLCSS: the validity end date (31.03.2026) and the 'financed by institutional credit' condition come from bank pages; the scsthub.in FAQ returned 503.",
+    "ZED testing and certification subsidy: the guidelines do not say whether the Rs 50,000 cap applies per certification or per certification level.",
+    "No 2025-26 or 2026-27 Union Budget measure was found that gives MSMEs a capital-investment cash subsidy; the announced measures are guarantees and equity funds."
+  ],
+  "checked_on": "2026-10-17"
+}
