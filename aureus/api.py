@@ -526,9 +526,9 @@ def meta():
     return {
         "states": [{"code": c, "name": n} for c, n in sorted(gstin_mod.STATES.items(), key=lambda kv: kv[1])],
         "asset_classes": [{"id": k, "label": v["label"]} for k, v in grid["asset_classes"].items()],
-        "zones": [{"id": k, "label": v} for k, v in grid["zones"].items() if not k.startswith("_")],
-        "zone_source": grid["zones"]["_source"],
-        "zone_source_url": next(x["source_url"] for x in grid["schemes"] if x["id"] == "mh-miisp-2025-ips"),
+        "zones_by_state": {code: {"zones": [{"id": k, "label": v} for k, v in z["zones"].items()],
+                                  "lookup": z.get("lookup"), "source": z.get("source"), "source_url": z.get("source_url")}
+                           for code, z in grid.get("zones_by_state", {}).items()},
         "schemes": [{"id": s["id"], "name": s["name"], "states": s["states"], "verified": s["verified"]} for s in grid["schemes"]],
         "notice_types": [{"id": k, "title": v["title"]} for k, v in notice.NOTICE_TYPES.items()],
         "purposes": [{"id": k, **v} for k, v in services.PURPOSES.items()],

@@ -63,7 +63,34 @@ class CapitalAsset:
                 "hsn_description": hsn_mod.describe(self.hsn)["description"] if self.hsn else None}
 
 
-ZONE_DEPENDENT = {"sgst_refund_ceiling", "electricity_duty_exemption"}
+ZONE_MAPS = ("rate_by_zone", "years_by_zone", "cap_by_zone")
+
+
+def _zone_value(mapping: dict | None, zone: str | None):
+    """Zone-keyed lookup; the key 'ALL' applies statewide."""
+    if not mapping:
+        return None
+    if zone in mapping:
+        return mapping[zone]
+    return mapping.get("ALL")
+
+
+def _needs_zone(scheme: dict) -> bool:
+    if scheme.get("zones"):
+        return True
+    return any(m and "ALL" not in m for m in (scheme["benefit"].get(k) for k in ZONE_MAPS))
+
+
+def zone_name(state_code: str, zone: str | None) -> str:
+    if not zone:
+        return ""
+    label = rule_grid().get("zones_by_state", {}).get(state_code, {}).get("zones", {}).get(zone)
+    return f"{zone}: {label}" if label and label != zone else f"Zone {zone}"
+
+
+def _lookup_hint(state_code: str) -> str:
+    hint = rule_grid().get("zones_by_state", {}).get(state_code, {}).get("lookup")
+    return f" ({hint})" if hint else ""
 
 
 @dataclass
@@ -102,8 +129,12 @@ def _rate(rate, category: str | None):
     return rate
 
 
-def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset]) -> dict:
+def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], today: date | None = None) -> dict:
     reasons, missing = [], []
+    today = today or date.today()
+    window_end = date.fromisoformat(scheme["window"]["to"])
+    if window_end < today and not scheme.get("continuing"):
+        reasons.append(f"Scheme period ended on {window_end:%d %b %Y}")
     states = scheme["states"]
     if "*" not in states and profile.state_code not in states:
         reasons.append("Unit is not located in an eligible state")
@@ -117,12 +148,12 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset]) 
     benefit = scheme["benefit"]
     kind = benefit["type"]
     zone = profile.zone
-    needs_zone = "zones" in scheme or kind in ZONE_DEPENDENT
-    if needs_zone and not reasons:
+    zone_label = zone_name(profile.state_code, zone)
+    if _needs_zone(scheme) and not reasons:
         if not zone:
-            missing.append("industrial zone (taluka group A-D+) of your unit")
-        elif "zones" in scheme and zone not in scheme["zones"]:
-            reasons.append(scheme.get("zone_exclusion_reason", f"Not available in Group {zone}"))
+            missing.append("industrial zone / area category of your unit" + _lookup_hint(profile.state_code))
+        elif scheme.get("zones") and zone not in scheme["zones"]:
+            reasons.append(scheme.get("zone_exclusion_reason", f"Not available in {zone_label}"))
 
     start = date.fromisoformat(scheme["window"]["from"])
     end = date.fromisoformat(scheme["window"]["to"])
@@ -131,8 +162,11 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset]) 
     eligible_cost = round(sum(a.value for a in qualifying), 2)
 
     estimate, basis_text, assumptions = 0.0, "", []
-    rate = _rate(benefit.get("rate"), profile.category)
-    zone_years = benefit.get("years_by_zone", {}).get(zone)
+    rate = _rate(benefit["rate"] if "rate" in benefit else _zone_value(benefit.get("rate_by_zone"), zone),
+                 profile.category)
+    years = benefit.get("years") or _zone_value(benefit.get("years_by_zone"), zone)
+    cap = benefit.get("cap") or _zone_value(benefit.get("cap_by_zone"), zone)
+    where = f" ({zone_label})" if zone and _needs_zone(scheme) else ""
 
     if kind in ("capital_subsidy", "sgst_refund_ceiling"):
         if not qualifying:
@@ -149,45 +183,51 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset]) 
                 assumptions.append(f"Assumed {TERM_LOAN_SHARE_ASSUMPTION:.0%} of the machinery cost was term-loan financed")
         if rate is not None:
             estimate = base * rate
-            basis_text = f"{rate:.0%} of {inr(base, 0)}"
-    elif kind == "sgst_refund_ceiling" and zone in benefit["rate_by_zone"]:
-        ceiling = benefit["rate_by_zone"][zone]
-        estimate = eligible_cost * ceiling
-        basis_text = (f"Up to {ceiling:.0%} of {inr(eligible_cost, 0)} capital investment (Group {zone}), "
-                      f"refunded from SGST over {zone_years} years")
-    elif kind == "electricity_duty_exemption" and zone_years:
+            basis_text = f"{rate:.0%} of {inr(base, 0)}{where}"
+    elif kind == "sgst_refund_ceiling" and rate is not None:
+        estimate = eligible_cost * rate
+        basis_text = (f"Up to {rate:.0%} of {inr(eligible_cost, 0)} capital investment{where}, refunded from SGST"
+                      + (f" over {years} years" if years else ""))
+    elif kind == "electricity_duty_exemption" and years:
         if profile.monthly_electricity_duty:
-            estimate = profile.monthly_electricity_duty * 12 * zone_years
-            basis_text = f"{inr(profile.monthly_electricity_duty, 0)}/month electricity duty waived for {zone_years} years"
+            estimate = profile.monthly_electricity_duty * 12 * years
+            basis_text = f"{inr(profile.monthly_electricity_duty, 0)}/month electricity duty waived for {years} years{where}"
         else:
             missing.append("monthly electricity duty (shown on your electricity bill)")
     elif kind == "power_tariff_per_unit":
         if profile.monthly_power_units:
-            estimate = profile.monthly_power_units * 12 * benefit["years"] * benefit["per_unit"]
-            basis_text = (f"₹{benefit['per_unit']:g}/unit on {profile.monthly_power_units:,.0f} units/month "
-                          f"for {benefit['years']} years")
+            estimate = profile.monthly_power_units * 12 * years * benefit["per_unit"]
+            basis_text = f"₹{benefit['per_unit']:g}/unit on {profile.monthly_power_units:,.0f} units/month for {years} years"
         else:
             missing.append("monthly electricity consumption in units (kWh)")
-    elif kind == "interest_subsidy":
+    elif kind == "interest_subsidy" and rate is not None:
         if profile.term_loan_amount:
-            estimate = min(profile.term_loan_amount * rate, benefit["annual_cap"])
-            basis_text = f"Up to {rate:.0%} a year on a {inr(profile.term_loan_amount, 0)} term loan (first-year figure)"
+            estimate = profile.term_loan_amount * rate
+            if benefit.get("annual_cap"):
+                estimate = min(estimate, benefit["annual_cap"])
+            basis_text = (f"Up to {rate:.0%} a year on a {inr(profile.term_loan_amount, 0)} term loan (first-year figure"
+                          + (f", for up to {years} years)" if years else ")"))
         else:
             missing.append("term loan amount")
-    elif kind == "certification_support":
-        if rate is not None:
-            estimate = benefit["certification_cost"] * rate
-            basis_text = f"{rate:.0%} of {inr(benefit['certification_cost'], 0)} certification cost"
+    elif kind == "certification_support" and rate is not None:
+        estimate = benefit["certification_cost"] * rate
+        basis_text = f"{rate:.0%} of {inr(benefit['certification_cost'], 0)} certification cost"
     elif kind == "certification_topup":
-        central = benefit["central_rate"].get(profile.category or "")
+        central = benefit.get("central_rate", {}).get(profile.category or "")
         if central is not None:
             net_fee = benefit["certification_cost"] * (1 - central)
             estimate = net_fee * rate
             basis_text = f"{rate:.0%} of the {inr(net_fee, 0)} fee left after the central ZED subsidy"
+        elif benefit.get("certification_cost") and rate is not None:
+            estimate = benefit["certification_cost"] * rate
+            basis_text = f"{rate:.0%} of {inr(benefit['certification_cost'], 0)} certification cost"
+        elif cap:
+            estimate = cap
+            basis_text = f"Up to {inr(cap, 0)} of certification costs reimbursed" + (f" ({rate:.0%})" if rate else "")
 
     capped = False
-    if benefit.get("cap") and estimate > benefit["cap"]:
-        estimate, capped = float(benefit["cap"]), True
+    if cap and estimate > cap:
+        estimate, capped = float(cap), True
     if not profile.has_udyam:
         missing.append("Udyam registration number (required to apply)")
 
@@ -200,9 +240,13 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset]) 
         "benefit_type": kind,
         "status": status,
         "estimated_benefit": round(estimate, 2) if status != "not_eligible" else 0.0,
-        "in_total": scheme.get("in_total", True),
+        # Interest subsidy is a first-year figure and conditional schemes depend on facts we can't check
+        # (ownership, exporter status...), so both stay out of the headline unless a scheme says otherwise.
+        "in_total": scheme.get("in_total", kind != "interest_subsidy" and not scheme.get("conditions")),
+        "conditions": scheme.get("conditions", []),
+        "continuing": scheme.get("continuing", False),
         "basis": basis_text,
-        "capped_at": benefit.get("cap") if capped else None,
+        "capped_at": cap if capped else None,
         "eligible_cost": eligible_cost,
         "qualifying_assets": [a.to_dict() for a in qualifying],
         "reasons": reasons,
@@ -220,8 +264,9 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset]) 
     }
 
 
-def match(profile: Profile, assets: list[CapitalAsset], include_ineligible: bool = False) -> dict:
-    evaluated = [evaluate_scheme(s, profile, assets) for s in rule_grid()["schemes"]]
+def match(profile: Profile, assets: list[CapitalAsset], include_ineligible: bool = False,
+          today: date | None = None) -> dict:
+    evaluated = [evaluate_scheme(s, profile, assets, today) for s in rule_grid()["schemes"]]
     shown = evaluated if include_ineligible else [e for e in evaluated if e["status"] != "not_eligible"]
     shown.sort(key=lambda e: (e["status"] != "eligible", not e["in_total"], -e["estimated_benefit"]))
     by_class: dict[str, float] = {}

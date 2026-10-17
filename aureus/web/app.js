@@ -179,11 +179,11 @@ async function calculatorForm() {
         <div class="field"><label>Term loan for machinery <span class="hint">(₹, optional)</span></label><input name="term_loan_amount" inputmode="numeric"></div>
       </div>
       <div class="fields">
-        <div class="field"><label>Taluka group <span class="hint">(Maharashtra)</span></label>${zoneSelect(m, '')}</div>
+        <div class="field"><label>Area / zone category</label><div data-zone-field>${zoneSelect(m, '', '27')}</div></div>
         <div class="field"><label>Monthly electricity duty <span class="hint">(₹, on your bill)</span></label><input name="monthly_electricity_duty" inputmode="numeric"></div>
         <div class="field"><label>Monthly power use <span class="hint">(units / kWh)</span></label><input name="monthly_power_units" inputmode="numeric"></div>
       </div>
-      <p class="muted" style="font-size:.85rem">Maharashtra incentives depend on your taluka's group. Find it in <a href="${esc(m.zone_source_url)}" target="_blank" rel="noopener noreferrer">Annexure I of the policy</a>.</p>
+      <div data-zone-hint-box>${zoneHint(m, '27')}</div>
       <button class="gold" type="submit">Show my estimate</button>
     </form>
     <div id="calc-result"></div>`;
@@ -332,9 +332,20 @@ function stepper(active) {
   return `<div class="steps">${steps.map((s, i) => `<div class="step ${i === active ? 'active' : i < active ? 'done' : ''}">${i < active ? '✓ ' : `${i + 1}. `}${esc(s)}</div>`).join('')}</div>`;
 }
 
-function zoneSelect(m, current) {
-  return `<select name="zone"><option value="">Not in Maharashtra / not sure</option>${(m?.zones || []).map((z) =>
-    `<option value="${esc(z.id)}" ${z.id === current ? 'selected' : ''}>${esc(z.label)}</option>`).join('')}</select>`;
+function zoneInfo(m, stateCode) { return (m?.zones_by_state || {})[stateCode]; }
+
+function zoneSelect(m, current, stateCode) {
+  const info = zoneInfo(m, stateCode);
+  if (!info) return '<select name="zone" disabled><option value="">No zones for this state</option></select>';
+  return `<select name="zone"><option value="">Not sure</option>${info.zones.map((z) =>
+    `<option value="${esc(z.id)}" ${z.id === current ? 'selected' : ''}>${esc(z.id === z.label ? z.id : `${z.id}: ${z.label}`)}</option>`).join('')}</select>`;
+}
+
+function zoneHint(m, stateCode) {
+  const info = zoneInfo(m, stateCode);
+  if (!info) return '';
+  return `<p class="muted" style="font-size:.85rem" data-zone-hint>${esc(info.lookup || 'Incentives depend on the area category of your unit.')}
+    ${info.source_url ? `<a href="${esc(info.source_url)}" target="_blank" rel="noopener noreferrer">Official list</a>` : ''}</p>`;
 }
 
 function profileFields(o = {}) {
@@ -356,11 +367,18 @@ function profileFields(o = {}) {
     <div class="field"><label>Annual turnover <span class="hint">(₹)</span></label><input name="annual_turnover" inputmode="numeric" value="${v('annual_turnover')}"></div>
     <div class="field"><label>Investment in plant &amp; machinery <span class="hint">(₹, total)</span></label><input name="investment_pm" inputmode="numeric" value="${v('investment_pm')}"></div>
     <div class="field"><label>Term loan for machinery <span class="hint">(₹)</span></label><input name="term_loan_amount" inputmode="numeric" value="${v('term_loan_amount')}"></div>
-    <div class="field"><label>Taluka group <span class="hint">(Maharashtra units)</span></label>${zoneSelect(store.meta, o.zone)}</div>
+    <div class="field"><label>Area / zone category</label><div data-zone-field>${zoneSelect(store.meta, o.zone, o.state_code || '')}</div></div>
     <div class="field"><label>Monthly electricity duty <span class="hint">(₹, on your bill)</span></label><input name="monthly_electricity_duty" inputmode="numeric" value="${v('monthly_electricity_duty')}"></div>
     <div class="field"><label>Monthly power use <span class="hint">(units / kWh)</span></label><input name="monthly_power_units" inputmode="numeric" value="${v('monthly_power_units')}"></div>
   </div>
-  <p class="muted" style="font-size:.85rem">Find your taluka's group in <a href="${esc(store.meta.zone_source_url)}" target="_blank" rel="noopener noreferrer">Annexure I of the Maharashtra policy</a>. Within the Pune and Mumbai metropolitan regions most talukas are Group A.</p>`;
+  <div data-zone-hint-box>${zoneHint(store.meta, o.state_code || '')}</div>`;
+}
+
+function refreshZoneField(form, stateCode) {
+  const field = form.querySelector('[data-zone-field]');
+  const hint = form.querySelector('[data-zone-hint-box]');
+  if (field) field.innerHTML = zoneSelect(store.meta, '', stateCode);
+  if (hint) hint.innerHTML = zoneHint(store.meta, stateCode);
 }
 
 function profilePayload(d) {
@@ -388,6 +406,7 @@ function onGstinInput(input) {
   gstinTimer = setTimeout(async () => {
     const r = await api(`/api/public/gstin/${encodeURIComponent(value)}`);
     msg.innerHTML = r.valid ? `<span class="ok">✓ Valid · ${esc(r.state)} · PAN ${esc(r.pan)}</span>` : '<span class="err">This GSTIN fails the format or checksum test</span>';
+    if (r.valid) refreshZoneField(input.closest('form'), r.state_code);
   }, 250);
 }
 
@@ -653,7 +672,8 @@ async function viewOrgSubsidies(orgId) {
       <div class="row between"><div style="flex:1;min-width:260px"><h3>${esc(x.name)}</h3><small>${esc(x.authority)} · ${esc(x.level)}</small></div>
         <div class="num"><div class="amount">${x.estimated_benefit ? inrShort(x.estimated_benefit) : '—'}</div>${badge(x.status, x.status === 'eligible' ? 'Eligible' : 'Needs info')}</div></div>
       <p style="margin-top:.4rem">${x.verified ? `${badge('ok', 'Verified ' + fmtDate(x.verified_on))} <small>${esc(x.source_document)}${x.clause ? ', ' + esc(x.clause) : ''}</small>` : badge('warn', 'Unverified figures')}</p>
-      ${x.in_total ? '' : '<p class="muted">Not added to the total (see note).</p>'}
+      ${x.conditions.length ? `<div class="banner warn" style="margin:.5rem 0">Only if: ${esc(x.conditions.join(' · '))}</div>` : ''}
+      ${x.in_total ? '' : `<p class="muted">Not added to the total${x.conditions.length ? ' until you confirm the conditions' : ' (see note)'}.</p>`}
       ${x.basis ? `<p style="margin-top:.6rem">${esc(x.basis)}${x.capped_at ? ` · capped at ${inrShort(x.capped_at)}` : ''}${x.disbursal ? ` · ${esc(x.disbursal)}` : ''}</p>` : ''}
       ${x.assumptions.map((a) => `<p class="muted">Assumption: ${esc(a)}</p>`).join('')}
       ${x.missing_inputs.length ? `<p class="flag">Needs: ${esc(x.missing_inputs.join('; '))} · <a href="#/org/${orgId}/settings">update profile</a></p>` : ''}
@@ -984,6 +1004,7 @@ document.addEventListener('input', (e) => {
   }
 });
 document.addEventListener('change', (e) => {
+  if (e.target.name === 'state_code' && e.target.closest('form[data-form=calculator]')) refreshZoneField(e.target.closest('form'), e.target.value);
   if (e.target.dataset.upload) uploadFile(e.target);
   if (e.target.dataset.actionChange === 'period') go(`#/org/${e.target.dataset.org}/recon${e.target.value ? `?period=${e.target.value}` : ''}`);
 });

@@ -586,14 +586,20 @@
       "verified": false
     }
   ],
-  "zones": {
-    "_source": "Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025, Annexure I (taluka classification, carried over from PSI-2019)",
-    "A": "Group A",
-    "B": "Group B",
-    "C": "Group C",
-    "D": "Group D",
-    "D+": "Group D+",
-    "VM": "Vidarbha, Marathwada, Ratnagiri, Sindhudurg, Jalgaon & Dhule",
-    "NI": "No-industry district, naxalism-affected area or aspirational district"
+  "zones_by_state": {
+    "27": {
+      "zones": {
+        "A": "Group A",
+        "B": "Group B",
+        "C": "Group C",
+        "D": "Group D",
+        "D+": "Group D+",
+        "VM": "Vidarbha, Marathwada, Ratnagiri, Sindhudurg, Jalgaon & Dhule",
+        "NI": "No-industry district, naxalism-affected area or aspirational district"
+      },
+      "source": "Maharashtra Industries, Investment & Services Policy 2025, GR No. मऔधो-2023/प्र.क्र.187/उद्योग-2 dated 31.12.2025, Annexure I (taluka classification, carried over from PSI-2019)",
+      "lookup": "Annexure I of the MIISP 2025 GR lists every taluka's group; within the Pune and Mumbai metropolitan regions most talukas are Group A",
+      "source_url": "https://industry.maharashtra.gov.in/sites/default/files/2025-12/202512311332497910.pdf"
+    }
   }
 }
