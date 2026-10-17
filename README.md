@@ -161,12 +161,15 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 | `MONGODB_DB` | Database name, default `aureus` |
 | `AUREUS_DATA_DIR` | Where the development key file lives |
 | `AUREUS_MATCH_TOLERANCE_PAISE` | Matched threshold, default `99` (₹0.99) |
+| `APP_BASE_URL` | Public URL used in emailed links |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `MAIL_FROM` | Outgoing email for password resets and alerts. In development, emails are printed to the log |
+| `AUREUS_LOGIN_MAX_FAILURES`, `AUREUS_LOGIN_MAX_FAILURES_PER_IP`, `AUREUS_LOGIN_WINDOW_MINUTES` | Login lockout: by default 5 failures per email or 20 per IP within 15 minutes |
 | `ANTHROPIC_API_KEY` | Enables *Polish with Claude* in Notice Copilot |
 | `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REDIRECT_URI` | Enables one-click Zoho Books OAuth (India DC by default; override `ZOHO_ACCOUNTS_URL` / `ZOHO_API_URL`) |
 
 ## What is production-ready vs. what needs work
 
-**Built and tested** (49 tests against MongoDB 8.0, plus a browser run through every screen):
+**Built and tested** (61 tests against MongoDB 8.0, plus a browser run through every screen):
 - ingestion parsers and the reconciliation engine
 - paisa-level matching
 - the policy maths
@@ -182,4 +185,4 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 **Not built yet:**
 - **Licensed GSTR-2B feed.** Pulling GSTR-2B automatically requires a GSP licence or a GST Suvidha Provider partner (the PRD mentions Account Aggregators). Until then the user downloads the JSON from the portal and uploads it; the parser reads the portal's own format.
 - **Verified scheme data for states other than Maharashtra.** See the warning above.
-- **Production hardening** beyond the basics: a KMS-held master key, MongoDB authentication and backups, rate limiting on login, email verification and password reset, background jobs for scheduled syncs, and invitations for users who don't yet have an account.
+- **Production hardening** still to do: a KMS-held master key, MongoDB backups, email verification at signup, and invitations for users who don't yet have an account. Done already: login lockout, password reset and change, and a daily job for Zoho sync, deadline alerts and consent-expiry warnings.

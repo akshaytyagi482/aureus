@@ -23,11 +23,17 @@ About 20 minutes. You need a GitHub login, a Render account and a MongoDB Atlas 
      `python -c "import os,base64;print(base64.b64encode(os.urandom(32)).decode())"`.
      **Store a copy in a password manager.** If it is lost, every encrypted record becomes unreadable.
    - `MONGODB_URI`: the Atlas string from step 1.
+   - `APP_BASE_URL` and the `SMTP_*` / `MAIL_FROM` email settings (section 3).
    - `ANTHROPIC_API_KEY` (optional), and the `ZOHO_*` values (optional; leave blank for now).
 3. **Deploy.** Render builds and starts the app, and checks `/api/health`. If the key or database is wrong, the deploy fails straight away and the log says why.
 4. **Custom domain (optional).** Under *Settings → Custom domains*, Render provides HTTPS automatically. If you use Zoho, set `ZOHO_REDIRECT_URI` to `https://<domain>/api/integrations/zoho/callback`.
 
-## 3. First use
+## 3. Email and the daily job
+
+- **Email** is used for password resets and alerts. Any SMTP provider works (Resend, SendGrid, or Amazon SES in Mumbai). Fill `SMTP_HOST`, `SMTP_USER`, `SMTP_PASSWORD` and `MAIL_FROM`, and set `APP_BASE_URL` to your public URL. In production, password reset refuses to run until email is configured.
+- **The daily job** (`aureusrecon-daily`, 08:00 IST) does three things: re-syncs Zoho Books, emails a GSTR-3B deadline alert when credit is still at risk, and warns 14 days before a data consent expires. Each alert goes out at most once per business per period. Render cron jobs are billed separately, at a small monthly minimum.
+
+## 4. First use
 
 - **Demo data.** Don't run the demo seed in production. Instead, sign up and use **Try with demo data** inside a test organisation.
 - **Real clients.** Give each client their own organisation. A CA signs up with the *Chartered Accountant* role and adds clients from the console.

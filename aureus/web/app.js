@@ -115,7 +115,7 @@ function renderNav() {
   }
   nav.innerHTML = `${store.user.role === 'ca' ? '<a href="#/console">Client console</a>' : '<a href="#/home">My business</a>'}
     <a href="#/calculator">Calculator</a>
-    <span class="muted" style="color:#b9c7d8;padding:0 .4rem">${esc(store.user.name)}</span>
+    <a href="#/account">${esc(store.user.name)}</a>
     <button data-action="logout">Sign out</button>`;
 }
 
@@ -222,7 +222,33 @@ function viewLogin() {
     <form data-form="login"><div class="field"><label>Email</label><input name="email" type="email" autocomplete="email" required></div>
     <div class="field"><label>Password</label><input name="password" type="password" autocomplete="current-password" required></div>
     <div id="auth-msg"></div><button class="primary" type="submit">Sign in</button></form>
-    <p class="muted" style="margin-top:1rem">New here? <a href="#/signup">Create an account</a></p></div>`;
+    <p class="muted" style="margin-top:1rem"><a href="#/forgot">Forgot password?</a> · New here? <a href="#/signup">Create an account</a></p></div>`;
+}
+
+function viewForgot() {
+  app.innerHTML = `<div class="auth card"><h1>Reset your password</h1>
+    <p class="muted">Enter your account email and we'll send a link to set a new password.</p>
+    <form data-form="forgot"><div class="field"><label>Email</label><input name="email" type="email" required autocomplete="email"></div>
+    <div id="auth-msg"></div><button class="primary" type="submit">Send reset link</button></form>
+    <p class="muted" style="margin-top:1rem"><a href="#/login">Back to sign in</a></p></div>`;
+}
+
+function viewReset(params) {
+  app.innerHTML = `<div class="auth card"><h1>Choose a new password</h1>
+    <form data-form="reset"><input type="hidden" name="token" value="${esc(params.get('token') || '')}">
+    <div class="field"><label>New password <span class="hint">(8+ characters)</span></label><input name="password" type="password" minlength="8" required autocomplete="new-password"></div>
+    <div id="auth-msg"></div><button class="primary" type="submit">Set password</button></form></div>`;
+}
+
+function viewAccount() {
+  app.innerHTML = `<div class="auth card"><h1>Your account</h1>
+    <p>${esc(store.user.name)} · ${esc(store.user.email)}${store.user.firm_name ? ' · ' + esc(store.user.firm_name) : ''}</p>
+    <h3 style="margin-top:1rem">Change password</h3>
+    <form data-form="change-password">
+      <div class="field"><label>Current password</label><input name="current_password" type="password" required autocomplete="current-password"></div>
+      <div class="field"><label>New password <span class="hint">(8+ characters)</span></label><input name="new_password" type="password" minlength="8" required autocomplete="new-password"></div>
+      <div id="auth-msg"></div><button class="primary" type="submit">Change password</button>
+    </form><p class="muted" style="margin-top:.8rem">Changing your password signs you out on every device.</p></div>`;
 }
 
 function viewSignup(params) {
@@ -894,6 +920,31 @@ const forms = {
   login: (f) => submitAuth(f, 'login'),
   signup: (f) => submitAuth(f, 'signup'),
   'create-org': submitCreateOrg,
+  forgot: async (form) => {
+    const msg = document.getElementById('auth-msg');
+    try {
+      const r = await api('/api/auth/password-reset/request', { method: 'POST', body: { email: formData(form).email } });
+      msg.innerHTML = `<div class="banner ok">${esc(r.detail)}</div>`;
+    } catch (err) { showError(err, msg); }
+  },
+  reset: async (form) => {
+    const d = formData(form);
+    try {
+      await api('/api/auth/password-reset/confirm', { method: 'POST', body: { token: d.token, password: d.password } });
+      setSession(null, null);
+      toast('Password updated. Sign in with your new password.');
+      go('#/login');
+    } catch (err) { showError(err, document.getElementById('auth-msg')); }
+  },
+  'change-password': async (form) => {
+    const d = formData(form);
+    try {
+      await api('/api/auth/password', { method: 'POST', body: d });
+      setSession(null, null);
+      toast('Password changed. Please sign in again.');
+      go('#/login');
+    } catch (err) { showError(err, document.getElementById('auth-msg')); }
+  },
   consent: submitConsent,
   notice: submitNotice,
   'update-org': async (form) => {
@@ -944,6 +995,9 @@ const routes = [
   [/^\/?$/, () => (store.user ? go(store.user.role === 'ca' ? '#/console' : '#/home') : viewLanding()), false],
   [/^\/calculator$/, viewCalculator, false],
   [/^\/login$/, viewLogin, false],
+  [/^\/forgot$/, viewForgot, false],
+  [/^\/reset$/, (m, p) => viewReset(p), false],
+  [/^\/account$/, viewAccount, true],
   [/^\/signup$/, (m, p) => viewSignup(p), false],
   [/^\/error$/, (m, p) => { app.innerHTML = `<div class="card"><div class="banner danger">${esc(p.get('message') || 'Something went wrong')}</div><a href="#/home">Back</a></div>`; }, false],
   [/^\/home$/, viewHome, true],

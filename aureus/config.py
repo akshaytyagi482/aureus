@@ -26,3 +26,18 @@ ZOHO_CLIENT_SECRET = os.environ.get("ZOHO_CLIENT_SECRET", "")
 ZOHO_REDIRECT_URI = os.environ.get("ZOHO_REDIRECT_URI", "http://localhost:8000/api/integrations/zoho/callback")
 ZOHO_ACCOUNTS_URL = os.environ.get("ZOHO_ACCOUNTS_URL", "https://accounts.zoho.in")
 ZOHO_API_URL = os.environ.get("ZOHO_API_URL", "https://www.zohoapis.in")
+
+# Public URL of the app, used in emailed links (password reset, alerts).
+APP_BASE_URL = os.environ.get("APP_BASE_URL", "http://localhost:8000").rstrip("/")
+
+# Outgoing email (any SMTP provider: Resend, SendGrid, Amazon SES, Gmail Workspace...).
+SMTP_HOST = os.environ.get("SMTP_HOST", "")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_USER = os.environ.get("SMTP_USER", "")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "")
+MAIL_FROM = os.environ.get("MAIL_FROM", "AureusRecon <no-reply@localhost>")
+
+# Brute-force protection: failed logins allowed per email / per IP within the window.
+LOGIN_MAX_FAILURES_PER_EMAIL = int(os.environ.get("AUREUS_LOGIN_MAX_FAILURES", "5"))
+LOGIN_MAX_FAILURES_PER_IP = int(os.environ.get("AUREUS_LOGIN_MAX_FAILURES_PER_IP", "20"))
+LOGIN_WINDOW_MINUTES = int(os.environ.get("AUREUS_LOGIN_WINDOW_MINUTES", "15"))

@@ -316,6 +316,22 @@ def store_dataset(org_id: int, user_id: int | None, kind: str, source: str, invo
     return {"dataset_id": dataset_id, "kind": kind, "source": source, "records": len(invoices), "periods": periods}
 
 
+def replace_by_period(org_id: int, user_id: int | None, kind: str, source: str, invoices: list) -> list[dict]:
+    """Store one dataset per period, replacing that source's earlier copy of the same period (used by syncs)."""
+    by_period: dict[str, list] = {}
+    for inv in invoices:
+        by_period.setdefault(deadlines.period_of(inv.invoice_date), []).append(inv)
+    stored = []
+    for period, group in sorted(by_period.items()):
+        old = [d["_id"] for d in get_db().datasets.find(
+            {"org_id": org_id, "kind": kind, "source": source, "periods": [period]}, {"_id": 1})]
+        stored.append(store_dataset(org_id, user_id, kind, source, group))
+        if old:  # remove only after the new copy is in place
+            get_db().dataset_chunks.delete_many({"dataset_id": {"$in": old}})
+            get_db().datasets.delete_many({"_id": {"$in": old}})
+    return stored
+
+
 def list_datasets(user: dict, org_id: int) -> list[dict]:
     require_member(user, org_id)
     rows = get_db().datasets.find({"org_id": org_id}).sort("_id", DESCENDING)

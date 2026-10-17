@@ -10,7 +10,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, EmailStr, Field
 
-from . import config, crypto, db, gstin as gstin_mod, integrations, sample, services
+from . import accounts, config, crypto, db, gstin as gstin_mod, integrations, mailer, sample, services
 from .config import BASE_DIR
 from .engines import policy
 from .engines.deadlines import period_label
@@ -90,8 +90,24 @@ class LoginBody(BaseModel):
     password: str
 
 
+def _ip(request: Request) -> str:
+    return request.client.host if request.client else "unknown"
+
+
+@app.exception_handler(accounts.TooManyAttempts)
+def _too_many(_, exc):
+    return JSONResponse({"detail": str(exc)}, status_code=429, headers={"Retry-After": str(exc.minutes * 60)})
+
+
+@app.exception_handler(mailer.MailNotConfigured)
+def _no_mail(_, exc):
+    return JSONResponse({"detail": str(exc)}, status_code=503)
+
+
 @app.post("/api/auth/signup")
-def signup(body: SignupBody):
+def signup(body: SignupBody, request: Request):
+    accounts.check_throttle("signup-ip", _ip(request), 10)
+    accounts.record_failure("signup-ip", _ip(request))  # counts signups per IP
     try:
         services.create_user(body.email, body.name, body.password, body.role, body.firm_name)
     except services.EmailTaken:
@@ -101,8 +117,8 @@ def signup(body: SignupBody):
 
 
 @app.post("/api/auth/login")
-def login(body: LoginBody):
-    result = services.login(body.email, body.password)
+def login(body: LoginBody, request: Request):
+    result = accounts.guarded_login(services.login, body.email, body.password, _ip(request))
     if not result:
         raise HTTPException(401, "Email or password is incorrect")
     token, user = result
@@ -112,6 +128,38 @@ def login(body: LoginBody):
 @app.post("/api/auth/logout")
 def logout(authorization: str = Header(default="")):
     services.logout(authorization.partition(" ")[2])
+    return {"ok": True}
+
+
+class ResetRequestBody(BaseModel):
+    email: EmailStr
+
+
+class ResetConfirmBody(BaseModel):
+    token: str = Field(min_length=10, max_length=200)
+    password: str = Field(min_length=8, max_length=200)
+
+
+class ChangePasswordBody(BaseModel):
+    current_password: str
+    new_password: str = Field(min_length=8, max_length=200)
+
+
+@app.post("/api/auth/password-reset/request")
+def password_reset_request(body: ResetRequestBody, request: Request):
+    accounts.request_reset(body.email, _ip(request))
+    return {"ok": True, "detail": "If an account uses this email, a reset link is on its way."}
+
+
+@app.post("/api/auth/password-reset/confirm")
+def password_reset_confirm(body: ResetConfirmBody):
+    accounts.confirm_reset(body.token, body.password)
+    return {"ok": True}
+
+
+@app.post("/api/auth/password")
+def change_password(body: ChangePasswordBody, user=Depends(current_user)):
+    accounts.change_password(user["id"], body.current_password, body.new_password)
     return {"ok": True}
 
 
@@ -330,7 +378,11 @@ def zoho_sync(org_id: int, body: ZohoSyncBody, user=Depends(current_user)):
         payload = integrations.fetch_bills(org_id, body.date_from.isoformat(), body.date_to.isoformat())
     except PermissionError as exc:
         raise HTTPException(409, str(exc))
-    return services.store_dataset(org_id, user["id"], "books", "zoho", zoho.parse_data(payload))
+    stored = services.replace_by_period(org_id, user["id"], "books", "zoho", zoho.parse_data(payload))
+    if not stored:
+        raise HTTPException(404, "Zoho Books returned no bills for these dates")
+    return {"records": sum(d["records"] for d in stored), "periods": [p for d in stored for p in d["periods"]],
+            "kind": "books", "source": "zoho"}
 
 
 # ---------------------------------------------------------------- tax engine

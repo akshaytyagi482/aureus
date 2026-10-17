@@ -1,15 +1,7 @@
 # Render Blueprint: Dashboard > New > Blueprint > pick this repo.
 # Secrets marked `sync: false` are asked for when the Blueprint is created.
-services:
-  - type: web
-    name: aureusrecon
-    runtime: python
-    region: singapore  # nearest Render region to India; data itself lives in MongoDB Atlas (Mumbai)
-    plan: starter      # free instances sleep after 15 minutes idle; use starter or above for real clients
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn aureus.api:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips "*"
-    healthCheckPath: /api/health
-    autoDeploy: true
+envVarGroups:
+  - name: aureus-shared
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.7
@@ -21,7 +13,19 @@ services:
         sync: false
       - key: MONGODB_DB
         value: aureus
-      - key: ANTHROPIC_API_KEY  # optional: enables Claude wording polish in Notice Copilot
+      - key: APP_BASE_URL       # https://<your-domain>, used in emailed links
+        sync: false
+      - key: SMTP_HOST          # e.g. smtp.resend.com / smtp.sendgrid.net / email-smtp.ap-south-1.amazonaws.com
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: MAIL_FROM          # e.g. AureusRecon <alerts@yourdomain.in>
+        sync: false
+      - key: ANTHROPIC_API_KEY  # optional: AI features
         sync: false
       - key: ZOHO_CLIENT_ID     # optional: Zoho Books one-click connect
         sync: false
@@ -29,3 +33,26 @@ services:
         sync: false
       - key: ZOHO_REDIRECT_URI  # https://<your-domain>/api/integrations/zoho/callback
         sync: false
+
+services:
+  - type: web
+    name: aureusrecon
+    runtime: python
+    region: singapore  # nearest Render region to India; data itself lives in MongoDB Atlas (Mumbai)
+    plan: starter      # free instances sleep after 15 minutes idle; use starter or above for real clients
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn aureus.api:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips "*"
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - fromGroup: aureus-shared
+
+  - type: cron
+    name: aureusrecon-daily
+    runtime: python
+    region: singapore
+    schedule: "30 2 * * *"  # 08:00 IST: Zoho re-sync, GSTR-3B deadline alerts, consent expiry warnings
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m aureus.jobs daily
+    envVars:
+      - fromGroup: aureus-shared

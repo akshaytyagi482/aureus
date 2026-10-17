@@ -13,6 +13,9 @@ Collections and what they hold:
     oauth_states      hashed OAuth state values, removed by a TTL index
     connector_tokens  hashed desktop-connector keys
     audit_log         who did what, without financial payloads
+    auth_failures     failed logins / reset requests for throttling (TTL)
+    password_resets   hashed one-time reset tokens (TTL 30 minutes)
+    notifications     which alerts were already sent, so jobs never repeat them
     counters          integer id sequences
 
 Documents use integer `_id`s so URLs and the API stay simple.
@@ -55,6 +58,11 @@ def init() -> None:
     d.oauth_states.create_index("created_at", expireAfterSeconds=15 * 60)
     d.connector_tokens.create_index("org_id")
     d.audit_log.create_index([("org_id", ASCENDING), ("_id", DESCENDING)])
+    d.auth_failures.create_index("at", expireAfterSeconds=24 * 3600)
+    d.auth_failures.create_index([("scope", ASCENDING), ("key", ASCENDING), ("at", ASCENDING)])
+    d.password_resets.create_index("created_at", expireAfterSeconds=30 * 60)
+    d.password_resets.create_index("user_id")
+    d.notifications.create_index([("org_id", ASCENDING), ("kind", ASCENDING), ("ref", ASCENDING)], unique=True)
 
 
 def next_id(name: str) -> int:
