@@ -110,7 +110,7 @@ def draft_reply(org: dict, rows: list[dict], notice_type: str, notice_ref: str =
     total_risk = sum(r["itc_at_risk"] for r in rows)
 
     lines = [
-        f"To,\nThe Proper Officer,\nState/Central Tax Jurisdiction",
+        "To,\nThe Proper Officer,\nState/Central Tax Jurisdiction",
         "",
         f"Subject: {meta['title']}" + (f" - Reference {notice_ref}" if notice_ref else "")
         + (f" dated {notice_date}" if notice_date else ""),

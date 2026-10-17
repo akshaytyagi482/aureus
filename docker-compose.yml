@@ -1,0 +1,10 @@
+# Local MongoDB for development: `docker compose up -d`, then run the app with the default MONGODB_URI.
+services:
+  mongo:
+    image: mongo:8.0
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:

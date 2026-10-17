@@ -9,11 +9,13 @@ the HTTP calls follow Zoho's documented OAuth 2.0 and Books v3 endpoints.
 """
 
 import time
+from datetime import timedelta
 from urllib.parse import urlencode
 
 import httpx
 
 from . import config, crypto, db
+from .db import get_db
 from .services import _ctx, audit
 
 SCOPE = "ZohoBooks.bills.READ,ZohoBooks.settings.READ"
@@ -31,10 +33,9 @@ def _require_config():
 def authorize_url(org_id: int, user_id: int) -> str:
     _require_config()
     state = crypto.new_token()
-    with db.transaction() as conn:
-        conn.execute("DELETE FROM oauth_states WHERE created_at < datetime('now', '-15 minutes')")
-        conn.execute("INSERT INTO oauth_states (state_hash, org_id, user_id) VALUES (?, ?, ?)",
-                     (crypto.token_hash(state), org_id, user_id))
+    # A TTL index on created_at removes unused states after 15 minutes.
+    get_db().oauth_states.insert_one({"_id": crypto.token_hash(state), "org_id": org_id, "user_id": user_id,
+                                      "created_at": db.now()})
     query = urlencode({"scope": SCOPE, "client_id": config.ZOHO_CLIENT_ID, "response_type": "code",
                        "redirect_uri": config.ZOHO_REDIRECT_URI, "access_type": "offline", "prompt": "consent",
                        "state": state})
@@ -43,10 +44,9 @@ def authorize_url(org_id: int, user_id: int) -> str:
 
 def complete(code: str, state: str) -> int:
     _require_config()
-    with db.transaction() as conn:
-        row = conn.execute("SELECT org_id, user_id FROM oauth_states WHERE state_hash = ? "
-                           "AND created_at >= datetime('now', '-15 minutes')", (crypto.token_hash(state),)).fetchone()
-        conn.execute("DELETE FROM oauth_states WHERE state_hash = ?", (crypto.token_hash(state),))
+    row = get_db().oauth_states.find_one_and_delete({"_id": crypto.token_hash(state)})
+    if row and db.as_utc(row["created_at"]) < db.now() - timedelta(minutes=15):
+        row = None
     if not row:
         raise PermissionError("OAuth state is invalid or expired; start the connection again")
     resp = httpx.post(f"{config.ZOHO_ACCOUNTS_URL}/oauth/v2/token", data={
@@ -58,31 +58,26 @@ def complete(code: str, state: str) -> int:
         raise PermissionError(f"Zoho rejected the authorisation: {tokens.get('error', 'unknown error')}")
     tokens["expires_at"] = time.time() + int(tokens.get("expires_in", 3600)) - 60
     _save_tokens(row["org_id"], tokens)
-    with db.transaction() as conn:
-        audit(conn, row["org_id"], row["user_id"], "integration_connected", {"provider": "zoho"})
+    audit(row["org_id"], row["user_id"], "integration_connected", {"provider": "zoho"})
     return row["org_id"]
 
 
 def _save_tokens(org_id: int, tokens: dict, external_org_id: str | None = None):
-    with db.transaction() as conn:
-        conn.execute("INSERT INTO integrations (org_id, provider, tokens_enc, external_org_id) VALUES (?, 'zoho', ?, ?) "
-                     "ON CONFLICT(org_id, provider) DO UPDATE SET tokens_enc = excluded.tokens_enc, "
-                     "external_org_id = COALESCE(excluded.external_org_id, integrations.external_org_id)",
-                     (org_id, crypto.encrypt_json(tokens, _ctx(org_id, "zoho")), external_org_id))
+    changes = {"tokens_enc": crypto.encrypt_json(tokens, _ctx(org_id, "zoho"))}
+    if external_org_id:
+        changes["external_org_id"] = external_org_id
+    get_db().integrations.update_one({"org_id": org_id, "provider": "zoho"},
+                                     {"$set": changes, "$setOnInsert": {"connected_at": db.now()}}, upsert=True)
 
 
 def status(org_id: int) -> dict:
-    with db.transaction() as conn:
-        row = conn.execute("SELECT connected_at, external_org_id FROM integrations WHERE org_id = ? AND provider = 'zoho'",
-                           (org_id,)).fetchone()
+    row = get_db().integrations.find_one({"org_id": org_id, "provider": "zoho"})
     return {"configured": bool(config.ZOHO_CLIENT_ID), "connected": bool(row),
-            "connected_at": row["connected_at"] if row else None}
+            "connected_at": db.fmt(row["connected_at"]) if row else None}
 
 
 def _access_token(org_id: int) -> tuple[dict, str | None]:
-    with db.transaction() as conn:
-        row = conn.execute("SELECT tokens_enc, external_org_id FROM integrations WHERE org_id = ? AND provider = 'zoho'",
-                           (org_id,)).fetchone()
+    row = get_db().integrations.find_one({"org_id": org_id, "provider": "zoho"})
     if not row:
         raise PermissionError("Zoho Books is not connected for this organisation")
     tokens = crypto.decrypt_json(row["tokens_enc"], _ctx(org_id, "zoho"))
@@ -94,7 +89,7 @@ def _access_token(org_id: int) -> tuple[dict, str | None]:
         fresh = resp.json()
         tokens.update(access_token=fresh["access_token"], expires_at=time.time() + int(fresh.get("expires_in", 3600)) - 60)
         _save_tokens(org_id, tokens)
-    return tokens, row["external_org_id"]
+    return tokens, row.get("external_org_id")
 
 
 def fetch_bills(org_id: int, date_from: str, date_to: str) -> dict:

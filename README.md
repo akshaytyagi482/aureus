@@ -16,6 +16,7 @@ One system serves three audiences: MSME owners, CA firms (multi-client console, 
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
+docker compose up -d                  # local MongoDB 8 (or point MONGODB_URI at Atlas / your own server)
 python -m aureus.seed                 # demo accounts + sample data
 uvicorn aureus.api:app --reload       # http://localhost:8000
 ```
@@ -115,6 +116,18 @@ Every legal citation comes from a fixed, reviewed list in `notice.py`. Each cita
 
 If `ANTHROPIC_API_KEY` is set, ticking *Polish with Claude* refines the wording (model `claude-opus-5-5`, server-side refusal fallback enabled). The prompt forbids changing facts or citations, and the template is kept if any citation goes missing or the call fails. Drafts are marked for professional review either way.
 
+## Database (MongoDB)
+
+All state lives in MongoDB (`aureus/db.py` lists every collection).
+
+- **Encrypted imports.** Each import is one AES-256-GCM ciphertext stored in `dataset_chunks` (≤ 4 MB per document, so large imports never reach MongoDB's 16 MB limit). `datasets` holds only the metadata, and is written after the chunks so a half-written import is never visible.
+- **Automatic expiry.** Sessions and OAuth states carry TTL indexes, so MongoDB deletes them when they expire.
+- **Uniqueness.** Unique indexes enforce one account per email and one membership per person per business.
+- **Readable ids.** Integer ids come from a `counters` collection, so URLs stay short.
+- **No multi-document transactions.** The app works on a standalone server as well as on a replica set or Atlas. Operations that touch several collections are ordered so that a partial failure is safe: revocation marks consent revoked before purging, and deleting a business removes access before the data.
+
+Tests use a fresh database per test on the server at `AUREUS_TEST_MONGODB_URI` (default `mongodb://127.0.0.1:27017`). Without a server they fall back to `mongomock`, in memory.
+
 ## Security & compliance posture (PRD §4)
 
 - **Data-blind storage.** Each import is stored as one AES-256-GCM blob bound to its organisation (`org:{id}:dataset` as associated data). It is decrypted only in memory for a calculation.
@@ -125,7 +138,7 @@ If `ANTHROPIC_API_KEY` is set, ticking *Polish with Claude* refines the wording 
 - **Tenancy.** Every organisation route checks membership. CAs see only clients they created or were invited to, and cannot delete a client that has an owner.
 - **Audit log.** Imports, consent grants and revocations, and access changes are logged without financial payloads. The app also sends strict security headers, including a CSP with no inline scripts.
 
-Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a development key file is generated under `var/`. `AUREUS_ENV=production` refuses to start without a key.
+Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a development key file is generated under `var/` (it never goes into the database). `AUREUS_ENV=production` refuses to start without a key.
 
 ## Configuration
 
@@ -133,14 +146,16 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 |---|---|
 | `AUREUS_MASTER_KEY` | AES-256 key, base64. **Required in production** |
 | `AUREUS_ENV` | `production` enforces the master key |
-| `AUREUS_DATA_DIR` / `AUREUS_DB_PATH` | Where SQLite and the dev key live |
+| `MONGODB_URI` | MongoDB connection string, default `mongodb://127.0.0.1:27017`. Atlas `mongodb+srv://` URIs work |
+| `MONGODB_DB` | Database name, default `aureus` |
+| `AUREUS_DATA_DIR` | Where the development key file lives |
 | `AUREUS_MATCH_TOLERANCE_PAISE` | Matched threshold, default `99` (₹0.99) |
 | `ANTHROPIC_API_KEY` | Enables *Polish with Claude* in Notice Copilot |
 | `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REDIRECT_URI` | Enables one-click Zoho Books OAuth (India DC by default; override `ZOHO_ACCOUNTS_URL` / `ZOHO_API_URL`) |
 
 ## What is production-ready vs. what needs work
 
-**Built and tested** (29 tests, plus a browser run through every screen):
+**Built and tested** (41 tests against MongoDB 8.0, plus a browser run through every screen):
 - ingestion parsers and the reconciliation engine
 - paisa-level matching
 - the policy maths
@@ -156,4 +171,4 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 **Not built yet:**
 - **Licensed GSTR-2B feed.** Pulling GSTR-2B automatically requires a GSP licence or a GST Suvidha Provider partner (the PRD mentions Account Aggregators). Until then the user downloads the JSON from the portal and uploads it; the parser reads the portal's own format.
 - **Verified scheme data for states other than Maharashtra.** See the warning above.
-- **Production hardening** beyond the basics: SQLite → Postgres, a KMS-held master key, rate limiting on login, email verification and password reset, background jobs for scheduled syncs, and invitations for users who don't yet have an account.
+- **Production hardening** beyond the basics: a KMS-held master key, MongoDB authentication and backups, rate limiting on login, email verification and password reset, background jobs for scheduled syncs, and invitations for users who don't yet have an account.

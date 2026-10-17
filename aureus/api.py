@@ -1,6 +1,5 @@
 """AureusRecon HTTP API and web app host."""
 
-import sqlite3
 from contextlib import asynccontextmanager
 from datetime import date
 from typing import Literal
@@ -93,7 +92,7 @@ class LoginBody(BaseModel):
 def signup(body: SignupBody):
     try:
         services.create_user(body.email, body.name, body.password, body.role, body.firm_name)
-    except sqlite3.IntegrityError:
+    except services.EmailTaken:
         raise HTTPException(409, "An account with this email already exists")
     token, user = services.login(body.email, body.password)
     return {"token": token, "user": user}

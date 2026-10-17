@@ -4,8 +4,6 @@
     ca@demo.in    / demo-pass-123  (CA, Mehta & Associates, with two clients)
 """
 
-import sqlite3
-
 from . import db, sample, services
 from .ingestion import parse_books, parse_gstr2b
 
@@ -15,7 +13,7 @@ PASSWORD = "demo-pass-123"
 def _user(email, name, role, firm=None):
     try:
         return services.create_user(email, name, PASSWORD, role, firm)
-    except sqlite3.IntegrityError:
+    except services.EmailTaken:
         return services.login(email, PASSWORD)[1]
 
 

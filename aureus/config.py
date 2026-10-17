@@ -3,7 +3,9 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = Path(os.environ.get("AUREUS_DATA_DIR", BASE_DIR.parent / "var"))
-DB_PATH = Path(os.environ.get("AUREUS_DB_PATH", DATA_DIR / "aureus.db"))
+
+MONGODB_URI = os.environ.get("MONGODB_URI", "mongodb://127.0.0.1:27017")
+MONGODB_DB = os.environ.get("MONGODB_DB", "aureus")
 
 # 32-byte AES-256 key, base64 encoded. Required in production; a local key file
 # is generated for development so the app runs out of the box.

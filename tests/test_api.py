@@ -1,6 +1,6 @@
-import sqlite3
+import json
 
-from aureus import config, sample
+from aureus import db, sample, services
 from aureus.outputs import notice
 
 from .conftest import signup
@@ -67,15 +67,18 @@ def test_gstr2b_for_another_gstin_is_rejected(client, owner):
     assert res.status_code == 400 and "belongs to GSTIN" in res.json()["detail"]
 
 
+def _dump_database() -> str:
+    d = db.get_db()
+    return json.dumps({name: list(d[name].find()) for name in d.list_collection_names()}, default=str)
+
+
 def test_data_is_encrypted_at_rest(client, owner, demo_org):
     client.post(f"/api/orgs/{demo_org}/import/sample", headers=owner)
-    conn = sqlite3.connect(config.DB_PATH)
-    dump = "\n".join(conn.iterdump())
+    dump = _dump_database()
     assert sample.BUYER["gstin"] not in dump
     assert "BST/2026/1187" not in dump and "Bharat Steel" not in dump
     assert sample.BUYER["udyam"] not in dump
-    tokens = [r[0] for r in conn.execute("SELECT token_hash FROM sessions")]
-    assert owner["Authorization"].split()[1] not in tokens
+    assert owner["Authorization"].split()[1] not in dump
 
 
 def test_revoke_consent_purges_immediately(client, owner, demo_org):
@@ -139,14 +142,28 @@ def test_polish_falls_back_without_credentials(monkeypatch):
     assert out["text"] == "x" and "polish_error" in out
 
 
-def test_init_adds_new_columns_to_older_database(tmp_path, monkeypatch):
-    from aureus import db
-    monkeypatch.setattr(config, "DB_PATH", tmp_path / "old.db")
-    conn = sqlite3.connect(config.DB_PATH)
-    conn.execute("CREATE TABLE orgs (id INTEGER PRIMARY KEY, name TEXT NOT NULL, gstin_enc TEXT NOT NULL, "
-                 "gstin_last4 TEXT NOT NULL, state_code TEXT NOT NULL, monthly_power_bill REAL)")
-    conn.commit()
-    conn.close()
-    db.init()
-    cols = {r[1] for r in sqlite3.connect(config.DB_PATH).execute("PRAGMA table_info(orgs)")}
-    assert {"zone", "monthly_electricity_duty", "monthly_power_units"} <= cols
+def test_large_dataset_is_chunked(monkeypatch, client, owner, demo_org):
+    monkeypatch.setattr(services, "CHUNK_CHARS", 1000)
+    client.post(f"/api/orgs/{demo_org}/import/sample", headers=owner)
+    dataset = db.get_db().datasets.find_one({"org_id": demo_org, "kind": "books"})
+    assert dataset["chunks"] > 1
+    assert db.get_db().dataset_chunks.count_documents({"dataset_id": dataset["_id"]}) == dataset["chunks"]
+    recon = client.get(f"/api/orgs/{demo_org}/reconciliation", headers=owner).json()
+    assert recon["summary"]["invoices"] == 21
+
+
+def test_delete_org_removes_everything(client, owner, demo_org):
+    client.post(f"/api/orgs/{demo_org}/import/sample", headers=owner)
+    client.post(f"/api/orgs/{demo_org}/connector-token", headers=owner)
+    assert client.delete(f"/api/orgs/{demo_org}", headers=owner).status_code == 200
+    d = db.get_db()
+    for name in ("orgs", "memberships", "consents", "datasets", "dataset_chunks", "connector_tokens"):
+        assert d[name].count_documents({"_id": demo_org} if name == "orgs" else {"org_id": demo_org}) == 0, name
+
+
+def test_expiring_collections_have_ttl_indexes():
+    d = db.get_db()
+    sessions = {tuple(i["key"].items()): i for i in d.sessions.list_indexes()}
+    assert sessions[(("expires_at", 1),)]["expireAfterSeconds"] == 0
+    states = {tuple(i["key"].items()): i for i in d.oauth_states.list_indexes()}
+    assert states[(("created_at", 1),)]["expireAfterSeconds"] == 900

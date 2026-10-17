@@ -1,8 +1,11 @@
 import base64
 import os
+import uuid
 
 import pytest
 from fastapi.testclient import TestClient
+from pymongo import MongoClient
+from pymongo.errors import PyMongoError
 
 os.environ.setdefault("AUREUS_MASTER_KEY", base64.b64encode(b"k" * 32).decode())
 
@@ -11,13 +14,31 @@ from aureus.api import app  # noqa: E402
 from aureus import sample  # noqa: E402
 
 
+def _mongo_client():
+    """A real MongoDB if one answers (CI, local dev), otherwise an in-memory mongomock."""
+    uri = os.environ.get("AUREUS_TEST_MONGODB_URI", "mongodb://127.0.0.1:27017")
+    try:
+        client = MongoClient(uri, tz_aware=True, serverSelectionTimeoutMS=1500)
+        client.admin.command("ping")
+        return client, True
+    except PyMongoError:
+        import mongomock
+        return mongomock.MongoClient(tz_aware=True), False
+
+
+_CLIENT, REAL_MONGO = _mongo_client()
+
+
 @pytest.fixture(autouse=True)
 def isolated_db(tmp_path, monkeypatch):
-    monkeypatch.setattr(config, "DB_PATH", tmp_path / "test.db")
+    name = f"aureus_test_{uuid.uuid4().hex[:12]}"
+    monkeypatch.setattr(config, "MONGODB_DB", name)
     monkeypatch.setattr(config, "DATA_DIR", tmp_path)
+    db.set_client(_CLIENT)
     crypto._key = None
     db.init()
     yield
+    _CLIENT.drop_database(name)
 
 
 @pytest.fixture
