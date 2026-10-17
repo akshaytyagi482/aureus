@@ -18,6 +18,7 @@ from ..money import inr
 CATEGORY_LIMITS = [("micro", 2.5e7, 1e8), ("small", 2.5e8, 1e9), ("medium", 1.25e9, 5e9)]
 
 TERM_LOAN_SHARE_ASSUMPTION = 0.75
+ASSUMED_LOAN_RATE = 0.10  # for subsidies paid as a share of interest, when the actual rate isn't known
 
 
 @lru_cache
@@ -66,19 +67,25 @@ class CapitalAsset:
 ZONE_MAPS = ("rate_by_zone", "years_by_zone", "cap_by_zone")
 
 
-def _zone_value(mapping: dict | None, zone: str | None):
-    """Zone-keyed lookup; the key 'ALL' applies statewide."""
+CATEGORY_KEYS = {"micro", "small", "medium"}
+
+
+def _zone_value(mapping: dict | None, zone: str | None, category: str | None = None):
+    """Look up by zone, then by enterprise size (some states key years or caps by size), then 'ALL' (statewide)."""
     if not mapping:
         return None
     if zone in mapping:
         return mapping[zone]
+    if category in mapping:
+        return mapping[category]
     return mapping.get("ALL")
 
 
 def _needs_zone(scheme: dict) -> bool:
     if scheme.get("zones"):
         return True
-    return any(m and "ALL" not in m for m in (scheme["benefit"].get(k) for k in ZONE_MAPS))
+    return any(m and "ALL" not in m and not set(m) <= CATEGORY_KEYS
+               for m in (scheme["benefit"].get(k) for k in ZONE_MAPS))
 
 
 def zone_name(state_code: str, zone: str | None) -> str:
@@ -132,7 +139,7 @@ def _rate(rate, category: str | None):
 def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], today: date | None = None) -> dict:
     reasons, missing = [], []
     today = today or date.today()
-    window_end = date.fromisoformat(scheme["window"]["to"])
+    window_end = date.fromisoformat(scheme["window"]["to"]) if scheme["window"].get("to") else date.max
     if window_end < today and not scheme.get("continuing"):
         reasons.append(f"Scheme period ended on {window_end:%d %b %Y}")
     states = scheme["states"]
@@ -155,17 +162,18 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
         elif scheme.get("zones") and zone not in scheme["zones"]:
             reasons.append(scheme.get("zone_exclusion_reason", f"Not available in {zone_label}"))
 
-    start = date.fromisoformat(scheme["window"]["from"])
-    end = date.fromisoformat(scheme["window"]["to"])
+    start = date.fromisoformat(scheme["window"]["from"]) if scheme["window"].get("from") else date.min
+    end = window_end
     qualifying = [a for a in assets
                   if a.asset_class in scheme["asset_classes"] and start <= a.invoice_date <= end]
     eligible_cost = round(sum(a.value for a in qualifying), 2)
 
     estimate, basis_text, assumptions = 0.0, "", []
-    rate = _rate(benefit["rate"] if "rate" in benefit else _zone_value(benefit.get("rate_by_zone"), zone),
+    rate = _rate(benefit["rate"] if "rate" in benefit else _zone_value(benefit.get("rate_by_zone"), zone, profile.category),
                  profile.category)
-    years = benefit.get("years") or _zone_value(benefit.get("years_by_zone"), zone)
-    cap = benefit.get("cap") or _zone_value(benefit.get("cap_by_zone"), zone)
+    years = benefit.get("years") or _zone_value(benefit.get("years_by_zone"), zone, profile.category)
+    cap = _rate(benefit.get("cap") or benefit.get("cap_by_category") or _zone_value(benefit.get("cap_by_zone"), zone, profile.category),
+                profile.category)
     where = f" ({zone_label})" if zone and _needs_zone(scheme) else ""
 
     if kind in ("capital_subsidy", "sgst_refund_ceiling"):
@@ -184,6 +192,9 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
         if rate is not None:
             estimate = base * rate
             basis_text = f"{rate:.0%} of {inr(base, 0)}{where}"
+    elif kind == "sgst_refund_ceiling" and rate is None and not reasons:
+        basis_text = "Refund of SGST you pay; this policy sets no investment-linked ceiling, so no estimate"
+        assumptions.append("Amount depends on the SGST your unit pays on in-state sales")
     elif kind == "sgst_refund_ceiling" and rate is not None:
         estimate = eligible_cost * rate
         basis_text = (f"Up to {rate:.0%} of {inr(eligible_cost, 0)} capital investment{where}, refunded from SGST"
@@ -196,17 +207,25 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
             missing.append("monthly electricity duty (shown on your electricity bill)")
     elif kind == "power_tariff_per_unit":
         if profile.monthly_power_units:
-            estimate = profile.monthly_power_units * 12 * years * benefit["per_unit"]
-            basis_text = f"₹{benefit['per_unit']:g}/unit on {profile.monthly_power_units:,.0f} units/month for {years} years"
+            per_unit = benefit.get("per_unit") or _zone_value(benefit.get("per_unit_by_zone"), zone, profile.category) or 0
+            estimate = profile.monthly_power_units * 12 * years * per_unit
+            basis_text = f"₹{per_unit:g}/unit on {profile.monthly_power_units:,.0f} units/month for {years} years{where}"
         else:
             missing.append("monthly electricity consumption in units (kWh)")
     elif kind == "interest_subsidy" and rate is not None:
         if profile.term_loan_amount:
-            estimate = profile.term_loan_amount * rate
-            if benefit.get("annual_cap"):
-                estimate = min(estimate, benefit["annual_cap"])
-            basis_text = (f"Up to {rate:.0%} a year on a {inr(profile.term_loan_amount, 0)} term loan (first-year figure"
-                          + (f", for up to {years} years)" if years else ")"))
+            if benefit.get("rate_basis", "").startswith("share"):
+                estimate = profile.term_loan_amount * ASSUMED_LOAN_RATE * rate
+                assumptions.append(f"Assumed a {ASSUMED_LOAN_RATE:.0%} interest rate on the term loan")
+                what = f"{rate:.0%} of the interest on a {inr(profile.term_loan_amount, 0)} term loan"
+            else:
+                estimate = profile.term_loan_amount * rate
+                what = f"Up to {rate:.2%} a year on a {inr(profile.term_loan_amount, 0)} term loan".replace(".00%", "%")
+            annual_cap = _rate(benefit.get("annual_cap") or _zone_value(benefit.get("annual_cap_by_zone"), zone, profile.category),
+                               profile.category)
+            if annual_cap:
+                estimate = min(estimate, annual_cap)
+            basis_text = what + " (first-year figure" + (f", for up to {years} years)" if years else ")") + where
         else:
             missing.append("term loan amount")
     elif kind == "certification_support" and rate is not None:
@@ -240,9 +259,12 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
         "benefit_type": kind,
         "status": status,
         "estimated_benefit": round(estimate, 2) if status != "not_eligible" else 0.0,
-        # Interest subsidy is a first-year figure and conditional schemes depend on facts we can't check
-        # (ownership, exporter status...), so both stay out of the headline unless a scheme says otherwise.
-        "in_total": scheme.get("in_total", kind != "interest_subsidy" and not scheme.get("conditions")),
+        # Interest subsidy is a first-year figure, certification reimbursements depend on actual certification
+        # spend, and conditional schemes depend on facts we can't check (ownership, exporter status...), so all
+        # stay out of the headline unless a scheme says otherwise.
+        "in_total": scheme.get("in_total", kind not in ("interest_subsidy", "certification_topup")
+                                and not scheme.get("conditions")),
+        "exclusive_group": scheme.get("exclusive_group"),
         "conditions": scheme.get("conditions", []),
         "continuing": scheme.get("continuing", False),
         "basis": basis_text,
@@ -272,7 +294,7 @@ def match(profile: Profile, assets: list[CapitalAsset], include_ineligible: bool
     by_class: dict[str, float] = {}
     for a in assets:
         by_class[a.asset_class] = round(by_class.get(a.asset_class, 0) + a.value, 2)
-    counted = [e for e in shown if e["status"] == "eligible" and e["in_total"]]
+    counted = _best_per_exclusive_group([e for e in shown if e["status"] == "eligible" and e["in_total"]])
     unverified = [e["name"] for e in counted if not e["verified"]]
     disclaimer = ("Maharashtra and ZED figures are checked against the official documents cited on each scheme. "
                   "Estimates are ceilings: actual payouts depend on DIC approval and, for the SGST refund, on tax you pay.")
@@ -289,6 +311,19 @@ def match(profile: Profile, assets: list[CapitalAsset], include_ineligible: bool
         "unverified_in_total": unverified,
         "disclaimer": disclaimer,
     }
+
+
+def _best_per_exclusive_group(schemes: list[dict]) -> list[dict]:
+    """Either/or benefits (e.g. SGST refund OR capital subsidy) count only once: the larger one."""
+    best: dict[str, dict] = {}
+    out = []
+    for e in schemes:
+        group = e.get("exclusive_group")
+        if not group:
+            out.append(e)
+        elif group not in best or e["estimated_benefit"] > best[group]["estimated_benefit"]:
+            best[group] = e
+    return out + list(best.values())
 
 
 def calculator(state_code: str, sector: str, investments: dict[str, float], category: str | None = None,

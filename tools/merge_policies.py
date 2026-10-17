@@ -17,13 +17,15 @@ GRID = Path(__file__).resolve().parent.parent / "aureus" / "data" / "schemes.jso
 TYPES = {
     "capital_subsidy": set(),
     "sgst_refund_ceiling": set(),
-    "interest_subsidy": {"rate"},
+    "interest_subsidy": set(),
     "electricity_duty_exemption": set(),
     "power_tariff_per_unit": {"per_unit", "years"},
     "certification_topup": set(),
     "certification_support": {"certification_cost", "rate"},
 }
 ASSET_CLASSES = {"plant_machinery", "testing_equipment", "pollution_control", "solar", "it_hardware"}
+NOT_DETECTABLE = {"building", "land"}  # allowed in research, dropped on merge: invoices can't show them
+MAX_RATE = 3.0  # SGST ceilings can exceed 100% of investment (Rajasthan 125%, Assam micro 250%)
 CATEGORIES = {"micro", "small", "medium"}
 FORM = {"electricity_duty_exemption": "dic_power_incentive", "power_tariff_per_unit": "dic_power_incentive",
         "certification_topup": "zed_registration", "certification_support": "zed_registration"}
@@ -45,8 +47,10 @@ def _rate_ok(value, where):
     for v in values:
         if isinstance(v, dict):
             _rate_ok(v, where)
-        elif not isinstance(v, (int, float)) or not 0 <= v <= 1:
-            raise Invalid(f"{where}: rate {v!r} must be a decimal between 0 and 1")
+        elif v is None:
+            continue
+        elif not isinstance(v, (int, float)) or not 0 <= v <= MAX_RATE:
+            raise Invalid(f"{where}: rate {v!r} must be a decimal between 0 and {MAX_RATE}")
 
 
 def validate(doc: dict, path: str) -> list[str]:
@@ -77,21 +81,24 @@ def validate(doc: dict, path: str) -> list[str]:
             check("rate" in b or "rate_by_zone" in b, f"{where}: capital_subsidy needs rate or rate_by_zone")
             check(b.get("basis", "eligible_cost") in ("eligible_cost", "term_loan"), f"{where}: bad basis")
         if kind == "sgst_refund_ceiling":
-            check("rate_by_zone" in b, f"{where}: sgst_refund_ceiling needs rate_by_zone")
+            check("rate_by_zone" in b, f"{where}: sgst_refund_ceiling needs rate_by_zone (null if uncapped)")
+        if kind == "interest_subsidy":
+            check("rate" in b or "rate_by_zone" in b, f"{where}: interest_subsidy needs rate or rate_by_zone")
         if kind == "electricity_duty_exemption":
             check("years_by_zone" in b or "years" in b, f"{where}: needs years_by_zone or years")
-        for key in ("rate_by_zone", "years_by_zone", "cap_by_zone"):
+        for key in ("rate_by_zone", "years_by_zone", "cap_by_zone", "annual_cap_by_zone", "per_unit_by_zone"):
             for z in (b.get(key) or {}):
-                check(z == "ALL" or z in zones, f"{where}: {key} uses zone {z!r} not defined in 'zones'")
+                check(z == "ALL" or z in zones or z in CATEGORIES, f"{where}: {key} uses zone {z!r} not defined in 'zones'")
         for z in s.get("zones") or []:
             check(z in zones, f"{where}: zone {z!r} not defined in 'zones'")
         check(set(s.get("categories") or []) <= CATEGORIES and s.get("categories"), f"{where}: bad categories")
-        check(set(s.get("asset_classes") or []) <= ASSET_CLASSES, f"{where}: bad asset_classes")
+        check(set(s.get("asset_classes") or []) <= ASSET_CLASSES | NOT_DETECTABLE, f"{where}: bad asset_classes")
         try:
             w = s["window"]
-            check(date.fromisoformat(w["from"]) <= date.fromisoformat(w["to"]), f"{where}: window from > to")
+            start = date.fromisoformat(w["from"]) if w.get("from") else date.min
+            check(w.get("to") is None or start <= date.fromisoformat(w["to"]), f"{where}: window from > to")
         except (KeyError, ValueError, TypeError):
-            errors.append(f"{path}: {where}: window needs ISO from/to dates")
+            errors.append(f"{path}: {where}: window needs an ISO 'from' date and an ISO or null 'to' date")
         check(isinstance(s.get("verified"), bool), f"{where}: verified must be true/false")
         if s.get("verified"):
             check(bool((doc.get("policy") or {}).get("source_url")), f"{where}: verified scheme needs policy.source_url")
@@ -117,7 +124,7 @@ def to_grid_scheme(doc: dict, s: dict) -> dict:
         "states": states,
         "categories": s["categories"],
         "sectors": ["manufacturing"],
-        "asset_classes": s.get("asset_classes") or [],
+        "asset_classes": [a for a in s.get("asset_classes") or [] if a not in NOT_DETECTABLE],
         "window": s["window"],
         "min_investment": s.get("min_investment") or 0,
         "benefit": s["benefit"],
@@ -135,7 +142,7 @@ def to_grid_scheme(doc: dict, s: dict) -> dict:
         out["zones"] = s["zones"]
         if s.get("zone_exclusion_reason"):
             out["zone_exclusion_reason"] = s["zone_exclusion_reason"]
-    for key in ("in_total", "conditions", "continuing"):
+    for key in ("in_total", "conditions", "continuing", "exclusive_group"):
         if key in s:
             out[key] = s[key]
     return out
