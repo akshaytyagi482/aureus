@@ -11,14 +11,14 @@ One system serves three audiences: MSME owners, CA firms (multi-client console, 
 
 ---
 
-**Docs:** [product flow, AI and data plan](docs/PRODUCT.md) · [deploying on Render + MongoDB Atlas](docs/DEPLOY.md)
+**Docs:** [product flow, AI and data plan](docs/PRODUCT.md) · [deploying on Render + PostgreSQL](docs/DEPLOY.md)
 
 ## Quick start
 
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements-dev.txt
-docker compose up -d                  # local MongoDB 8 (or point MONGODB_URI at Atlas / your own server)
+docker compose up -d                  # local PostgreSQL 16 (or set DATABASE_URL to any Postgres)
 python -m aureus.seed                 # demo accounts + sample data
 uvicorn aureus.api:app --reload       # http://localhost:8000
 ```
@@ -127,17 +127,17 @@ Every legal citation comes from a fixed, reviewed list in `notice.py`. Each cita
 
 If `ANTHROPIC_API_KEY` is set, ticking *Polish with Claude* refines the wording (model `claude-opus-5-5`, server-side refusal fallback enabled). The prompt forbids changing facts or citations, and the template is kept if any citation goes missing or the call fails. Drafts are marked for professional review either way.
 
-## Database (MongoDB)
+## Database (PostgreSQL)
 
-All state lives in MongoDB (`aureus/db.py` lists every collection).
+All state lives in PostgreSQL 16 (`aureus/db.py` lists every table).
 
-- **Encrypted imports.** Each import is one AES-256-GCM ciphertext stored in `dataset_chunks` (≤ 4 MB per document, so large imports never reach MongoDB's 16 MB limit). `datasets` holds only the metadata, and is written after the chunks so a half-written import is never visible.
-- **Automatic expiry.** Sessions and OAuth states carry TTL indexes, so MongoDB deletes them when they expire.
-- **Uniqueness.** Unique indexes enforce one account per email and one membership per person per business.
-- **Readable ids.** Integer ids come from a `counters` collection, so URLs stay short.
-- **No multi-document transactions.** The app works on a standalone server as well as on a replica set or Atlas. Operations that touch several collections are ordered so that a partial failure is safe: revocation marks consent revoked before purging, and deleting a business removes access before the data.
+- **Encrypted imports.** Each import is one AES-256-GCM ciphertext in `datasets.payload_enc`. GSTIN, Udyam number and OAuth tokens are encrypted too; tokens and passwords are stored only as hashes.
+- **Foreign keys.** Deleting a business cascades to everything it owns. The audit log is kept, since it holds no financial data.
+- **Transactions.** Revoking consent and purging its data happen together or not at all, and so do sync swaps and org creation.
+- **Migrations.** Numbered migrations run once at start-up, under an advisory lock so the web app and the cron job never race.
+- **Expiry.** Sessions, OAuth states, reset tokens and login-failure records are filtered by time in every query, and purged by the daily job.
 
-Tests use a fresh database per test on the server at `AUREUS_TEST_MONGODB_URI` (default `mongodb://127.0.0.1:27017`). Without a server they fall back to `mongomock`, in memory.
+Tests run against a real Postgres database, `AUREUS_TEST_DATABASE_URL` (default `postgresql://postgres@127.0.0.1:5432/aureus_test`), and empty every table between tests. `docker compose up -d` creates both databases.
 
 ## Security & compliance posture (PRD §4)
 
@@ -157,8 +157,8 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 |---|---|
 | `AUREUS_MASTER_KEY` | AES-256 key, base64. **Required in production** |
 | `AUREUS_ENV` | `production` enforces the master key |
-| `MONGODB_URI` | MongoDB connection string, default `mongodb://127.0.0.1:27017`. Atlas `mongodb+srv://` URIs work |
-| `MONGODB_DB` | Database name, default `aureus` |
+| `DATABASE_URL` | PostgreSQL connection string, default `postgresql://postgres@127.0.0.1:5432/aureus` |
+| `AUREUS_DB_POOL_SIZE` | Maximum database connections per process, default 10 |
 | `AUREUS_DATA_DIR` | Where the development key file lives |
 | `AUREUS_MATCH_TOLERANCE_PAISE` | Matched threshold, default `99` (₹0.99) |
 | `APP_BASE_URL` | Public URL used in emailed links |
@@ -169,7 +169,7 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 
 ## What is production-ready vs. what needs work
 
-**Built and tested** (61 tests against MongoDB 8.0, plus a browser run through every screen):
+**Built and tested** (62 tests against PostgreSQL 16, plus a browser run through every screen):
 - ingestion parsers and the reconciliation engine
 - paisa-level matching
 - the policy maths
@@ -185,4 +185,4 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 **Not built yet:**
 - **Licensed GSTR-2B feed.** Pulling GSTR-2B automatically requires a GSP licence or a GST Suvidha Provider partner (the PRD mentions Account Aggregators). Until then the user downloads the JSON from the portal and uploads it; the parser reads the portal's own format.
 - **Verified scheme data for states other than Maharashtra.** See the warning above.
-- **Production hardening** still to do: a KMS-held master key, MongoDB backups, email verification at signup, and invitations for users who don't yet have an account. Done already: login lockout, password reset and change, and a daily job for Zoho sync, deadline alerts and consent-expiry warnings.
+- **Production hardening** still to do: a KMS-held master key, database backup policy, email verification at signup, and invitations for users who don't yet have an account. Done already: login lockout, password reset and change, and a daily job for Zoho sync, deadline alerts and consent-expiry warnings.

@@ -1,44 +1,36 @@
 import base64
 import os
-import uuid
 
+import psycopg
 import pytest
 from fastapi.testclient import TestClient
-from pymongo import MongoClient
-from pymongo.errors import PyMongoError
 
 os.environ.setdefault("AUREUS_MASTER_KEY", base64.b64encode(b"k" * 32).decode())
+TEST_DATABASE_URL = os.environ.get("AUREUS_TEST_DATABASE_URL", "postgresql://postgres@127.0.0.1:5432/aureus_test")
+os.environ["DATABASE_URL"] = TEST_DATABASE_URL
 
 from aureus import config, crypto, db  # noqa: E402
 from aureus.api import app  # noqa: E402
 from aureus import sample  # noqa: E402
 
 
-def _mongo_client():
-    """A real MongoDB if one answers (CI, local dev), otherwise an in-memory mongomock."""
-    uri = os.environ.get("AUREUS_TEST_MONGODB_URI", "mongodb://127.0.0.1:27017")
+def pytest_configure(config):
     try:
-        client = MongoClient(uri, tz_aware=True, serverSelectionTimeoutMS=1500)
-        client.admin.command("ping")
-        return client, True
-    except PyMongoError:
-        import mongomock
-        return mongomock.MongoClient(tz_aware=True), False
-
-
-_CLIENT, REAL_MONGO = _mongo_client()
+        psycopg.connect(TEST_DATABASE_URL, connect_timeout=3).close()
+    except psycopg.OperationalError as exc:
+        pytest.exit(f"PostgreSQL test database not reachable at {TEST_DATABASE_URL}: {exc}\n"
+                    "Start Postgres and create the database (createdb aureus_test), or set AUREUS_TEST_DATABASE_URL.",
+                    returncode=2)
 
 
 @pytest.fixture(autouse=True)
 def isolated_db(tmp_path, monkeypatch):
-    name = f"aureus_test_{uuid.uuid4().hex[:12]}"
-    monkeypatch.setattr(config, "MONGODB_DB", name)
     monkeypatch.setattr(config, "DATA_DIR", tmp_path)
-    db.set_client(_CLIENT)
     crypto._key = None
     db.init()
+    with db.tx() as cur:
+        cur.execute(f"TRUNCATE {', '.join(db.TABLES)} RESTART IDENTITY CASCADE")
     yield
-    _CLIENT.drop_database(name)
 
 
 @pytest.fixture
@@ -69,3 +61,9 @@ def demo_org(client, owner):
     for purpose in ("books_sync", "gstr2b_feed"):
         assert client.post(f"/api/orgs/{org_id}/consent", headers=owner, json={"purpose": purpose}).status_code == 200
     return org_id
+
+
+@pytest.fixture(scope="session", autouse=True)
+def close_pool_at_end():
+    yield
+    db.close()

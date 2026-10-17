@@ -27,6 +27,7 @@ async def lifespan(_app):
         crypto.check_key()  # fail the deploy now, not on the first import
     db.init()
     yield
+    db.close()
 
 
 app = FastAPI(title="AureusRecon", version="1.0.0", docs_url="/api/docs", openapi_url="/api/openapi.json",

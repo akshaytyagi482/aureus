@@ -9,10 +9,6 @@ envVarGroups:
         value: production
       - key: AUREUS_MASTER_KEY  # python -c "import os,base64;print(base64.b64encode(os.urandom(32)).decode())"
         sync: false
-      - key: MONGODB_URI        # Atlas connection string, e.g. mongodb+srv://user:pass@cluster.mongodb.net
-        sync: false
-      - key: MONGODB_DB
-        value: aureus
       - key: APP_BASE_URL       # https://<your-domain>, used in emailed links
         sync: false
       - key: SMTP_HOST          # e.g. smtp.resend.com / smtp.sendgrid.net / email-smtp.ap-south-1.amazonaws.com
@@ -38,7 +34,7 @@ services:
   - type: web
     name: aureusrecon
     runtime: python
-    region: singapore  # nearest Render region to India; data itself lives in MongoDB Atlas (Mumbai)
+    region: singapore  # nearest Render region to India
     plan: starter      # free instances sleep after 15 minutes idle; use starter or above for real clients
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn aureus.api:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips "*"
@@ -46,6 +42,10 @@ services:
     autoDeploy: true
     envVars:
       - fromGroup: aureus-shared
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aureusrecon-db
+          property: connectionString
 
   - type: cron
     name: aureusrecon-daily
@@ -56,3 +56,17 @@ services:
     startCommand: python -m aureus.jobs daily
     envVars:
       - fromGroup: aureus-shared
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aureusrecon-db
+          property: connectionString
+
+# Managed PostgreSQL. To keep data in India instead, delete this block and set DATABASE_URL
+# to a Mumbai-hosted Postgres (e.g. AWS RDS ap-south-1 or Supabase South Asia) in both services.
+databases:
+  - name: aureusrecon-db
+    region: singapore
+    plan: 0.1c-256mb  # smallest paid instance; Render's free Postgres expires, so avoid it for real data
+    databaseName: aureus
+    postgresMajorVersion: "16"
+    ipAllowList: []  # only Render services in this account can connect

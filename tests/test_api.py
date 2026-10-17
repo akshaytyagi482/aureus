@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from aureus import db, sample, services
 from aureus.outputs import notice
 
@@ -68,8 +70,7 @@ def test_gstr2b_for_another_gstin_is_rejected(client, owner):
 
 
 def _dump_database() -> str:
-    d = db.get_db()
-    return json.dumps({name: list(d[name].find()) for name in d.list_collection_names()}, default=str)
+    return json.dumps({t: db.all(f"SELECT * FROM {t}") for t in db.TABLES}, default=str)
 
 
 def test_data_is_encrypted_at_rest(client, owner, demo_org):
@@ -142,31 +143,34 @@ def test_polish_falls_back_without_credentials(monkeypatch):
     assert out["text"] == "x" and "polish_error" in out
 
 
-def test_large_dataset_is_chunked(monkeypatch, client, owner, demo_org):
-    monkeypatch.setattr(services, "CHUNK_CHARS", 1000)
-    client.post(f"/api/orgs/{demo_org}/import/sample", headers=owner)
-    dataset = db.get_db().datasets.find_one({"org_id": demo_org, "kind": "books"})
-    assert dataset["chunks"] > 1
-    assert db.get_db().dataset_chunks.count_documents({"dataset_id": dataset["_id"]}) == dataset["chunks"]
-    recon = client.get(f"/api/orgs/{demo_org}/reconciliation", headers=owner).json()
-    assert recon["summary"]["invoices"] == 21
-
-
 def test_delete_org_removes_everything(client, owner, demo_org):
     client.post(f"/api/orgs/{demo_org}/import/sample", headers=owner)
     client.post(f"/api/orgs/{demo_org}/connector-token", headers=owner)
     assert client.delete(f"/api/orgs/{demo_org}", headers=owner).status_code == 200
-    d = db.get_db()
-    for name in ("orgs", "memberships", "consents", "datasets", "dataset_chunks", "connector_tokens"):
-        assert d[name].count_documents({"_id": demo_org} if name == "orgs" else {"org_id": demo_org}) == 0, name
+    for table in ("memberships", "consents", "datasets", "connector_tokens", "integrations", "notifications"):
+        assert db.one(f"SELECT COUNT(*) AS n FROM {table} WHERE org_id = %s", (demo_org,))["n"] == 0, table
+    assert db.one("SELECT COUNT(*) AS n FROM orgs WHERE id = %s", (demo_org,))["n"] == 0
 
 
-def test_expiring_collections_have_ttl_indexes():
-    d = db.get_db()
-    sessions = {tuple(i["key"].items()): i for i in d.sessions.list_indexes()}
-    assert sessions[(("expires_at", 1),)]["expireAfterSeconds"] == 0
-    states = {tuple(i["key"].items()): i for i in d.oauth_states.list_indexes()}
-    assert states[(("created_at", 1),)]["expireAfterSeconds"] == 900
+def test_revoke_is_atomic(client, owner, demo_org, monkeypatch):
+    """If the purge fails half-way, consent must not end up revoked with data still present (or vice versa)."""
+    client.post(f"/api/orgs/{demo_org}/import/sample", headers=owner)
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("audit write failed")
+    monkeypatch.setattr(services, "audit", boom)
+    user = services.user_for_token(owner["Authorization"].split()[1])
+    with pytest.raises(RuntimeError):
+        services.revoke_consent(user, demo_org, "all")
+    assert db.one("SELECT COUNT(*) AS n FROM datasets WHERE org_id = %s", (demo_org,))["n"] == 3
+    assert len(services.active_consents(demo_org)) == 2
+
+
+def test_migrations_are_idempotent():
+    db.init()
+    db.init()
+    assert db.one("SELECT MAX(version) AS v FROM schema_migrations")["v"] == len(db.MIGRATIONS)
+
 
 
 def test_ims_flow(client, owner, demo_org):

@@ -78,7 +78,7 @@ def test_deadline_alert_sent_once(client, owner, demo_org, outbox):
 
 
 def test_consent_expiry_warning(client, owner, demo_org, outbox):
-    db.get_db().consents.update_many({"org_id": demo_org}, {"$set": {"expires_at": db.now() + timedelta(days=5)}})
+    db.execute("UPDATE consents SET expires_at = %s WHERE org_id = %s", (db.now() + timedelta(days=5), demo_org))
     assert jobs.consent_expiry_warnings(date.today()) == 2
     assert jobs.consent_expiry_warnings(date.today()) == 0
 
@@ -87,8 +87,7 @@ def test_replace_by_period_keeps_one_copy(owner, client, demo_org):
     invoices = parse_books("tally", sample.tally_xml())
     services.replace_by_period(demo_org, None, "books", "zoho", invoices)
     services.replace_by_period(demo_org, None, "books", "zoho", invoices)
-    assert db.get_db().datasets.count_documents({"org_id": demo_org, "source": "zoho"}) == 1
-    assert db.get_db().dataset_chunks.count_documents({"org_id": demo_org}) == 1
+    assert db.one("SELECT COUNT(*) AS n FROM datasets WHERE org_id = %s AND source = 'zoho'", (demo_org,))["n"] == 1
 
 
 def test_signup_is_throttled_per_ip(client):
@@ -100,4 +99,12 @@ def test_signup_is_throttled_per_ip(client):
 def test_daily_job_runs_end_to_end(client, owner, demo_org, outbox):
     client.post(f"/api/orgs/{demo_org}/import/sample", headers=owner)
     result = jobs.daily(date(2026, 10, 17))
-    assert result == {"zoho_synced": 0, "deadline_alerts": 1, "consent_warnings": 0}
+    assert {k: v for k, v in result.items() if k != "expired_rows_purged"} == \
+        {"zoho_synced": 0, "deadline_alerts": 1, "consent_warnings": 0}
+
+
+def test_purge_expired_rows(client, owner):
+    db.execute("UPDATE sessions SET expires_at = now() - interval '1 minute'")
+    db.execute("INSERT INTO auth_failures (scope, key, at) VALUES ('login-ip', 'x', now() - interval '2 days')")
+    assert jobs.purge_expired() >= 2
+    assert client.get("/api/me", headers=owner).status_code == 401

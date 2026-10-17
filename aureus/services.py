@@ -1,17 +1,16 @@
 """Application services: tenants, consent, encrypted datasets and engine runs.
 
-Raw invoices never sit in plain fields. Each import is sealed as one
-AES-256-GCM ciphertext bound to its organisation, stored in chunks, and only
-decrypted in memory for the duration of a reconciliation or policy run.
+Raw invoices never sit in plain columns. Each import is sealed as one
+AES-256-GCM ciphertext bound to its organisation, and is only decrypted in
+memory for the duration of a reconciliation or policy run.
 """
 
 from datetime import date, timedelta
 
-from pymongo import ASCENDING, DESCENDING
-from pymongo.errors import DuplicateKeyError
+from psycopg.errors import UniqueViolation
 
 from . import config, crypto, db, gstin as gstin_mod
-from .db import fmt, get_db, next_id
+from .db import fmt, tx
 from .engines import deadlines, ims_actions, policy, tax
 from .ingestion import ims as ingest_ims
 from .models import Invoice
@@ -31,7 +30,6 @@ PURPOSES = {
     },
 }
 CONSENT_DAYS = 365
-CHUNK_CHARS = 4 * 1024 * 1024  # keeps every document far below MongoDB's 16 MB limit
 
 
 class AccessDenied(Exception):
@@ -46,55 +44,50 @@ class EmailTaken(Exception):
     pass
 
 
-def audit(org_id, user_id, action, detail=None):
-    get_db().audit_log.insert_one({"_id": next_id("audit_log"), "org_id": org_id, "user_id": user_id,
-                                   "action": action, "detail": detail, "at": db.now()})
+def audit(org_id, user_id, action, detail=None, cur=None):
+    sql = "INSERT INTO audit_log (org_id, user_id, action, detail) VALUES (%s, %s, %s, %s)"
+    params = (org_id, user_id, action, db.json(detail) if detail is not None else None)
+    if cur is not None:
+        cur.execute(sql, params)
+    else:
+        db.execute(sql, params)
 
 
 # ---------------------------------------------------------------- users & sessions
 
-def _user_out(doc) -> dict | None:
-    if not doc:
-        return None
-    return {"id": doc["_id"], "email": doc["email"], "name": doc["name"], "role": doc["role"],
-            "firm_name": doc.get("firm_name")}
+USER_COLUMNS = "id, email, name, role, firm_name"
 
 
 def create_user(email: str, name: str, password: str, role: str, firm_name: str | None = None) -> dict:
-    doc = {"email": email.lower().strip(), "name": name.strip(), "password_hash": crypto.hash_password(password),
-           "role": role, "firm_name": firm_name, "created_at": db.now()}
-    if get_db().users.find_one({"email": doc["email"]}, {"_id": 1}):
-        raise EmailTaken(doc["email"])
-    doc["_id"] = next_id("users")
     try:
-        get_db().users.insert_one(doc)
-    except DuplicateKeyError:  # lost a race with a concurrent signup
-        raise EmailTaken(doc["email"])
-    return _user_out(doc)
+        return db.one(f"INSERT INTO users (email, name, password_hash, role, firm_name) VALUES (%s, %s, %s, %s, %s) "
+                      f"RETURNING {USER_COLUMNS}",
+                      (email.lower().strip(), name.strip(), crypto.hash_password(password), role, firm_name))
+    except UniqueViolation:
+        raise EmailTaken(email)
 
 
 def get_user(user_id: int) -> dict | None:
-    return _user_out(get_db().users.find_one({"_id": user_id}))
+    return db.one(f"SELECT {USER_COLUMNS} FROM users WHERE id = %s", (user_id,))
 
 
 def login(email: str, password: str) -> tuple[str, dict] | None:
-    doc = get_db().users.find_one({"email": email.lower().strip()})
-    if not doc or not crypto.verify_password(password, doc["password_hash"]):
+    row = db.one("SELECT * FROM users WHERE email = %s", (email.lower().strip(),))
+    if not row or not crypto.verify_password(password, row["password_hash"]):
         return None
     token = crypto.new_token()
-    get_db().sessions.insert_one({"_id": crypto.token_hash(token), "user_id": doc["_id"],
-                                  "expires_at": db.now() + timedelta(hours=config.SESSION_TTL_HOURS)})
-    return token, _user_out(doc)
+    db.execute("INSERT INTO sessions (token_hash, user_id, expires_at) VALUES (%s, %s, %s)",
+               (crypto.token_hash(token), row["id"], db.now() + timedelta(hours=config.SESSION_TTL_HOURS)))
+    return token, {k: row[k] for k in ("id", "email", "name", "role", "firm_name")}
 
 
 def user_for_token(token: str) -> dict | None:
-    # The TTL index deletes expired sessions within a minute; the date filter closes that gap.
-    session = get_db().sessions.find_one({"_id": crypto.token_hash(token), "expires_at": {"$gt": db.now()}})
-    return get_user(session["user_id"]) if session else None
+    return db.one("SELECT u.id, u.email, u.name, u.role, u.firm_name FROM sessions s JOIN users u ON u.id = s.user_id "
+                  "WHERE s.token_hash = %s AND s.expires_at > now()", (crypto.token_hash(token),))
 
 
 def logout(token: str) -> None:
-    get_db().sessions.delete_one({"_id": crypto.token_hash(token)})
+    db.execute("DELETE FROM sessions WHERE token_hash = %s", (crypto.token_hash(token),))
 
 
 # ---------------------------------------------------------------- organisations
@@ -107,19 +100,16 @@ ORG_FIELDS = ("name", "district", "address", "sector", "industry", "annual_turno
               "term_loan_amount", "zone", "monthly_electricity_duty", "monthly_power_units", "filing_frequency")
 
 
-def _org_out(doc) -> dict:
-    org = {k: doc.get(k) for k in ORG_FIELDS}
-    org.update(id=doc["_id"], state_code=doc["state_code"], gstin_last4=doc["gstin_last4"],
-               created_by=doc.get("created_by"), created_at=fmt(doc.get("created_at")))
-    org["sector"] = org["sector"] or "manufacturing"
-    org["filing_frequency"] = org["filing_frequency"] or "monthly"
-    org["gstin"] = crypto.decrypt_text(doc["gstin_enc"], _ctx(doc["_id"], "gstin"))
-    org["udyam"] = crypto.decrypt_text(doc.get("udyam_enc"), _ctx(doc["_id"], "udyam"))
+def _org_out(row: dict) -> dict:
+    org = {k: row[k] for k in ORG_FIELDS}
+    org.update(id=row["id"], state_code=row["state_code"], gstin_last4=row["gstin_last4"],
+               created_by=row["created_by"], created_at=fmt(row["created_at"]))
+    org["gstin"] = crypto.decrypt_text(row["gstin_enc"], _ctx(row["id"], "gstin"))
+    org["udyam"] = crypto.decrypt_text(row["udyam_enc"], _ctx(row["id"], "udyam"))
     org["state"] = gstin_mod.state_name(org["state_code"])
     org["category"] = policy.classify_enterprise(org["investment_pm"], org["annual_turnover"])
-    ca = get_db().memberships.find_one({"org_id": doc["_id"], "role": "ca"}, sort=[("user_id", ASCENDING)])
-    advisor = get_db().users.find_one({"_id": ca["user_id"]}) if ca else None
-    org["advisor"] = {"name": advisor["name"], "firm_name": advisor.get("firm_name")} if advisor else None
+    org["advisor"] = db.one("SELECT u.name, u.firm_name FROM memberships m JOIN users u ON u.id = m.user_id "
+                            "WHERE m.org_id = %s AND m.role = 'ca' ORDER BY u.id LIMIT 1", (row["id"],))
     return org
 
 
@@ -130,32 +120,41 @@ def _org_changes(org_id: int, data: dict) -> dict:
     return sets
 
 
+def _apply_changes(cur, org_id: int, changes: dict) -> None:
+    if changes:
+        cur.execute(f"UPDATE orgs SET {', '.join(f'{k} = %s' for k in changes)} WHERE id = %s",
+                    (*changes.values(), org_id))
+
+
 def create_org(user: dict, data: dict) -> dict:
     gstin = data["gstin"].strip().upper()
     if not gstin_mod.is_valid(gstin):
         raise ValueError("GSTIN is not valid (format or checksum)")
-    org_id = next_id("orgs")
-    doc = {"_id": org_id, "gstin_enc": crypto.encrypt_text(gstin, _ctx(org_id, "gstin")), "gstin_last4": gstin[-4:],
-           "state_code": gstin[:2], "created_by": user["id"], "created_at": db.now(),
-           "sector": "manufacturing", "filing_frequency": "monthly", **_org_changes(org_id, data)}
-    get_db().orgs.insert_one(doc)
-    get_db().memberships.insert_one({"org_id": org_id, "user_id": user["id"],
-                                     "role": "owner" if user["role"] == "msme" else "ca"})
-    audit(org_id, user["id"], "org_created")
-    return _org_out(doc)
+    with tx() as cur:
+        # The id is part of the encryption context, so insert first, then seal the GSTIN.
+        cur.execute("INSERT INTO orgs (name, gstin_enc, gstin_last4, state_code, created_by) "
+                    "VALUES (%s, '', %s, %s, %s) RETURNING id", (data["name"], gstin[-4:], gstin[:2], user["id"]))
+        org_id = cur.fetchone()["id"]
+        changes = _org_changes(org_id, data)
+        changes["gstin_enc"] = crypto.encrypt_text(gstin, _ctx(org_id, "gstin"))
+        _apply_changes(cur, org_id, changes)
+        cur.execute("INSERT INTO memberships (org_id, user_id, role) VALUES (%s, %s, %s)",
+                    (org_id, user["id"], "owner" if user["role"] == "msme" else "ca"))
+        audit(org_id, user["id"], "org_created", cur=cur)
+    return get_org_by_id(org_id)
 
 
 def update_org(user: dict, org_id: int, data: dict) -> dict:
     require_member(user, org_id)
-    changes = _org_changes(org_id, data)
-    if changes:
-        get_db().orgs.update_one({"_id": org_id}, {"$set": changes})
-    audit(org_id, user["id"], "org_updated", {"fields": sorted(k for k in data if k in ORG_FIELDS or k == "udyam")})
+    with tx() as cur:
+        _apply_changes(cur, org_id, _org_changes(org_id, data))
+        audit(org_id, user["id"], "org_updated",
+              {"fields": sorted(k for k in data if k in ORG_FIELDS or k == "udyam")}, cur=cur)
     return get_org_by_id(org_id)
 
 
 def require_member(user: dict, org_id: int) -> str:
-    row = get_db().memberships.find_one({"org_id": org_id, "user_id": user["id"]})
+    row = db.one("SELECT role FROM memberships WHERE org_id = %s AND user_id = %s", (org_id, user["id"]))
     if not row:
         raise AccessDenied("You do not have access to this organisation")
     return row["role"]
@@ -168,63 +167,45 @@ def get_org(user: dict, org_id: int) -> dict:
 
 def get_org_by_id(org_id: int) -> dict:
     """Internal lookup without a membership check (connector tokens are already org-scoped)."""
-    doc = get_db().orgs.find_one({"_id": org_id})
-    if not doc:
+    row = db.one("SELECT * FROM orgs WHERE id = %s", (org_id,))
+    if not row:
         raise AccessDenied("You do not have access to this organisation")
-    return _org_out(doc)
+    return _org_out(row)
 
 
 def list_orgs(user: dict) -> list[dict]:
-    ids = [m["org_id"] for m in get_db().memberships.find({"user_id": user["id"]})]
-    return [_org_out(doc) for doc in get_db().orgs.find({"_id": {"$in": ids}}).sort("name", ASCENDING)]
+    rows = db.all("SELECT o.* FROM orgs o JOIN memberships m ON m.org_id = o.id WHERE m.user_id = %s "
+                  "ORDER BY o.name", (user["id"],))
+    return [_org_out(r) for r in rows]
 
 
 def add_member(user: dict, org_id: int, email: str) -> dict:
     require_member(user, org_id)
-    other = get_db().users.find_one({"email": email.lower().strip()})
+    other = db.one("SELECT id, name, role, firm_name FROM users WHERE email = %s", (email.lower().strip(),))
     if not other:
         raise ValueError("No AureusRecon account uses that email. Ask them to sign up first.")
     role = "owner" if other["role"] == "msme" else "ca"
-    get_db().memberships.update_one({"org_id": org_id, "user_id": other["_id"]},
-                                    {"$setOnInsert": {"role": role}}, upsert=True)
-    audit(org_id, user["id"], "member_added", {"user_id": other["_id"], "role": role})
-    return {"user_id": other["_id"], "name": other["name"], "role": role, "firm_name": other.get("firm_name")}
+    with tx() as cur:
+        cur.execute("INSERT INTO memberships (org_id, user_id, role) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING",
+                    (org_id, other["id"], role))
+        audit(org_id, user["id"], "member_added", {"user_id": other["id"], "role": role}, cur=cur)
+    return {"user_id": other["id"], "name": other["name"], "role": role, "firm_name": other["firm_name"]}
 
 
 def list_members(user: dict, org_id: int) -> list[dict]:
     require_member(user, org_id)
-    rows = list(get_db().memberships.find({"org_id": org_id}))
-    users = {u["_id"]: u for u in get_db().users.find({"_id": {"$in": [r["user_id"] for r in rows]}})}
-    members = [{"user_id": r["user_id"], "name": users[r["user_id"]]["name"], "email": users[r["user_id"]]["email"],
-                "firm_name": users[r["user_id"]].get("firm_name"), "role": r["role"]}
-               for r in rows if r["user_id"] in users]
-    return sorted(members, key=lambda m: (m["role"] != "owner", m["name"]))
-
-
-def _purge_org_data(org_id: int, kinds: list[str], providers: list[str], connector_tokens: bool) -> dict:
-    d = get_db()
-    ids = [ds["_id"] for ds in d.datasets.find({"org_id": org_id, "kind": {"$in": kinds}}, {"_id": 1})]
-    d.dataset_chunks.delete_many({"dataset_id": {"$in": ids}})
-    removed = d.datasets.delete_many({"_id": {"$in": ids}}).deleted_count
-    integrations = d.integrations.delete_many({"org_id": org_id, "provider": {"$in": providers}}).deleted_count
-    if connector_tokens:
-        d.connector_tokens.delete_many({"org_id": org_id})
-    return {"datasets": removed, "integrations": integrations}
+    return db.all("SELECT u.id AS user_id, u.name, u.email, u.firm_name, m.role FROM memberships m "
+                  "JOIN users u ON u.id = m.user_id WHERE m.org_id = %s ORDER BY m.role DESC, u.name", (org_id,))
 
 
 def delete_org(user: dict, org_id: int) -> None:
     role = require_member(user, org_id)
-    d = get_db()
-    if role != "owner" and d.memberships.count_documents({"org_id": org_id, "role": "owner"}):
-        raise AccessDenied("Only the business owner can delete this organisation")
-    # Remove access first, so a half-finished delete never leaves data reachable.
-    d.memberships.delete_many({"org_id": org_id})
-    _purge_org_data(org_id, ["books", "gstr2b", "ims"], ["zoho"], connector_tokens=True)
-    d.dataset_chunks.delete_many({"org_id": org_id})
-    for name in ("consents", "integrations", "oauth_states"):
-        d[name].delete_many({"org_id": org_id})
-    d.orgs.delete_one({"_id": org_id})
-    audit(None, user["id"], "org_deleted", {"org_id": org_id})
+    with tx() as cur:
+        cur.execute("SELECT COUNT(*) AS n FROM memberships WHERE org_id = %s AND role = 'owner'", (org_id,))
+        if role != "owner" and cur.fetchone()["n"]:
+            raise AccessDenied("Only the business owner can delete this organisation")
+        cur.execute("DELETE FROM orgs WHERE id = %s", (org_id,))  # cascades to every owned row
+        audit(None, user["id"], "org_deleted", {"org_id": org_id}, cur=cur)
 
 
 # ---------------------------------------------------------------- consent
@@ -247,36 +228,42 @@ def grant_consent(user: dict, org_id: int, purpose: str) -> dict:
         "storage": "Encrypted at rest (AES-256-GCM); portal and bank credentials are never collected",
         "revocation": "Revoke anytime; all data collected under this consent is deleted immediately",
     }
-    d = get_db()
-    d.consents.update_many({"org_id": org_id, "purpose": purpose, "revoked_at": None}, {"$set": {"revoked_at": granted}})
-    consent_id = next_id("consents")
-    d.consents.insert_one({"_id": consent_id, "org_id": org_id, "purpose": purpose, "granted_by": user["id"],
-                           "granted_at": granted, "expires_at": expires, "revoked_at": None, "artefact": artefact})
-    audit(org_id, user["id"], "consent_granted", {"purpose": purpose})
+    with tx() as cur:
+        cur.execute("UPDATE consents SET revoked_at = now() WHERE org_id = %s AND purpose = %s AND revoked_at IS NULL",
+                    (org_id, purpose))
+        cur.execute("INSERT INTO consents (org_id, purpose, granted_by, granted_at, expires_at, artefact) "
+                    "VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
+                    (org_id, purpose, user["id"], granted, expires, db.json(artefact)))
+        consent_id = cur.fetchone()["id"]
+        audit(org_id, user["id"], "consent_granted", {"purpose": purpose}, cur=cur)
     return {**artefact, "consent_id": consent_id}
 
 
 def active_consents(org_id: int) -> dict:
-    rows = get_db().consents.find({"org_id": org_id, "revoked_at": None, "expires_at": {"$gt": db.now()}})
-    return {r["purpose"]: {"consent_id": r["_id"], **r["artefact"]} for r in rows}
+    rows = db.all("SELECT id, purpose, artefact FROM consents WHERE org_id = %s AND revoked_at IS NULL "
+                  "AND expires_at > now()", (org_id,))
+    return {r["purpose"]: {"consent_id": r["id"], **r["artefact"]} for r in rows}
 
 
 def revoke_consent(user: dict, org_id: int, purpose: str) -> dict:
-    """Revoke and purge immediately. `purpose='all'` revokes everything."""
+    """Revoke and purge in one transaction. `purpose='all'` revokes everything."""
     require_member(user, org_id)
     purposes = list(PURPOSES) if purpose == "all" else [purpose]
     for p in purposes:
         if p not in PURPOSES:
             raise ValueError(f"Unknown purpose '{p}'")
-    # Revoke first: imports check consent, so no new data can arrive while the purge runs.
-    get_db().consents.update_many({"org_id": org_id, "purpose": {"$in": purposes}, "revoked_at": None},
-                                  {"$set": {"revoked_at": db.now()}})
-    purged = _purge_org_data(
-        org_id,
-        kinds=[k for p in purposes for k in PURPOSES[p]["dataset_kinds"]],
-        providers=[prov for p in purposes for prov in PURPOSES[p]["integrations"]],
-        connector_tokens="books_sync" in purposes)
-    audit(org_id, user["id"], "consent_revoked", {"purposes": purposes, **purged})
+    kinds = [k for p in purposes for k in PURPOSES[p]["dataset_kinds"]]
+    providers = [prov for p in purposes for prov in PURPOSES[p]["integrations"]]
+    with tx() as cur:
+        cur.execute("UPDATE consents SET revoked_at = now() WHERE org_id = %s AND purpose = ANY(%s) "
+                    "AND revoked_at IS NULL", (org_id, purposes))
+        cur.execute("DELETE FROM datasets WHERE org_id = %s AND kind = ANY(%s)", (org_id, kinds))
+        purged = {"datasets": cur.rowcount}
+        cur.execute("DELETE FROM integrations WHERE org_id = %s AND provider = ANY(%s)", (org_id, providers))
+        purged["integrations"] = cur.rowcount
+        if "books_sync" in purposes:
+            cur.execute("DELETE FROM connector_tokens WHERE org_id = %s", (org_id,))
+        audit(org_id, user["id"], "consent_revoked", {"purposes": purposes, **purged}, cur=cur)
     return {"revoked": purposes, **purged}
 
 
@@ -288,32 +275,35 @@ def _require_consent(org_id: int, kind: str):
 
 # ---------------------------------------------------------------- datasets
 
-def store_dataset(org_id: int, user_id: int | None, kind: str, source: str, invoices: list) -> dict:
+def _periods_and_records(kind: str, invoices: list) -> tuple[list[str], list[dict]]:
+    if kind == "ims":
+        return sorted({r["return_period"] for r in invoices if r["return_period"]}), invoices
+    if kind == "gstr2b":
+        return sorted({i.return_period for i in invoices if i.return_period}), [i.to_dict() for i in invoices]
+    return sorted({deadlines.period_of(i.invoice_date) for i in invoices}), [i.to_dict() for i in invoices]
+
+
+def store_dataset(org_id: int, user_id: int | None, kind: str, source: str, invoices: list, cur=None) -> dict:
     """Store invoices (books / gstr2b) or IMS records (plain dicts) as one encrypted dataset."""
     if not invoices:
         raise ValueError("The file contained no invoices")
-    if kind == "ims":
-        periods = sorted({r["return_period"] for r in invoices if r["return_period"]})
-        records = invoices
-    elif kind == "gstr2b":
-        periods = sorted({i.return_period for i in invoices if i.return_period})
-        records = [i.to_dict() for i in invoices]
-    else:
-        periods = sorted({deadlines.period_of(i.invoice_date) for i in invoices})
-        records = [i.to_dict() for i in invoices]
+    periods, records = _periods_and_records(kind, invoices)
     _require_consent(org_id, kind)
     payload = crypto.encrypt_json(records, _ctx(org_id, "dataset"))
-    chunks = [payload[i:i + CHUNK_CHARS] for i in range(0, len(payload), CHUNK_CHARS)]
-    dataset_id = next_id("datasets")
-    d = get_db()
-    # Chunks first, metadata last: a dataset only becomes visible once it is complete.
-    d.dataset_chunks.insert_many([{"dataset_id": dataset_id, "org_id": org_id, "n": n, "data": part}
-                                  for n, part in enumerate(chunks)])
-    d.datasets.insert_one({"_id": dataset_id, "org_id": org_id, "kind": kind, "source": source,
-                           "periods": periods, "record_count": len(invoices), "chunks": len(chunks),
-                           "imported_at": db.now()})
-    audit(org_id, user_id, "dataset_imported", {"kind": kind, "source": source, "records": len(invoices)})
-    return {"dataset_id": dataset_id, "kind": kind, "source": source, "records": len(invoices), "periods": periods}
+
+    def write(c):
+        c.execute("INSERT INTO datasets (org_id, kind, source, periods, record_count, payload_enc) "
+                  "VALUES (%s, %s, %s, %s, %s, %s) RETURNING id", (org_id, kind, source, periods, len(records), payload))
+        new_id = c.fetchone()["id"]
+        audit(org_id, user_id, "dataset_imported", {"kind": kind, "source": source, "records": len(records)}, cur=c)
+        return new_id
+
+    if cur is not None:
+        dataset_id = write(cur)
+    else:
+        with tx() as c:
+            dataset_id = write(c)
+    return {"dataset_id": dataset_id, "kind": kind, "source": source, "records": len(records), "periods": periods}
 
 
 def replace_by_period(org_id: int, user_id: int | None, kind: str, source: str, invoices: list) -> list[dict]:
@@ -322,62 +312,56 @@ def replace_by_period(org_id: int, user_id: int | None, kind: str, source: str, 
     for inv in invoices:
         by_period.setdefault(deadlines.period_of(inv.invoice_date), []).append(inv)
     stored = []
-    for period, group in sorted(by_period.items()):
-        old = [d["_id"] for d in get_db().datasets.find(
-            {"org_id": org_id, "kind": kind, "source": source, "periods": [period]}, {"_id": 1})]
-        stored.append(store_dataset(org_id, user_id, kind, source, group))
-        if old:  # remove only after the new copy is in place
-            get_db().dataset_chunks.delete_many({"dataset_id": {"$in": old}})
-            get_db().datasets.delete_many({"_id": {"$in": old}})
+    with tx() as cur:  # all periods swap together, or none do
+        for period, group in sorted(by_period.items()):
+            cur.execute("DELETE FROM datasets WHERE org_id = %s AND kind = %s AND source = %s AND periods = %s",
+                        (org_id, kind, source, [period]))
+            stored.append(store_dataset(org_id, user_id, kind, source, group, cur=cur))
     return stored
 
 
 def list_datasets(user: dict, org_id: int) -> list[dict]:
     require_member(user, org_id)
-    rows = get_db().datasets.find({"org_id": org_id}).sort("_id", DESCENDING)
-    return [{"id": r["_id"], "kind": r["kind"], "source": r["source"], "period": ",".join(r["periods"]),
+    rows = db.all("SELECT id, kind, source, periods, record_count, imported_at FROM datasets WHERE org_id = %s "
+                  "ORDER BY id DESC", (org_id,))
+    return [{"id": r["id"], "kind": r["kind"], "source": r["source"], "period": ",".join(r["periods"]),
              "record_count": r["record_count"], "imported_at": fmt(r["imported_at"])} for r in rows]
 
 
 def delete_dataset(user: dict, org_id: int, dataset_id: int) -> None:
     require_member(user, org_id)
-    d = get_db()
-    if d.datasets.delete_one({"_id": dataset_id, "org_id": org_id}).deleted_count:
-        d.dataset_chunks.delete_many({"dataset_id": dataset_id})
-    audit(org_id, user["id"], "dataset_deleted", {"dataset_id": dataset_id})
+    with tx() as cur:
+        cur.execute("DELETE FROM datasets WHERE id = %s AND org_id = %s", (dataset_id, org_id))
+        audit(org_id, user["id"], "dataset_deleted", {"dataset_id": dataset_id}, cur=cur)
 
 
-def _read_payload(org_id: int, dataset: dict) -> list[dict]:
-    parts = get_db().dataset_chunks.find({"dataset_id": dataset["_id"]}).sort("n", ASCENDING)
-    return crypto.decrypt_json("".join(p["data"] for p in parts), _ctx(org_id, "dataset"))
+def _payloads(org_id: int, kind: str):
+    for row in db.all("SELECT payload_enc FROM datasets WHERE org_id = %s AND kind = %s ORDER BY id", (org_id, kind)):
+        yield from crypto.decrypt_json(row["payload_enc"], _ctx(org_id, "dataset"))
 
 
 def load_invoices(org_id: int, kind: str) -> list[Invoice]:
     """Decrypt every dataset of a kind into memory; later imports replace earlier copies of the same invoice."""
     merged: dict[tuple, Invoice] = {}
-    for dataset in get_db().datasets.find({"org_id": org_id, "kind": kind}).sort("_id", ASCENDING):
-        for record in _read_payload(org_id, dataset):
-            inv = Invoice.from_dict(record)
-            key = (inv.return_period, inv.supplier_gstin, tax.normalize_invoice_no(inv.invoice_no))
-            merged[key] = inv
+    for record in _payloads(org_id, kind):
+        inv = Invoice.from_dict(record)
+        merged[(inv.return_period, inv.supplier_gstin, tax.normalize_invoice_no(inv.invoice_no))] = inv
     return list(merged.values())
 
 
 def load_ims(org_id: int) -> list[dict]:
     """Latest IMS record per document: a newer IMS download supersedes older actions."""
     merged: dict[tuple, dict] = {}
-    for dataset in get_db().datasets.find({"org_id": org_id, "kind": "ims"}).sort("_id", ASCENDING):
-        for record in _read_payload(org_id, dataset):
-            key = (record["section"], record["supplier_gstin"], tax.normalize_invoice_no(record["doc_no"]))
-            merged[key] = record
+    for record in _payloads(org_id, "ims"):
+        merged[(record["section"], record["supplier_gstin"], tax.normalize_invoice_no(record["doc_no"]))] = record
     return list(merged.values())
 
 
 # ---------------------------------------------------------------- engine runs
 
 def available_periods(org_id: int) -> list[str]:
-    periods = set(get_db().datasets.distinct("periods", {"org_id": org_id}))
-    return sorted(periods, key=lambda p: (p[2:], p[:2]), reverse=True)
+    rows = db.all("SELECT DISTINCT unnest(periods) AS p FROM datasets WHERE org_id = %s", (org_id,))
+    return sorted({r["p"] for r in rows}, key=lambda p: (p[2:], p[:2]), reverse=True)
 
 
 def run_reconciliation(org: dict, period: str | None = None, today: date | None = None) -> dict:
@@ -458,21 +442,21 @@ def org_summary(org: dict, today: date | None = None) -> dict:
 def create_connector_token(user: dict, org_id: int) -> str:
     require_member(user, org_id)
     token = "arc_" + crypto.new_token()
-    get_db().connector_tokens.insert_one({"_id": crypto.token_hash(token), "org_id": org_id, "created_by": user["id"],
-                                          "created_at": db.now(), "last_used_at": None})
-    audit(org_id, user["id"], "connector_token_created")
+    with tx() as cur:
+        cur.execute("INSERT INTO connector_tokens (token_hash, org_id, created_by) VALUES (%s, %s, %s)",
+                    (crypto.token_hash(token), org_id, user["id"]))
+        audit(org_id, user["id"], "connector_token_created", cur=cur)
     return token
 
 
 def org_for_connector_token(token: str) -> int | None:
-    row = get_db().connector_tokens.find_one_and_update({"_id": crypto.token_hash(token)},
-                                                        {"$set": {"last_used_at": db.now()}})
+    row = db.one("UPDATE connector_tokens SET last_used_at = now() WHERE token_hash = %s RETURNING org_id",
+                 (crypto.token_hash(token),))
     return row["org_id"] if row else None
 
 
 def audit_trail(user: dict, org_id: int, limit: int = 50) -> list[dict]:
     require_member(user, org_id)
-    rows = list(get_db().audit_log.find({"org_id": org_id}).sort("_id", DESCENDING).limit(limit))
-    names = {u["_id"]: u["name"] for u in get_db().users.find({"_id": {"$in": [r["user_id"] for r in rows]}})}
-    return [{"action": r["action"], "detail": r.get("detail"), "at": fmt(r["at"]), "user": names.get(r["user_id"])}
-            for r in rows]
+    rows = db.all("SELECT a.action, a.detail, a.at, u.name AS user FROM audit_log a LEFT JOIN users u "
+                  "ON u.id = a.user_id WHERE a.org_id = %s ORDER BY a.id DESC LIMIT %s", (org_id, limit))
+    return [{**r, "at": fmt(r["at"])} for r in rows]

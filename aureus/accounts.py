@@ -3,7 +3,6 @@
 from datetime import timedelta
 
 from . import config, crypto, db, mailer
-from .db import get_db
 
 RESET_TTL_MINUTES = 30
 
@@ -20,17 +19,18 @@ def _window_start():
 
 def check_throttle(scope: str, key: str, limit: int) -> None:
     """Raise if `key` has `limit` or more recorded failures in the window (scope: 'login-email', 'login-ip', ...)."""
-    recent = get_db().auth_failures.count_documents({"scope": scope, "key": key, "at": {"$gt": _window_start()}})
+    recent = db.one("SELECT COUNT(*) AS n FROM auth_failures WHERE scope = %s AND key = %s AND at > %s",
+                    (scope, key, _window_start()))["n"]
     if recent >= limit:
         raise TooManyAttempts(config.LOGIN_WINDOW_MINUTES)
 
 
 def record_failure(scope: str, key: str) -> None:
-    get_db().auth_failures.insert_one({"scope": scope, "key": key, "at": db.now()})
+    db.execute("INSERT INTO auth_failures (scope, key) VALUES (%s, %s)", (scope, key))
 
 
 def clear_failures(scope: str, key: str) -> None:
-    get_db().auth_failures.delete_many({"scope": scope, "key": key})
+    db.execute("DELETE FROM auth_failures WHERE scope = %s AND key = %s", (scope, key))
 
 
 def guarded_login(login_fn, email: str, password: str, ip: str):
@@ -51,11 +51,11 @@ def request_reset(email: str, ip: str) -> None:
     """Always behaves the same whether or not the account exists, so emails can't be probed."""
     check_throttle("reset-ip", ip, 5)
     record_failure("reset-ip", ip)  # counts requests, not failures
-    user = get_db().users.find_one({"email": email.lower().strip()})
+    user = db.one("SELECT id, email, name FROM users WHERE email = %s", (email.lower().strip(),))
     if not user:
         return
     token = crypto.new_token()
-    get_db().password_resets.insert_one({"_id": crypto.token_hash(token), "user_id": user["_id"], "created_at": db.now()})
+    db.execute("INSERT INTO password_resets (token_hash, user_id) VALUES (%s, %s)", (crypto.token_hash(token), user["id"]))
     link = f"{config.APP_BASE_URL}/#/reset?token={token}"
     mailer.send(user["email"], "Reset your AureusRecon password",
                 f"Hello {user['name']},\n\nUse this link to set a new password. It works once and expires in "
@@ -63,23 +63,24 @@ def request_reset(email: str, ip: str) -> None:
 
 
 def confirm_reset(token: str, new_password: str) -> int:
-    doc = get_db().password_resets.find_one_and_delete({"_id": crypto.token_hash(token)})
-    if not doc or db.as_utc(doc["created_at"]) < db.now() - timedelta(minutes=RESET_TTL_MINUTES):
+    doc = db.one("DELETE FROM password_resets WHERE token_hash = %s RETURNING user_id, created_at",
+                 (crypto.token_hash(token),))
+    if not doc or doc["created_at"] < db.now() - timedelta(minutes=RESET_TTL_MINUTES):
         raise ValueError("This reset link is invalid or has expired. Ask for a new one.")
     _set_password(doc["user_id"], new_password)
     return doc["user_id"]
 
 
 def change_password(user_id: int, current: str, new_password: str) -> None:
-    doc = get_db().users.find_one({"_id": user_id})
+    doc = db.one("SELECT password_hash FROM users WHERE id = %s", (user_id,))
     if not doc or not crypto.verify_password(current, doc["password_hash"]):
         raise ValueError("Current password is incorrect")
     _set_password(user_id, new_password)
 
 
 def _set_password(user_id: int, new_password: str) -> None:
-    get_db().users.update_one({"_id": user_id}, {"$set": {"password_hash": crypto.hash_password(new_password)}})
-    get_db().password_resets.delete_many({"user_id": user_id})
-    get_db().sessions.delete_many({"user_id": user_id})  # sign out everywhere
-    get_db().audit_log.insert_one({"_id": db.next_id("audit_log"), "org_id": None, "user_id": user_id,
-                                   "action": "password_changed", "detail": None, "at": db.now()})
+    with db.tx() as cur:
+        cur.execute("UPDATE users SET password_hash = %s WHERE id = %s", (crypto.hash_password(new_password), user_id))
+        cur.execute("DELETE FROM password_resets WHERE user_id = %s", (user_id,))
+        cur.execute("DELETE FROM sessions WHERE user_id = %s", (user_id,))  # sign out everywhere
+        cur.execute("INSERT INTO audit_log (org_id, user_id, action) VALUES (NULL, %s, 'password_changed')", (user_id,))

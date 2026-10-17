@@ -1,6 +1,6 @@
-# Deploying AureusRecon on Render + MongoDB Atlas
+# Deploying AureusRecon on Render + PostgreSQL
 
-About 20 minutes. You need a GitHub login, a Render account and a MongoDB Atlas account.
+About 20 minutes. You need a GitHub login and a Render account. `render.yaml` creates the web app, the daily job and a managed PostgreSQL database in one step.
 
 ## Why Render and not Vercel
 
@@ -8,12 +8,17 @@ About 20 minutes. You need a GitHub login, a Render account and a MongoDB Atlas 
 - **Long requests:** reconciliation and Zoho syncs can run past serverless time limits.
 - **Simplicity:** Render runs the app as a normal always-on server, which is how it was built, and `render.yaml` in this repo sets it up in one step.
 
-## 1. Database: MongoDB Atlas
+## 1. Database: PostgreSQL
 
-1. **Create a cluster.** At [cloud.mongodb.com](https://cloud.mongodb.com), click *Create cluster*, pick AWS, and choose **Mumbai (ap-south-1)** so the data stays in India. M0 (free) is fine for a pilot; use M10 or above for paying clients (backups, more storage).
-2. **Create a database user.** Go to *Database Access → Add user*, choose password authentication and the *Read and write to any database* role.
-3. **Allow Render to connect.** Go to *Network Access → Add IP address*. Render's outbound IPs are listed on your service's *Connect → Outbound* tab: add those. For a quick first test, `0.0.0.0/0` works, but remove it afterwards.
-4. **Copy the connection string.** Under *Connect → Drivers*, copy the `mongodb+srv://…` string and put the user's password into it.
+**Default.** The blueprint creates a Render PostgreSQL 16 database (`aureusrecon-db`) in Singapore, Render's closest region to India. Both the web app and the daily job get its connection string automatically, and only services in your Render account can reach it.
+
+**Keeping data inside India.** Render has no India region. If a client requires data in India, use a Postgres hosted in Mumbai instead:
+- **AWS RDS:** `ap-south-1`.
+- **Supabase:** South Asia (Mumbai) region.
+
+To switch, delete the `databases:` block in `render.yaml` and set `DATABASE_URL` yourself on both services. Any standard `postgresql://user:pass@host:5432/db` string works; add `?sslmode=require` for hosted databases.
+
+**Schema.** The app creates and upgrades its own tables on start-up (numbered migrations in `aureus/db.py`), so there is nothing to run by hand.
 
 ## 2. App: Render
 
@@ -22,7 +27,6 @@ About 20 minutes. You need a GitHub login, a Render account and a MongoDB Atlas 
    - `AUREUS_MASTER_KEY`: generate one with
      `python -c "import os,base64;print(base64.b64encode(os.urandom(32)).decode())"`.
      **Store a copy in a password manager.** If it is lost, every encrypted record becomes unreadable.
-   - `MONGODB_URI`: the Atlas string from step 1.
    - `APP_BASE_URL` and the `SMTP_*` / `MAIL_FROM` email settings (section 3).
    - `ANTHROPIC_API_KEY` (optional), and the `ZOHO_*` values (optional; leave blank for now).
 3. **Deploy.** Render builds and starts the app, and checks `/api/health`. If the key or database is wrong, the deploy fails straight away and the log says why.
@@ -43,5 +47,5 @@ About 20 minutes. You need a GitHub login, a Render account and a MongoDB Atlas 
 | Item | Pilot | Paying clients |
 |---|---|---|
 | Render web service | Free (sleeps when idle) or Starter | Starter / Standard |
-| MongoDB Atlas | M0 free | M10 (backups) |
+| PostgreSQL (Render) | Smallest paid instance (free ones expire) | Larger instance, point-in-time recovery |
 | Anthropic API | Only if Notice Copilot polish is on | Per use |
