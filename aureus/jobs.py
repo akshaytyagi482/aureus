@@ -114,6 +114,8 @@ def daily(today: date | None = None) -> dict:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    if config.ENV == "production":
+        config.check_production()
     if sys.argv[1:] != ["daily"]:
         sys.exit("usage: python -m aureus.jobs daily")
     print(daily())

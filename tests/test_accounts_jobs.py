@@ -108,3 +108,15 @@ def test_purge_expired_rows(client, owner):
     db.execute("INSERT INTO auth_failures (scope, key, at) VALUES ('login-ip', 'x', now() - interval '2 days')")
     assert jobs.purge_expired() >= 2
     assert client.get("/api/me", headers=owner).status_code == 401
+
+
+def test_production_refuses_to_start_without_database_or_key(monkeypatch):
+    from aureus import config
+    monkeypatch.setattr(config, "DATABASE_URL_SET", False)
+    monkeypatch.setattr(config, "MASTER_KEY_B64", "")
+    with pytest.raises(RuntimeError) as err:
+        config.check_production()
+    assert "DATABASE_URL is not set" in str(err.value) and "AUREUS_MASTER_KEY is not set" in str(err.value)
+    monkeypatch.setattr(config, "DATABASE_URL_SET", True)
+    monkeypatch.setattr(config, "MASTER_KEY_B64", "x")
+    config.check_production()

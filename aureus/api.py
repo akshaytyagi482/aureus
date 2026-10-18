@@ -24,7 +24,8 @@ MAX_UPLOAD_BYTES = 20 * 1024 * 1024
 @asynccontextmanager
 async def lifespan(_app):
     if config.ENV == "production":
-        crypto.check_key()  # fail the deploy now, not on the first import
+        config.check_production()  # fail the deploy now with a clear reason, not on the first request
+        crypto.check_key()
     db.init()
     yield
     db.close()

@@ -33,6 +33,15 @@ To switch, delete the `databases:` block in `render.yaml` and set `DATABASE_URL`
 3. **Deploy.** Render builds and starts the app, and checks `/api/health`. If the key or database is wrong, the deploy fails straight away and the log says why.
 4. **Custom domain (optional).** Under *Settings → Custom domains*, Render provides HTTPS automatically. If you use Zoho, set `ZOHO_REDIRECT_URI` to `https://<domain>/api/integrations/zoho/callback`.
 
+### If the deploy fails
+
+- **`connection to server at "127.0.0.1", port 5432 failed`** or **`DATABASE_URL is not set`**: the web service isn't linked to a database. This happens when it was created with *New → Web Service* instead of *New → Blueprint*. Either delete it and create everything with *New → Blueprint* (recommended), or fix it by hand:
+  1. *New → PostgreSQL*: name `aureusrecon-db`, region Singapore, PostgreSQL 16, a paid plan.
+  2. On the web service, *Environment*: add `DATABASE_URL` = the database's **Internal Database URL**, `AUREUS_ENV` = `production`, `AUREUS_MASTER_KEY`, `APP_BASE_URL`, `GEMINI_API_KEY` (and email settings later).
+  3. Check *Settings*: build command `pip install -r requirements.txt`, start command `uvicorn aureus.api:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips "*"`, health check path `/api/health`.
+  4. Create the daily job too (*New → Cron Job*, command `python -m aureus.jobs daily`, schedule `30 2 * * *`) with the same environment values.
+- **`AUREUS_MASTER_KEY is not set`**: add the key. On Render the app refuses to start without it, because a temporary key would make all saved data unreadable after the next deploy.
+
 ## 3. Email and the daily job
 
 - **Email** is used for password resets and alerts. Any SMTP provider works (Resend, SendGrid, or Amazon SES in Mumbai). Fill `SMTP_HOST`, `SMTP_USER`, `SMTP_PASSWORD` and `MAIL_FROM`, and set `APP_BASE_URL` to your public URL. In production, password reset refuses to run until email is configured.

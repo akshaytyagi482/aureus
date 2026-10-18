@@ -6,12 +6,16 @@ DATA_DIR = Path(os.environ.get("AUREUS_DATA_DIR", BASE_DIR.parent / "var"))
 
 # PostgreSQL connection string (Render, Neon, Supabase, AWS RDS all give one in this form).
 DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://postgres@127.0.0.1:5432/aureus")
+DATABASE_URL_SET = "DATABASE_URL" in os.environ
 DB_POOL_SIZE = int(os.environ.get("AUREUS_DB_POOL_SIZE", "10"))
 
 # 32-byte AES-256 key, base64 encoded. Required in production; a local key file
 # is generated for development so the app runs out of the box.
 MASTER_KEY_B64 = os.environ.get("AUREUS_MASTER_KEY", "")
-ENV = os.environ.get("AUREUS_ENV", "development")
+# Render sets RENDER=true on every service; treat it as production even if AUREUS_ENV was forgotten,
+# so a missing key fails the deploy instead of silently using a throwaway key file.
+ON_RENDER = bool(os.environ.get("RENDER"))
+ENV = os.environ.get("AUREUS_ENV") or ("production" if ON_RENDER else "development")
 
 SESSION_TTL_HOURS = int(os.environ.get("AUREUS_SESSION_TTL_HOURS", "12"))
 
@@ -50,3 +54,16 @@ MAIL_FROM = os.environ.get("MAIL_FROM", "AureusRecon <no-reply@localhost>")
 LOGIN_MAX_FAILURES_PER_EMAIL = int(os.environ.get("AUREUS_LOGIN_MAX_FAILURES", "5"))
 LOGIN_MAX_FAILURES_PER_IP = int(os.environ.get("AUREUS_LOGIN_MAX_FAILURES_PER_IP", "20"))
 LOGIN_WINDOW_MINUTES = int(os.environ.get("AUREUS_LOGIN_WINDOW_MINUTES", "15"))
+
+
+def check_production() -> None:
+    """Refuse to start in production without the settings that protect client data."""
+    problems = []
+    if not DATABASE_URL_SET:
+        problems.append("DATABASE_URL is not set. Link the Postgres database: create the services from the Blueprint "
+                        "(New > Blueprint), or add DATABASE_URL = the database's Internal Database URL.")
+    if not MASTER_KEY_B64:
+        problems.append("AUREUS_MASTER_KEY is not set. Generate one (see docs/DEPLOY.md) and keep a copy; "
+                        "without it encrypted data would be lost on the next deploy.")
+    if problems:
+        raise RuntimeError("AureusRecon cannot start:\n  - " + "\n  - ".join(problems))
