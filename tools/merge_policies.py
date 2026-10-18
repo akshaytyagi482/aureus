@@ -43,7 +43,7 @@ class Invalid(ValueError):
 
 
 def _rate_ok(value, where):
-    values = value.values() if isinstance(value, dict) else [value]
+    values = value.values() if isinstance(value, dict) else value if isinstance(value, list) else [value]
     for v in values:
         if isinstance(v, dict):
             _rate_ok(v, where)
@@ -72,13 +72,22 @@ def validate(doc: dict, path: str) -> list[str]:
         for f in TYPES[kind]:
             check(f in b, f"{where}: {kind} needs '{f}'")
         try:
-            for key in ("rate", "rate_by_zone"):
+            for key in ("rate", "rate_by_zone", "share_by_zone"):
                 if key in b:
                     _rate_ok(b[key], where)
         except Invalid as exc:
             errors.append(f"{path}: {exc}")
         if kind == "capital_subsidy":
-            check("rate" in b or "rate_by_zone" in b, f"{where}: capital_subsidy needs rate or rate_by_zone")
+            check("rate" in b or "rate_by_zone" in b or "slabs_by_zone" in b,
+                  f"{where}: capital_subsidy needs rate, rate_by_zone or slabs_by_zone")
+            for z, slabs in (b.get("slabs_by_zone") or {}).items():
+                ups = [u for u, _ in slabs]
+                check(all(u is not None for u in ups[:-1]) and ups[:-1] == sorted(ups[:-1]),
+                      f"{where}: slabs for {z!r} must rise, only the last may be open-ended")
+                try:
+                    _rate_ok([r for _, r in slabs], where)
+                except Invalid as exc:
+                    errors.append(f"{path}: {exc}")
             check(b.get("basis", "eligible_cost") in ("eligible_cost", "term_loan"), f"{where}: bad basis")
         if kind == "sgst_refund_ceiling":
             check("rate_by_zone" in b, f"{where}: sgst_refund_ceiling needs rate_by_zone (null if uncapped)")
@@ -88,7 +97,7 @@ def validate(doc: dict, path: str) -> list[str]:
             check("per_unit" in b or "per_unit_by_zone" in b, f"{where}: needs per_unit or per_unit_by_zone")
         if kind == "electricity_duty_exemption":
             check("years_by_zone" in b or "years" in b, f"{where}: needs years_by_zone or years")
-        for key in ("rate_by_zone", "years_by_zone", "cap_by_zone", "annual_cap_by_zone", "per_unit_by_zone"):
+        for key in ("rate_by_zone", "years_by_zone", "cap_by_zone", "annual_cap_by_zone", "per_unit_by_zone", "slabs_by_zone", "share_by_zone"):
             for z in (b.get(key) or {}):
                 check(z == "ALL" or z in zones or z in CATEGORIES, f"{where}: {key} uses zone {z!r} not defined in 'zones'")
         for z in s.get("zones") or []:

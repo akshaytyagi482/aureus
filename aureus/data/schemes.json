@@ -1029,23 +1029,99 @@
         "manufacturing"
       ],
       "asset_classes": [
-        "plant_machinery"
+        "plant_machinery",
+        "testing_equipment",
+        "pollution_control",
+        "solar"
       ],
       "window": {
-        "from": "2023-08-01",
-        "to": "2028-07-31"
+        "from": "2023-08-09",
+        "to": "2028-08-08"
       },
       "min_investment": 0,
       "benefit": {
         "type": "capital_subsidy",
         "basis": "eligible_cost",
-        "rate_by_zone": {
-          "A": 0.5,
-          "B": 0.4,
-          "C": 0.3,
-          "D": 0.2
+        "slabs_by_zone": {
+          "A": [
+            [
+              10000000,
+              0.5
+            ],
+            [
+              50000000,
+              0.25
+            ],
+            [
+              100000000,
+              0.2
+            ],
+            [
+              500000000,
+              0.0375
+            ]
+          ],
+          "B": [
+            [
+              10000000,
+              0.4
+            ],
+            [
+              50000000,
+              0.2
+            ],
+            [
+              100000000,
+              0.16
+            ],
+            [
+              500000000,
+              0.025
+            ]
+          ],
+          "C": [
+            [
+              10000000,
+              0.3
+            ],
+            [
+              50000000,
+              0.125
+            ],
+            [
+              100000000,
+              0.08
+            ],
+            [
+              500000000,
+              0.02
+            ]
+          ],
+          "D": [
+            [
+              10000000,
+              0.2
+            ],
+            [
+              50000000,
+              0.1
+            ],
+            [
+              100000000,
+              0.06
+            ],
+            [
+              500000000,
+              0.015
+            ]
+          ]
         },
-        "cap": 40000000
+        "cap_by_zone": {
+          "A": 40000000,
+          "B": 30000000,
+          "C": 20000000,
+          "D": 15000000
+        }
       },
       "disbursal": null,
       "form_template": "dic_capital_subsidy",
@@ -1056,12 +1132,12 @@
         "Term loan sanction letter (if financed)",
         "Commencement of production proof"
       ],
-      "clause": "MSME Policy 2023 - capital subsidy schedule (clause no. not confirmed)",
-      "notes": "SECONDARY / CONFLICTING. Rates for the first Rs 1 crore of eligible investment (Drishti IAS 15-09-2023: A 50%, B 40%, C 30%, D 'Rs 20 lakh'); higher slabs (Rs 1-5 cr, 5-10 cr, 10-50 cr) get lower marginal rates with an overall maximum of Rs 4 crore (Cat A: Rs 1.5 cr / 2.5 cr / 4 cr by slab per Drishti; publicservicesmap: 20-50%, max Rs 4 crore). ICAI handbook (June 2026) instead shows caps of Rs 50/40/30/20 lakh for A/B/C/D - likely the first-slab cap only. Paid in 2 annual instalments (micro, up to Rs 1 cr) or 5 annual instalments (Rs 1-50 cr). Extra for SC/ST/women: up to Rs 10/15/20 lakh by investment slab; +5%/+10% for priority/most-priority sectors. Applies to units starting commercial production within the policy period; claims via investuttarakhand.uk.gov.in, State Level Authorised Committee.",
-      "source_document": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023, MSME Section Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023 (as cited in the State's own implementation guidelines; ICAI cites 06-09-2023) dated 2023-08-09",
-      "source_url": "https://destinationuttarakhand.uk.gov.in/swcsincentive/common/protected/msme_policy/MSMEpolicy.pdf",
-      "verified": false,
-      "verified_on": null
+      "clause": "Uttarakhand MSME Policy 2023 - official FAQs (Invest Uttarakhand), Q11-Q12, Q18",
+      "notes": "Official FAQ table: Category A 50% of fixed capital investment up to Rs 1 crore (max Rs 50 lakh); above that Rs 50 lakh + 25% of the excess up to Rs 5 crore (max Rs 1.5 crore), Rs 1.5 crore + 20% up to Rs 10 crore (max Rs 2.5 crore), Rs 2.5 crore + 3.75% up to Rs 50 crore (max Rs 4 crore). B: 40/20/16/2.5% (max Rs 3 crore). C: 30/12.5/8/2% (max Rs 2 crore). D: 20/10/6/1.5% (max Rs 1.5 crore). Modelled as marginal slabs, which reproduce every stated maximum. New units and substantial expansion. Paid in 2 instalments (micro) or 5 (small, medium). Extra 5-10% for priority / most-priority sectors, anchor units and SC/ST/women/divyang owners (one only) is not modelled.",
+      "source_document": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023, Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023 dated 2023-08-09",
+      "source_url": "https://investuttarakhand.uk.gov.in/themes/new_investuk/img/faq/MSME_Policy_2023_V1_FAQ.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18"
     },
     {
       "id": "uk-msme-2023-interest",
@@ -1081,20 +1157,39 @@
       ],
       "asset_classes": [],
       "window": {
-        "from": "2023-08-01",
-        "to": "2028-07-31"
+        "from": "2023-08-09",
+        "to": "2028-08-08"
       },
       "min_investment": 0,
       "benefit": {
         "type": "interest_subsidy",
-        "rate": 0.04,
-        "annual_cap": 500000,
+        "rate": {
+          "micro": 0.04,
+          "small": 0.03,
+          "medium": 0.02
+        },
         "years": 3,
         "annual_cap_by_zone": {
-          "A": 500000,
-          "B": 400000,
-          "C": 300000,
-          "D": 200000
+          "A": {
+            "micro": 500000,
+            "small": 600000,
+            "medium": 700000
+          },
+          "B": {
+            "micro": 400000,
+            "small": 500000,
+            "medium": 600000
+          },
+          "C": {
+            "micro": 300000,
+            "small": 400000,
+            "medium": 500000
+          },
+          "D": {
+            "micro": 200000,
+            "small": 300000,
+            "medium": 400000
+          }
         }
       },
       "disbursal": null,
@@ -1106,12 +1201,12 @@
         "Term loan sanction letter (if financed)",
         "Commencement of production proof"
       ],
-      "clause": "MSME Policy 2023 - interest subsidy (clause no. not confirmed)",
-      "notes": "SECONDARY. ICAI handbook: 4% p.a. for 3 years, max Rs 5/4/3/2 lakh per year in A/B/C/D. publicservicesmap lists 2-4% p.a. (rate may vary by category). Not checked against official text.",
-      "source_document": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023, MSME Section Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023 (as cited in the State's own implementation guidelines; ICAI cites 06-09-2023) dated 2023-08-09",
-      "source_url": "https://destinationuttarakhand.uk.gov.in/swcsincentive/common/protected/msme_policy/MSMEpolicy.pdf",
-      "verified": false,
-      "verified_on": null
+      "clause": "Uttarakhand MSME Policy 2023 - official FAQs (Invest Uttarakhand), Q19-Q21",
+      "notes": "Official FAQ: new units with a term loan for building and P&M; micro 4%, small 3%, medium 2% for 3 years from commercial production; yearly caps by area A-D: micro Rs 5/4/3/2 lakh, small Rs 6/5/4/3 lakh, medium Rs 7/6/5/4 lakh.",
+      "source_document": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023, Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023 dated 2023-08-09",
+      "source_url": "https://investuttarakhand.uk.gov.in/themes/new_investuk/img/faq/MSME_Policy_2023_V1_FAQ.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18"
     },
     {
       "id": "uk-msme-2023-ed",
@@ -1131,8 +1226,8 @@
       ],
       "asset_classes": [],
       "window": {
-        "from": "2023-08-01",
-        "to": "2028-07-31"
+        "from": "2023-08-09",
+        "to": "2028-08-08"
       },
       "min_investment": 0,
       "benefit": {
@@ -1148,12 +1243,15 @@
         "Eligibility certificate",
         "Latest 12 months of electricity bills"
       ],
-      "clause": "MSME Policy 2023 - electricity duty (clause no. not confirmed)",
-      "notes": "SECONDARY. 100% reimbursement of electricity duty for 5 years for connected load up to 500 kW (ICAI; publicservicesmap). Not checked against official text.",
-      "source_document": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023, MSME Section Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023 (as cited in the State's own implementation guidelines; ICAI cites 06-09-2023) dated 2023-08-09",
-      "source_url": "https://destinationuttarakhand.uk.gov.in/swcsincentive/common/protected/msme_policy/MSMEpolicy.pdf",
-      "verified": false,
-      "verified_on": null
+      "clause": "Uttarakhand MSME Policy 2023 - official FAQs (Invest Uttarakhand), Q22-Q23",
+      "notes": "Official FAQ: new units with sanctioned load up to 500 kW get electricity duty exemption for 5 years (FAQ does not state the share; taken as full exemption).",
+      "source_document": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023, Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023 dated 2023-08-09",
+      "source_url": "https://investuttarakhand.uk.gov.in/themes/new_investuk/img/faq/MSME_Policy_2023_V1_FAQ.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18",
+      "conditions": [
+        "Sanctioned electricity load up to 500 kW"
+      ]
     },
     {
       "id": "uk-msme-2023-cert",
@@ -1173,8 +1271,8 @@
       ],
       "asset_classes": [],
       "window": {
-        "from": "2023-08-01",
-        "to": "2028-07-31"
+        "from": "2023-08-09",
+        "to": "2028-08-08"
       },
       "min_investment": 0,
       "benefit": {
@@ -1189,12 +1287,12 @@
         "Certificate obtained",
         "Fee payment receipt"
       ],
-      "clause": "MSME Policy 2023 - quality certification (clause no. not confirmed)",
-      "notes": "SECONDARY. 75% up to Rs 1 lakh for ISO/ISI/BIS/ZED/FSSAI etc. (ICAI handbook). ZED awards Rs 75,000 Gold / 50,000 Silver / 25,000 Bronze (ICAI).",
-      "source_document": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023, MSME Section Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023 (as cited in the State's own implementation guidelines; ICAI cites 06-09-2023) dated 2023-08-09",
-      "source_url": "https://destinationuttarakhand.uk.gov.in/swcsincentive/common/protected/msme_policy/MSMEpolicy.pdf",
-      "verified": false,
-      "verified_on": null
+      "clause": "Uttarakhand MSME Policy 2023 - official FAQs (Invest Uttarakhand), Q33-Q35",
+      "notes": "Official FAQ: 75% of the cost of ISO, ISI, BIS, FSSAI, ZED and similar certificates, up to Rs 1 lakh per unit; new units.",
+      "source_document": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023, Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023 dated 2023-08-09",
+      "source_url": "https://investuttarakhand.uk.gov.in/themes/new_investuk/img/faq/MSME_Policy_2023_V1_FAQ.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18"
     },
     {
       "id": "hr-msme-2026-capital",
@@ -1666,7 +1764,7 @@
       "source_document": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs, Finance Department (Tax Division) Order No. F.12(32)FD/Tax/2024-93 (as printed: 'F.12(32)FD/TIIX/2024-93A' in the scanned text layer) dated 2024-10-08",
       "source_url": "https://www.epch.in/sites/default/files/policies/RIPS-2024-Notified-on-8-10-2024.pdf",
       "verified": true,
-      "verified_on": "2026-10-17"
+      "verified_on": "2026-10-18"
     },
     {
       "id": "rj-rips2024-msme-interest",
@@ -1728,7 +1826,7 @@
       "source_document": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs, Finance Department (Tax Division) Order No. F.12(32)FD/Tax/2024-93 (as printed: 'F.12(32)FD/TIIX/2024-93A' in the scanned text layer) dated 2024-10-08",
       "source_url": "https://www.epch.in/sites/default/files/policies/RIPS-2024-Notified-on-8-10-2024.pdf",
       "verified": true,
-      "verified_on": "2026-10-17"
+      "verified_on": "2026-10-18"
     },
     {
       "id": "rj-rips2024-msme-ed",
@@ -1770,7 +1868,7 @@
       "source_document": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs, Finance Department (Tax Division) Order No. F.12(32)FD/Tax/2024-93 (as printed: 'F.12(32)FD/TIIX/2024-93A' in the scanned text layer) dated 2024-10-08",
       "source_url": "https://www.epch.in/sites/default/files/policies/RIPS-2024-Notified-on-8-10-2024.pdf",
       "verified": true,
-      "verified_on": "2026-10-17"
+      "verified_on": "2026-10-18"
     },
     {
       "id": "rj-rips2024-msme-plastic-alt-capital",
@@ -1816,7 +1914,7 @@
       "source_document": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs, Finance Department (Tax Division) Order No. F.12(32)FD/Tax/2024-93 (as printed: 'F.12(32)FD/TIIX/2024-93A' in the scanned text layer) dated 2024-10-08",
       "source_url": "https://www.epch.in/sites/default/files/policies/RIPS-2024-Notified-on-8-10-2024.pdf",
       "verified": true,
-      "verified_on": "2026-10-17",
+      "verified_on": "2026-10-18",
       "conditions": [
         "Unit makes alternatives to plastic products"
       ]
@@ -1865,7 +1963,7 @@
       "source_document": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs, Finance Department (Tax Division) Order No. F.12(32)FD/Tax/2024-93 (as printed: 'F.12(32)FD/TIIX/2024-93A' in the scanned text layer) dated 2024-10-08",
       "source_url": "https://www.epch.in/sites/default/files/policies/RIPS-2024-Notified-on-8-10-2024.pdf",
       "verified": true,
-      "verified_on": "2026-10-17",
+      "verified_on": "2026-10-18",
       "conditions": [
         "Agro or food processing enterprise"
       ]
@@ -1914,7 +2012,7 @@
       "source_document": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs, Finance Department (Tax Division) Order No. F.12(32)FD/Tax/2024-93 (as printed: 'F.12(32)FD/TIIX/2024-93A' in the scanned text layer) dated 2024-10-08",
       "source_url": "https://www.epch.in/sites/default/files/policies/RIPS-2024-Notified-on-8-10-2024.pdf",
       "verified": true,
-      "verified_on": "2026-10-17"
+      "verified_on": "2026-10-18"
     },
     {
       "id": "rj-msme2024-addl-interest",
@@ -1971,12 +2069,15 @@
         "Term loan sanction letter (if financed)",
         "Commencement of production proof"
       ],
-      "clause": "Rajasthan MSME Policy 2024, section 6.2 (per secondary source)",
-      "notes": "NOT VERIFIED. Figures come from the ICAI MSME & Startup Committee handbook 'Rajasthan State MSME Policy' (startup.icai.org, 2026), table 5.2.1. It also lists +2% (up to Rs 7.5 lakh/yr) for ODOP/thrust-sector MSMEs and +1% (up to Rs 5 lakh/yr) for backward/tribal areas and women/SC/ST/PwBD/young entrepreneurs. Aggregators give different numbers ('0.5% to 2%'). The official MSME Policy 2024 PDF could not be retrieved (industries.rajasthan.gov.in refused connections).",
+      "clause": "Rajasthan MSME Policy 2024, section 6.2",
+      "notes": "Official text: selected new or expanding MSMEs get extra interest subvention over RIPS 2024, by loan for plant & machinery: up to Rs 5 crore 2%, Rs 5-10 crore 1%, Rs 10-50 crore 0.5%, for the same period as the RIPS 2024 MSME interest subsidy (7 years). Projects are selected by the district (up to Rs 10 crore) or high-level (above) task force. Collateral-free CGTMSE loans under Rs 5 crore also get 100% of the annual guarantee fee for 7 years.",
       "source_document": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs, Finance Department (Tax Division) Order No. F.12(32)FD/Tax/2024-93 (as printed: 'F.12(32)FD/TIIX/2024-93A' in the scanned text layer) dated 2024-10-08",
-      "source_url": "https://www.epch.in/sites/default/files/policies/RIPS-2024-Notified-on-8-10-2024.pdf",
-      "verified": false,
-      "verified_on": null
+      "source_url": "https://industries.rajasthan.gov.in/",
+      "verified": true,
+      "verified_on": "2026-10-18",
+      "conditions": [
+        "Project selected by the district or high-level task force committee"
+      ]
     },
     {
       "id": "rj-msme2024-cert",
@@ -2012,12 +2113,12 @@
         "Certificate obtained",
         "Fee payment receipt"
       ],
-      "clause": "Rajasthan MSME Policy 2024 (section number not confirmed)",
-      "notes": "NOT VERIFIED. 50% up to Rs 3 lakh for ISO/BIS/FSSAI/ZED/WHO-GMP and IPR, per ICAI handbook section 5.6 (secondary). The official text was not obtained.",
+      "clause": "Rajasthan MSME Policy 2024, section 6.6(a)",
+      "notes": "Official text: one-time reimbursement of 50% of the cost (including testing and documentation) of quality certifications (BIS, FSSAI), system certifications (ISO, ZED) and IPR, up to Rs 3 lakh.",
       "source_document": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs, Finance Department (Tax Division) Order No. F.12(32)FD/Tax/2024-93 (as printed: 'F.12(32)FD/TIIX/2024-93A' in the scanned text layer) dated 2024-10-08",
-      "source_url": "https://www.epch.in/sites/default/files/policies/RIPS-2024-Notified-on-8-10-2024.pdf",
-      "verified": false,
-      "verified_on": null
+      "source_url": "https://industries.rajasthan.gov.in/",
+      "verified": true,
+      "verified_on": "2026-10-18"
     },
     {
       "id": "up-msme-2022-capital",
@@ -3134,6 +3235,98 @@
       "verified_on": "2026-10-17"
     },
     {
+      "id": "mz-ip2025-interest",
+      "name": "Interest subsidy on term loans (new micro and small units)",
+      "authority": "Government of Mizoram (via District Industries Centre)",
+      "level": "state",
+      "states": [
+        "15"
+      ],
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2025-05-23",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": 1000000,
+        "years": 5
+      },
+      "disbursal": null,
+      "form_template": "dic_capital_subsidy",
+      "documents": [
+        "Udyam Registration Certificate",
+        "Purchase invoices with payment proof",
+        "Chartered Engineer certificate for plant & machinery",
+        "Term loan sanction letter (if financed)",
+        "Commencement of production proof"
+      ],
+      "clause": "Industrial Policy of Mizoram 2025, para 4.4 table, Sl. 3",
+      "notes": "Official text: interest on term loans subsidised up to 5% for the first 5 years; the claim is limited to Rs 10 lakh of interest paid in a full year (modelled as a Rs 10 lakh yearly cap, the most it could be); only the shortfall if another scheme already pays interest subsidy; regular repayment required.",
+      "source_document": "The Industrial Policy of Mizoram, 2025, Notification No. B.16017/05/2020-C&I dated 23-05-2025 (Mizoram Gazette Extraordinary Issue No. 344, 26-05-2025) dated 2025-05-23",
+      "source_url": "https://industries.mizoram.gov.in/uploads/attachments/2025/09/0b918d996ad1ef9bcda2820c81658832/pages-177-the-industrial-policy-of-mizoram-2025-gazette.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18"
+    },
+    {
+      "id": "mz-ip2025-captive-power",
+      "name": "Subsidy on captive power generating set (incl. renewable)",
+      "authority": "Government of Mizoram (via District Industries Centre)",
+      "level": "state",
+      "states": [
+        "15"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "asset_classes": [
+        "solar"
+      ],
+      "window": {
+        "from": "2025-05-23",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 500000
+      },
+      "disbursal": null,
+      "form_template": "dic_capital_subsidy",
+      "documents": [
+        "Udyam Registration Certificate",
+        "Purchase invoices with payment proof",
+        "Chartered Engineer certificate for plant & machinery",
+        "Term loan sanction letter (if financed)",
+        "Commencement of production proof"
+      ],
+      "clause": "Industrial Policy of Mizoram 2025, para 4.4 table, Sl. 6",
+      "notes": "Official text: 50% of the cost and installation of a captive power generating set (including renewable sources), up to Rs 5 lakh per unit, for new MSMEs within 5 years of production. Applied to solar purchases the app can detect; a DG set also qualifies.",
+      "source_document": "The Industrial Policy of Mizoram, 2025, Notification No. B.16017/05/2020-C&I dated 23-05-2025 (Mizoram Gazette Extraordinary Issue No. 344, 26-05-2025) dated 2025-05-23",
+      "source_url": "https://industries.mizoram.gov.in/uploads/attachments/2025/09/0b918d996ad1ef9bcda2820c81658832/pages-177-the-industrial-policy-of-mizoram-2025-gazette.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18",
+      "conditions": [
+        "New unit within 5 years of starting production"
+      ]
+    },
+    {
       "id": "tr-tiipis2022-cis-nonthrust",
       "name": "TIIPIS 2022 State Capital Investment Subsidy - non-thrust MSME",
       "authority": "Government of Tripura (via District Industries Centre)",
@@ -3989,6 +4182,11 @@
           "A": 5,
           "B": 5,
           "C": 5
+        },
+        "share_by_zone": {
+          "A": 0.5,
+          "B": 0.75,
+          "C": 0.75
         }
       },
       "disbursal": null,
@@ -4030,7 +4228,11 @@
       "benefit": {
         "type": "certification_topup",
         "rate": 0.5,
-        "cap": 500000
+        "cap": {
+          "micro": 500000,
+          "small": 500000,
+          "medium": 1000000
+        }
       },
       "disbursal": null,
       "form_template": "zed_registration",
@@ -4979,7 +5181,10 @@
         "manufacturing"
       ],
       "asset_classes": [
-        "plant_machinery"
+        "plant_machinery",
+        "testing_equipment",
+        "pollution_control",
+        "solar"
       ],
       "window": {
         "from": "2025-02-24",
@@ -5001,12 +5206,13 @@
         "Term loan sanction letter (if financed)",
         "Commencement of production proof"
       ],
-      "clause": "MSME Development Policy 2025, section 7.1.1(i)-(iv) (per ICAI handbook; KIP Financial cites 'Clause 1')",
-      "notes": "NOT VERIFIED; from secondary sources only (ICAI MSME & Startup Committee 'Madhya Pradesh State MSME Policy' 2026 handbook; KIP Financial consultancy summary). 40% of eligible investment in plant & machinery, building and other listed items made before commercial production. Paid in 4 equal annual instalments. Building cost counted only up to 100% of P&M cost. Applies to units with P&M investment up to Rs 10 crore. Women/SC/ST-owned units (at least 51%) get +2% p.a. for 4 years (+2.5% for SC/ST women). Exporters get +2% p.a. for 4 years if exports are 25-50% of sales, or +3% if above 50%. No absolute cap was found in the sources. Units above Rs 10 crore P&M (medium) instead get 'Investment Promotion Assistance' up to 40%, paid over 7 years under a formula with multipliers (Annexure-II). That formula was not captured.",
-      "source_document": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP), Notification No. F 0057/2025/1/65 (as cited by TeamLease RegTech; not seen in official text) dated 2025-02-22",
-      "source_url": "https://teamleaseregtech.com/updates/article/39993/madhya-pradesh-msme-development-policy-2025/ (secondary listing; the attached notification PDF has been removed; no official mp.gov.in copy reachable)",
-      "verified": false,
-      "verified_on": null
+      "clause": "MP MSME Development Policy 2025, clause 7.1.1 and 7.1.2(i), Annexure-2",
+      "notes": "Official text: new units with P&M up to Rs 10 crore get 40% of eligible investment (P&M, building capped at 100% of P&M, and items in clause 17(vi)) in 4 annual instalments; above Rs 10 crore, up to 40% as investment promotion assistance over 7 years per the Annexure-2 formula, which equals 40% up to Rs 50 crore eligible investment and tapers above. Women/SC/ST owners get +2% a year for 4 years, exporters +2-3%; multipliers for exports, employment, priority blocks and FDI raise it further (not modelled, so the estimate is a floor). Expansion/diversification of existing units counts on the additional investment.",
+      "source_document": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP), Department of MSME, Government of Madhya Pradesh dated 2025-02-22",
+      "source_url": "https://mpmsme.gov.in/mpmsmecms/Uploaded%20Document/Documents/MP%20MSMED%20Policy%202025.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18",
+      "max_investment": 500000000
     },
     {
       "id": "mp-msme2025-quality",
@@ -5042,16 +5248,16 @@
         "Certificate obtained",
         "Fee payment receipt"
       ],
-      "clause": "MSME Development Policy 2025, section 7.2(i) (per ICAI handbook)",
-      "notes": "NOT VERIFIED; ICAI handbook only. 100% of cost, cumulative cap Rs 20 lakh per unit over the policy period. International/export certifications: 50% up to Rs 50 lakh (7.2(ii)). Patents/IPR: 100% up to Rs 10 lakh per patent (7.3).",
-      "source_document": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP), Notification No. F 0057/2025/1/65 (as cited by TeamLease RegTech; not seen in official text) dated 2025-02-22",
-      "source_url": "https://teamleaseregtech.com/updates/article/39993/madhya-pradesh-msme-development-policy-2025/ (secondary listing; the attached notification PDF has been removed; no official mp.gov.in copy reachable)",
-      "verified": false,
-      "verified_on": null
+      "clause": "MP MSME Development Policy 2025, clause 7.2(i)",
+      "notes": "Official text: 100% of quality certification spend (ISO/BIS/BEE/ISI/FPO/AGMARK), up to Rs 20 lakh in total during the policy. Export-market certification: 50% up to Rs 50 lakh (7.2(ii)).",
+      "source_document": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP), Department of MSME, Government of Madhya Pradesh dated 2025-02-22",
+      "source_url": "https://mpmsme.gov.in/mpmsmecms/Uploaded%20Document/Documents/MP%20MSMED%20Policy%202025.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18"
     },
     {
-      "id": "mp-msme2025-interest-textile",
-      "name": "Sector package interest subsidy (e.g. textiles/pharma) for MSMEs above Rs 5 crore P&M",
+      "id": "mp-msme2025-interest-apparel",
+      "name": "Interest subsidy - apparel and made-ups units (P&M above Rs 5 crore)",
       "authority": "Government of Madhya Pradesh (via District Industries Centre)",
       "level": "state",
       "states": [
@@ -5075,6 +5281,52 @@
       "benefit": {
         "type": "interest_subsidy",
         "rate": 0.05,
+        "annual_cap": null,
+        "years": 7
+      },
+      "disbursal": null,
+      "form_template": "dic_capital_subsidy",
+      "documents": [
+        "Udyam Registration Certificate",
+        "Purchase invoices with payment proof",
+        "Chartered Engineer certificate for plant & machinery",
+        "Term loan sanction letter (if financed)",
+        "Commencement of production proof"
+      ],
+      "clause": "MP MSME Development Policy 2025, clause 8.3(ii)(a)",
+      "notes": "Official text: apparel and made-ups units with more than Rs 5 crore in P&M get 5% interest subsidy on term loans for plant and machinery for 7 years; no yearly ceiling stated.",
+      "source_document": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP), Department of MSME, Government of Madhya Pradesh dated 2025-02-22",
+      "source_url": "https://mpmsme.gov.in/mpmsmecms/Uploaded%20Document/Documents/MP%20MSMED%20Policy%202025.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18",
+      "conditions": [
+        "Apparel or made-ups unit with plant & machinery above Rs 5 crore"
+      ]
+    },
+    {
+      "id": "mp-msme2025-interest-pharma",
+      "name": "Interest subsidy - pharmaceutical / medical device units (P&M above Rs 5 crore)",
+      "authority": "Government of Madhya Pradesh (via District Industries Centre)",
+      "level": "state",
+      "states": [
+        "23"
+      ],
+      "categories": [
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "asset_classes": [],
+      "window": {
+        "from": "2025-02-24",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
         "annual_cap": 10000000,
         "years": 5
       },
@@ -5087,15 +5339,61 @@
         "Term loan sanction letter (if financed)",
         "Commencement of production proof"
       ],
-      "clause": "MSME Development Policy 2025, section 8.1(iv) (per ICAI handbook)",
-      "notes": "NOT VERIFIED; ICAI handbook only, and the handbook's sector attribution is unclear. 5% on term loans for 5 years, max Rs 1 crore per year, for sector-package units with P&M above Rs 5 crore. Food processing units above Rs 5 crore reportedly get a Rs 1/unit power tariff subsidy for 5 years (8.2(ii)(a)) and 100% mandi fee reimbursement for 5 years (8.2). Do not use without the official text.",
-      "source_document": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP), Notification No. F 0057/2025/1/65 (as cited by TeamLease RegTech; not seen in official text) dated 2025-02-22",
-      "source_url": "https://teamleaseregtech.com/updates/article/39993/madhya-pradesh-msme-development-policy-2025/ (secondary listing; the attached notification PDF has been removed; no official mp.gov.in copy reachable)",
-      "verified": false,
-      "verified_on": null,
+      "clause": "MP MSME Development Policy 2025, clause 8.1(iv)",
+      "notes": "Official text: pharmaceutical / medical device makers with more than Rs 5 crore in P&M get 5% interest subsidy on term loans for 5 years, up to Rs 100 lakh a year. (Earlier secondary sources attributed this to textiles.)",
+      "source_document": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP), Department of MSME, Government of Madhya Pradesh dated 2025-02-22",
+      "source_url": "https://mpmsme.gov.in/mpmsmecms/Uploaded%20Document/Documents/MP%20MSMED%20Policy%202025.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18",
       "conditions": [
-        "Unit under a sector package with plant & machinery above Rs 5 crore"
+        "Pharmaceutical or medical device unit with plant & machinery above Rs 5 crore"
       ]
+    },
+    {
+      "id": "mp-msme2025-green",
+      "name": "Green industrialization assistance (pollution control, waste management)",
+      "authority": "Government of Madhya Pradesh (via District Industries Centre)",
+      "level": "state",
+      "states": [
+        "23"
+      ],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "sectors": [
+        "manufacturing"
+      ],
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2025-02-24",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 5000000
+      },
+      "disbursal": null,
+      "form_template": "dic_capital_subsidy",
+      "documents": [
+        "Udyam Registration Certificate",
+        "Purchase invoices with payment proof",
+        "Chartered Engineer certificate for plant & machinery",
+        "Term loan sanction letter (if financed)",
+        "Commencement of production proof"
+      ],
+      "clause": "MP MSME Development Policy 2025, clause 7.5(i)",
+      "notes": "Official text: 50% of spend on waste management, pollution control devices, health & safety equipment and water conservation, up to Rs 50 lakh for units with P&M up to Rs 10 crore and Rs 250 lakh above that. The lower cap is used.",
+      "source_document": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP), Department of MSME, Government of Madhya Pradesh dated 2025-02-22",
+      "source_url": "https://mpmsme.gov.in/mpmsmecms/Uploaded%20Document/Documents/MP%20MSMED%20Policy%202025.pdf",
+      "verified": true,
+      "verified_on": "2026-10-18"
     },
     {
       "id": "gj-vgip2026-msme-capital",
@@ -5152,9 +5450,9 @@
       "clause": "Section 19 'Nudging MSMEs to Go Global', table 'Incentives for MSMEs', p.35",
       "notes": "Rate is % of eligible fixed capital investment (eFCI); table heading says 'Capital Subsidy on Term Loan', so a term loan appears to be required. No rupee cap is given in the policy. Components 1-3 can be combined, but the total is capped at 45% of eFCI (Cat A) or 35% (Cat B). SC/ST entrepreneurs (Dr. Babasaheb Ambedkar / Bhagwan Birsa Munda schemes) and persons with disabilities get +5% on the overall ceiling (p.36). Selected thrust sectors (sports goods, toys, footwear, robots, drones) get 35%/30% of eFCI over 5 years for MSMEs, within an overall ceiling of 50% (A) / 45% (B) (Section 21, p.39). The detailed MSME scheme GR (reported dated 2026-09-25, no. IMD/WRT/e-file/9/2026/2630/CH per adaptassociates.com) could not be retrieved.",
       "source_document": "Viksit Gujarat Industrial Policy 2026 (Industries Commissionerate / Industries and Mines Department, Government of Gujarat) dated 2026-06-15",
-      "source_url": "https://indextb.com/files/2026/6/698c2aec-e449-46b5-b3fe-efc6d391e5e2_Viksit-Gujarat-Industrial-Policy2026_new.pdf",
+      "source_url": "https://ic.gujarat.gov.in/documents/Viksit-Gujarat-Industrial-Policy2026_new.pdf",
       "verified": true,
-      "verified_on": "2026-10-17",
+      "verified_on": "2026-10-18",
       "zones": [
         "A",
         "B"
@@ -5201,9 +5499,9 @@
       "clause": "Section 19, table 'Incentives for MSMEs', p.35",
       "notes": "7% on the term loan for 5 years, total capped at 10% of eFCI. Same in Category A and B. The overall eFCI ceiling applies (see capital scheme). The policy gives +1% interest subsidy for women entrepreneurs (Section 13, p.28) and for startups (+1%, up to 9%, Section 12, p.27). Press reports also give +1% for first-generation entrepreneurs; that is not verified. Press reports say NBFC loans are excluded (from the unretrieved GR).",
       "source_document": "Viksit Gujarat Industrial Policy 2026 (Industries Commissionerate / Industries and Mines Department, Government of Gujarat) dated 2026-06-15",
-      "source_url": "https://indextb.com/files/2026/6/698c2aec-e449-46b5-b3fe-efc6d391e5e2_Viksit-Gujarat-Industrial-Policy2026_new.pdf",
+      "source_url": "https://ic.gujarat.gov.in/documents/Viksit-Gujarat-Industrial-Policy2026_new.pdf",
       "verified": true,
-      "verified_on": "2026-10-17",
+      "verified_on": "2026-10-18",
       "zones": [
         "A",
         "B"
@@ -5252,9 +5550,9 @@
       "clause": "Section 19, table 'Incentives for MSMEs', p.35",
       "notes": "Rs 2/unit (Cat A) or Rs 1/unit (Cat B) for 5 years, total capped at 25% of eFCI. The overall eFCI ceiling applies. Press reports mention higher annual limits for micro units in the early years (GR detail, unverified).",
       "source_document": "Viksit Gujarat Industrial Policy 2026 (Industries Commissionerate / Industries and Mines Department, Government of Gujarat) dated 2026-06-15",
-      "source_url": "https://indextb.com/files/2026/6/698c2aec-e449-46b5-b3fe-efc6d391e5e2_Viksit-Gujarat-Industrial-Policy2026_new.pdf",
+      "source_url": "https://ic.gujarat.gov.in/documents/Viksit-Gujarat-Industrial-Policy2026_new.pdf",
       "verified": true,
-      "verified_on": "2026-10-17",
+      "verified_on": "2026-10-18",
       "zones": [
         "A",
         "B"
@@ -5298,9 +5596,9 @@
       "clause": "Section 20, p.39 ('In addition, MSMEs, Large, Mega and Ultra-Mega Units will be eligible for ... 100% Electricity Duty Exemption as per Gujarat Electricity Duty Act 1958')",
       "notes": "100% exemption is stated, but the policy document gives no duration. The years must come from the GR or Electricity Duty notification, which was not retrieved.",
       "source_document": "Viksit Gujarat Industrial Policy 2026 (Industries Commissionerate / Industries and Mines Department, Government of Gujarat) dated 2026-06-15",
-      "source_url": "https://indextb.com/files/2026/6/698c2aec-e449-46b5-b3fe-efc6d391e5e2_Viksit-Gujarat-Industrial-Policy2026_new.pdf",
+      "source_url": "https://ic.gujarat.gov.in/documents/Viksit-Gujarat-Industrial-Policy2026_new.pdf",
       "verified": true,
-      "verified_on": "2026-10-17"
+      "verified_on": "2026-10-18"
     },
     {
       "id": "gj-vgip2026-intl-cert",
@@ -5340,9 +5638,9 @@
       "clause": "Section 15 'Promotion of Research & Development', p.31",
       "notes": "25% of international certification cost (CE, WHO-GMP, US FDA, EU-GMP, ISO etc.), up to Rs 10 lakh per certificate and a maximum of 5 certifications in the policy period. The text sits in the R&D section and does not say it is MSME-only. The MSME GR reportedly provides a separate quality-certification assistance (50% of fees + testing equipment, combined max Rs 10 lakh; ZED assistance also mentioned). That figure is from deshgujarat.com (2026-10-09), so it is NOT verified.",
       "source_document": "Viksit Gujarat Industrial Policy 2026 (Industries Commissionerate / Industries and Mines Department, Government of Gujarat) dated 2026-06-15",
-      "source_url": "https://indextb.com/files/2026/6/698c2aec-e449-46b5-b3fe-efc6d391e5e2_Viksit-Gujarat-Industrial-Policy2026_new.pdf",
+      "source_url": "https://ic.gujarat.gov.in/documents/Viksit-Gujarat-Industrial-Policy2026_new.pdf",
       "verified": true,
-      "verified_on": "2026-10-17"
+      "verified_on": "2026-10-18"
     },
     {
       "id": "dd-ips2022-capital",
@@ -8964,14 +9262,14 @@
     },
     "05": {
       "zones": {
-        "A": "Category A - hill districts (most remote hill areas)",
-        "B": "Category B - hill districts / hill areas",
-        "C": "Category C - plains areas",
-        "D": "Category D - developed plains areas (e.g. industrial belts)"
+        "A": "Category A - all of Pithoragarh, Uttarkashi, Chamoli, Champawat, Rudraprayag, Bageshwar",
+        "B": "Category B - Almora, Pauri Garhwal, hill areas of Tehri Garhwal; Bhimtal, Dhari, Betalghat, Ramgarh, Okhalkanda blocks (Nainital); Chakrata block (Dehradun)",
+        "C": "Category C - plains of Tehri (Dhalwala, Tapovan, Muni ki Reti, Fakot plains); areas above 800 m in Raipur, Sahaspur, Vikasnagar, Kalsi, Doiwala (Dehradun) and Kotabagh (Nainital) blocks",
+        "D": "Category D - Haridwar, Udham Singh Nagar; Ramnagar and Haldwani blocks, Haldwani, Lalkuan, Ramnagar towns; Kotabagh up to 800 m; Dehradun Municipal Corporation and areas up to 800 m in Raipur, Sahaspur, Vikasnagar, Kalsi, Doiwala"
       },
-      "lookup": "District/block-wise A-D categorisation is an annexure of the MSME Policy 2023 notification (A & B mostly hill districts, C & D mostly plains); annexure not retrieved.",
+      "lookup": "FAQ Q4 of the MSME Policy 2023: by district, development block and, in Dehradun and Nainital, height above sea level (800 m).",
       "source": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023",
-      "source_url": "https://destinationuttarakhand.uk.gov.in/swcsincentive/common/protected/msme_policy/MSMEpolicy.pdf"
+      "source_url": "https://investuttarakhand.uk.gov.in/themes/new_investuk/img/faq/MSME_Policy_2023_V1_FAQ.pdf"
     },
     "06": {
       "zones": {
@@ -9066,7 +9364,7 @@
       },
       "lookup": "Taluka classification GR of the Industries & Mines Dept (Oct 2026), Annexure-A: 268 talukas, 130 in Category A and 138 in Category B (per press reports). The Annexure was NOT retrieved; the IC site ic.gujarat.gov.in was unreachable. The older 2020-policy list (taluka category.pdf on indextb.com) does NOT apply.",
       "source": "Viksit Gujarat Industrial Policy 2026 (Industries Commissionerate / Industries and Mines Department, Government of Gujarat)",
-      "source_url": "https://indextb.com/files/2026/6/698c2aec-e449-46b5-b3fe-efc6d391e5e2_Viksit-Gujarat-Industrial-Policy2026_new.pdf"
+      "source_url": "https://ic.gujarat.gov.in/documents/Viksit-Gujarat-Industrial-Policy2026_new.pdf"
     },
     "29": {
       "zones": {
@@ -9187,15 +9485,15 @@
       "state": "Uttarakhand",
       "status": "current",
       "policy": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023",
-      "valid_to": "2028-07-31",
-      "checked_on": "2026-10-17",
+      "valid_to": "2028-08-08",
+      "checked_on": "2026-10-18",
       "schemes": 4,
-      "verified_schemes": 0,
+      "verified_schemes": 4,
       "gaps": [
-        "Official policy/guidelines PDF (destinationuttarakhand.uk.gov.in) and all *.uk.gov.in hosts reset connections from this environment after repeated retries; no figure verified against the official text.",
-        "Secondary sources conflict on capital subsidy caps (Rs 4 crore overall tiered vs Rs 50/40/30/20 lakh) and notification date (09-08-2023 vs 06-09-2023). valid_to assumed as 5 years from 01-08-2023 per secondary sources ('policy period began 01.08.2023').",
-        "District category annexure (A-D) not obtained.",
-        "Central Industrial Development Scheme for Himalayan states (IDS 2017 for HP & Uttarakhand) ended 31-03-2022 per general knowledge - not re-verified."
+        "Verified against the government's official FAQ on the MSME Policy 2023 (Invest Uttarakhand), supplied by the client; the notification itself has not been read. FAQs restate the policy tables in full.",
+        "Extra capital subsidy for priority / most-priority sectors, anchor units and SC/ST/women/divyang-owned units (5-10%, one only) is not modelled.",
+        "ZED award (Rs 25,000-75,000), stamp duty, mandi fee and DPR assistance are not modelled.",
+        "Manufacturing only; 70% of permanent jobs must go to state residents (FAQ Q39)."
       ]
     },
     "06": {
@@ -9231,14 +9529,14 @@
       "status": "current",
       "policy": "Rajasthan Investment Promotion Scheme 2024 (RIPS 2024) - Chapter 3.4 MSMEs",
       "valid_to": "2029-03-31",
-      "checked_on": "2026-10-17",
+      "checked_on": "2026-10-18",
       "schemes": 8,
-      "verified_schemes": 6,
+      "verified_schemes": 8,
       "gaps": [
         "The RIPS 2024 copy used is the signed Finance Dept order hosted on epch.in. No rajasthan.gov.in-hosted copy was reachable (industries.rajasthan.gov.in, rajnivesh, invest.rajasthan refused connections or returned errors). Pages 44-49 and 65-88 are image-only and were read visually.",
         "Amendments to RIPS 2024 after Oct 2024 were not found. The Finance Dept issued procedural guidelines on 2025-01-03 (notification F.12(32)FD/Tax/2024-118, per TeamLease RegTech), which were not reviewed.",
-        "Rajasthan MSME Policy 2024 (in force to 2029-03-31): official text not obtained. Its add-on interest subsidy, CGTMSE fee and certification figures are from secondary sources only.",
-        "RIPS 2024 has no per-unit power tariff subsidy for MSMEs. The SGST incentive is a share of tax plus an overall % of EFCI ceiling, not a pure % of FCI ceiling."
+        "RIPS 2024 has no per-unit power tariff subsidy for MSMEs. The SGST incentive is a share of tax plus an overall % of EFCI ceiling, not a pure % of FCI ceiling.",
+        "Rajasthan MSME Policy 2024 verified from the copy supplied by the client, kept at research/inbox/rajasthan-msme-policy-2024.pdf (in force from Gazette notification to 31-03-2029; supersedes the MSME Policy Package 2022)."
       ]
     },
     "09": {
@@ -9334,15 +9632,15 @@
     "15": {
       "state": "Mizoram",
       "status": "current",
-      "policy": "The Industrial and Investment Policy of Mizoram, 2025 (replaces Mizoram Industrial Policy 2012)",
+      "policy": "The Industrial Policy of Mizoram, 2025",
       "valid_to": null,
-      "checked_on": "2026-10-17",
-      "schemes": 0,
-      "verified_schemes": 0,
+      "checked_on": "2026-10-18",
+      "schemes": 2,
+      "verified_schemes": 2,
       "gaps": [
-        "Official text of the Industrial and Investment Policy of Mizoram, 2025 could not be obtained: industries.mizoram.gov.in returns HTTP 403 to this environment (curl and WebFetch), web.archive.org blocked, and Gazette Extraordinary No. 597 (22.08.2025) not found on mizoramassembly.in. Existence confirmed by cabinet approval report (virthli.in, 13.05.2025) and AIR Aizawl bulletin (launch 07.10.2025); notification no./date from schemekosh.com (secondary).",
-        "Capital investment subsidy, interest subsidy, SGST reimbursement, electricity duty and certification provisions of the 2025 policy unknown; older (2012 and earlier) figures deliberately not used as they are superseded.",
-        "Department site still also lists 'Draft Mizoram Industrial Policy 2025' - status of final text unconfirmed from primary source."
+        "Verified against the Mizoram Gazette Extraordinary No. 344 (26-05-2025), supplied by the client. The policy states detailed schemes and guidelines will be notified separately; those were not read.",
+        "Green incentives (ETP, ZLD, pollution control) are promised in para 9.1 but rates are left to later notification.",
+        "No capital investment subsidy on plant & machinery; UNNATI 2024 (central) still applies alongside."
       ]
     },
     "16": {
@@ -9395,7 +9693,8 @@
       "gaps": [
         "WBIS 2026 official notification (number, date, zone list, caps) not found; all schemes verified=false.",
         "Predecessor verified from official notification: Banglashree for MSMEs (No. 1543/MSMET-18011(11)/1/2020 dated 22.07.2020, Kolkata Gazette Extraordinary WB(Part-I)/2020/SAR-642) was in force 01.04.2020-31.03.2025 (para 1), source https://myenterprisewb.in (Banglashree - 22/07/2020 download) - EXPIRED; units commencing production 01.04.2025-30.09.2026 appear to have no MSME incentive scheme.",
-        "West Bengal also enacted a 2025 Act revoking older industrial incentive schemes (reported); not relevant to MSME scheme figures."
+        "West Bengal also enacted a 2025 Act revoking older industrial incentive schemes (reported); not relevant to MSME scheme figures.",
+        "18-10-2026: the client re-sent the KNN India report; it matches these figures, but the government notification (number, date, zone list, caps) is still needed to mark them verified."
       ]
     },
     "20": {
@@ -9447,15 +9746,14 @@
       "status": "current",
       "policy": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP)",
       "valid_to": null,
-      "checked_on": "2026-10-17",
-      "schemes": 3,
-      "verified_schemes": 0,
+      "checked_on": "2026-10-18",
+      "schemes": 5,
+      "verified_schemes": 5,
       "gaps": [
-        "The official MSME Development Policy 2025 text could not be obtained. mpmsme.gov.in returned 503 or connection resets. invest.mp.gov.in redirects to a JavaScript single-window app (sws.invest.mp.gov.in) whose bundle links only Energy/Export/Logistics/Health/Start-up policy PDFs. The TeamLease RegTech attachment (blob storage) is gone (ResourceNotFound). All MP figures are therefore verified=false.",
-        "The MP Investment Promotion Scheme 2025 (official document, copy on nsws.gov.in) was obtained, but it covers LARGE and mega units under IPP 2025, not MSMEs (its section 1). It was not used for MSME figures.",
-        "Validity: per secondary sources, effective 2025-02-24 and in force until amended/replaced. No fixed end date was confirmed.",
-        "Electricity duty exemption and SGST reimbursement for MSMEs: not found in any source; MP MSME incentives are capital-subsidy based.",
-        "The ICAI handbook text shows signs of paraphrase/auto-generation (e.g. 'sigmoidal curve basic model') and should not be relied on for exact figures."
+        "Verified against the official MP MSME Development Policy 2025 (mpmsme.gov.in), supplied by the client. In force from 24-02-2025 until amended or replaced; the implementing MP MSME Promotion Scheme 2025 has not been read.",
+        "Multipliers (exports, employment, priority blocks, FDI) and the extra 2-3% for women/SC/ST owners and exporters are not modelled, so subsidy estimates are a floor.",
+        "Above Rs 50 crore eligible investment the Annexure-2 formula tapers below 40%; such units are left out.",
+        "No electricity duty or SGST reimbursement for MSMEs in this policy."
       ]
     },
     "24": {
@@ -9463,7 +9761,7 @@
       "status": "current",
       "policy": "Viksit Gujarat Industrial Policy 2026 (Industries Commissionerate / Industries and Mines Department, Government of Gujarat)",
       "valid_to": "2031-05-31",
-      "checked_on": "2026-10-17",
+      "checked_on": "2026-10-18",
       "schemes": 5,
       "verified_schemes": 5,
       "gaps": [
@@ -9471,8 +9769,8 @@
         "Taluka Category A/B list (Annexure-A of the Oct 2026 classification GR): not retrieved, so a unit's zone cannot be looked up yet.",
         "Electricity duty exemption duration.",
         "MSME quality certification and ZED assistance amounts in the GR (press: 50% up to Rs 10 lakh combined).",
-        "Policy PDF is image-only (no text layer); figures were read visually from rendered pages 35, 36, 39 and 31.",
-        "Aatmanirbhar Gujarat Scheme for MSMEs (GR MIS-102022-1271(1)-I dated 2022-10-05, window to 2027-10-04) appears superseded by the VGIP 2026 MSME scheme for units from 2026-06-01. Not confirmed from a GR."
+        "Aatmanirbhar Gujarat Scheme for MSMEs (GR MIS-102022-1271(1)-I dated 2022-10-05, window to 2027-10-04) appears superseded by the VGIP 2026 MSME scheme for units from 2026-06-01. Not confirmed from a GR.",
+        "Policy PDF is image-only. Figures were first read visually from an indextb.com copy, then re-checked by OCR on the official ic.gujarat.gov.in copy supplied by the client (18-10-2026): the MSME table (Category A 35% / B 25% of eFCI, 7% interest for 5 years up to 10% of eFCI, Rs 2 / Rs 1 per unit for 5 years up to 25% of eFCI, ceilings 45% / 35%) matches."
       ]
     },
     "26": {

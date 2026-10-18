@@ -64,7 +64,7 @@ class CapitalAsset:
                 "hsn_description": hsn_mod.describe(self.hsn)["description"] if self.hsn else None}
 
 
-ZONE_MAPS = ("rate_by_zone", "years_by_zone", "cap_by_zone")
+ZONE_MAPS = ("rate_by_zone", "years_by_zone", "cap_by_zone", "slabs_by_zone")
 
 
 CATEGORY_KEYS = {"micro", "small", "medium"}
@@ -191,7 +191,17 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
             else:
                 base = eligible_cost * TERM_LOAN_SHARE_ASSUMPTION
                 assumptions.append(f"Assumed {TERM_LOAN_SHARE_ASSUMPTION:.0%} of the machinery cost was term-loan financed")
-        if rate is not None:
+        slabs = _zone_value(benefit.get("slabs_by_zone"), zone, profile.category)
+        if slabs:
+            # Marginal slabs like tax brackets: [[up_to, rate], ...], the last up_to may be null.
+            lower = 0.0
+            for up_to, slab_rate in slabs:
+                top = base if up_to is None else min(base, up_to)
+                if top > lower:
+                    estimate += (top - lower) * slab_rate
+                lower = up_to if up_to is not None else base
+            basis_text = f"Slab rates on {inr(base, 0)}{where}"
+        elif rate is not None:
             estimate = base * rate
             basis_text = f"{rate:.0%} of {inr(base, 0)}{where}"
     elif kind == "sgst_refund_ceiling" and rate is None and not reasons:
@@ -207,8 +217,10 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
         missing.append("exemption period (the policy leaves it to a separate order)")
     elif kind == "electricity_duty_exemption" and years:
         if profile.monthly_electricity_duty:
-            estimate = profile.monthly_electricity_duty * 12 * years
-            basis_text = f"{inr(profile.monthly_electricity_duty, 0)}/month electricity duty waived for {years} years{where}"
+            share = _rate(_zone_value(benefit.get("share_by_zone"), zone, profile.category), profile.category) or 1
+            estimate = profile.monthly_electricity_duty * 12 * years * share
+            basis_text = (f"{share:.0%} of " if share < 1 else "") + \
+                f"{inr(profile.monthly_electricity_duty, 0)}/month electricity duty waived for {years} years{where}"
         else:
             missing.append("monthly electricity duty (shown on your electricity bill)")
     elif kind == "power_tariff_per_unit" and not years and not reasons:
@@ -228,6 +240,14 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
         else:
             missing.append("monthly electricity consumption in units (kWh)")
     elif kind == "interest_subsidy" and rate is not None:
+        if profile.term_loan_amount and benefit.get("rate_slabs"):
+            # The whole loan gets the rate of the slab its size falls in.
+            for slab in benefit["rate_slabs"]:
+                if slab.get("loan_from", 0) < profile.term_loan_amount <= (slab.get("loan_upto") or float("inf")):
+                    rate = slab["rate"]
+                    break
+            else:
+                rate = 0
         if profile.term_loan_amount:
             basis = benefit.get("rate_basis", "")
             if basis.startswith(("share", "fraction")):

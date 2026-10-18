@@ -8,7 +8,7 @@
     "date": "2026-06-15",
     "valid_from": "2026-06-01",
     "valid_to": "2031-05-31",
-    "source_url": "https://indextb.com/files/2026/6/698c2aec-e449-46b5-b3fe-efc6d391e5e2_Viksit-Gujarat-Industrial-Policy2026_new.pdf",
+    "source_url": "https://ic.gujarat.gov.in/documents/Viksit-Gujarat-Industrial-Policy2026_new.pdf",
     "language": "en"
   },
   "zones": {
@@ -185,8 +185,8 @@
     "Taluka Category A/B list (Annexure-A of the Oct 2026 classification GR): not retrieved, so a unit's zone cannot be looked up yet.",
     "Electricity duty exemption duration.",
     "MSME quality certification and ZED assistance amounts in the GR (press: 50% up to Rs 10 lakh combined).",
-    "Policy PDF is image-only (no text layer); figures were read visually from rendered pages 35, 36, 39 and 31.",
-    "Aatmanirbhar Gujarat Scheme for MSMEs (GR MIS-102022-1271(1)-I dated 2022-10-05, window to 2027-10-04) appears superseded by the VGIP 2026 MSME scheme for units from 2026-06-01. Not confirmed from a GR."
+    "Aatmanirbhar Gujarat Scheme for MSMEs (GR MIS-102022-1271(1)-I dated 2022-10-05, window to 2027-10-04) appears superseded by the VGIP 2026 MSME scheme for units from 2026-06-01. Not confirmed from a GR.",
+    "Policy PDF is image-only. Figures were first read visually from an indextb.com copy, then re-checked by OCR on the official ic.gujarat.gov.in copy supplied by the client (18-10-2026): the MSME table (Category A 35% / B 25% of eFCI, 7% interest for 5 years up to 10% of eFCI, Rs 2 / Rs 1 per unit for 5 years up to 25% of eFCI, ceilings 45% / 35%) matches."
   ],
-  "checked_on": "2026-10-17"
+  "checked_on": "2026-10-18"
 }

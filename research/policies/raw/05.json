@@ -2,70 +2,224 @@
   "state_code": "05",
   "state": "Uttarakhand",
   "status": "current",
-  "policy": {"name": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023", "order_no": "MSME Section Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023 (as cited in the State's own implementation guidelines; ICAI cites 06-09-2023)", "date": "2023-08-09", "valid_from": "2023-08-01", "valid_to": "2028-07-31",
-             "source_url": "https://destinationuttarakhand.uk.gov.in/swcsincentive/common/protected/msme_policy/MSMEpolicy.pdf", "language": "en"},
-  "zones": {
-    "A": "Category A - hill districts (most remote hill areas)",
-    "B": "Category B - hill districts / hill areas",
-    "C": "Category C - plains areas",
-    "D": "Category D - developed plains areas (e.g. industrial belts)"
+  "policy": {
+    "name": "Uttarakhand Micro, Small and Medium Enterprises Policy 2023",
+    "order_no": "Notification No. 1145/VII-3-23/04(01)-MSME/2023 dated 09-08-2023",
+    "date": "2023-08-09",
+    "valid_from": "2023-08-09",
+    "valid_to": "2028-08-08",
+    "source_url": "https://investuttarakhand.uk.gov.in/themes/new_investuk/img/faq/MSME_Policy_2023_V1_FAQ.pdf",
+    "language": "en"
   },
-  "zone_lookup": "District/block-wise A-D categorisation is an annexure of the MSME Policy 2023 notification (A & B mostly hill districts, C & D mostly plains); annexure not retrieved.",
+  "zones": {
+    "A": "Category A - all of Pithoragarh, Uttarkashi, Chamoli, Champawat, Rudraprayag, Bageshwar",
+    "B": "Category B - Almora, Pauri Garhwal, hill areas of Tehri Garhwal; Bhimtal, Dhari, Betalghat, Ramgarh, Okhalkanda blocks (Nainital); Chakrata block (Dehradun)",
+    "C": "Category C - plains of Tehri (Dhalwala, Tapovan, Muni ki Reti, Fakot plains); areas above 800 m in Raipur, Sahaspur, Vikasnagar, Kalsi, Doiwala (Dehradun) and Kotabagh (Nainital) blocks",
+    "D": "Category D - Haridwar, Udham Singh Nagar; Ramnagar and Haldwani blocks, Haldwani, Lalkuan, Ramnagar towns; Kotabagh up to 800 m; Dehradun Municipal Corporation and areas up to 800 m in Raipur, Sahaspur, Vikasnagar, Kalsi, Doiwala"
+  },
+  "zone_lookup": "FAQ Q4 of the MSME Policy 2023: by district, development block and, in Dehradun and Nainital, height above sea level (800 m).",
   "schemes": [
     {
       "id": "uk-msme-2023-capital",
       "name": "Capital subsidy (assistance on capital goods: workshop building, plant & machinery)",
-      "categories": ["micro","small","medium"],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
       "zones": null,
-      "asset_classes": ["plant_machinery"],
-      "window": {"from": "2023-08-01", "to": "2028-07-31"},
+      "asset_classes": [],
+      "window": {
+        "from": "2023-08-09",
+        "to": "2028-08-08"
+      },
       "min_investment": 0,
-      "benefit": {"type": "capital_subsidy", "basis": "eligible_cost",
-                  "rate_by_zone": {"A": 0.50, "B": 0.40, "C": 0.30, "D": 0.20},
-                  "cap": 40000000},
-      "clause": "MSME Policy 2023 - capital subsidy schedule (clause no. not confirmed)",
-      "verified": false,
-      "notes": "SECONDARY / CONFLICTING. Rates for the first Rs 1 crore of eligible investment (Drishti IAS 15-09-2023: A 50%, B 40%, C 30%, D 'Rs 20 lakh'); higher slabs (Rs 1-5 cr, 5-10 cr, 10-50 cr) get lower marginal rates with an overall maximum of Rs 4 crore (Cat A: Rs 1.5 cr / 2.5 cr / 4 cr by slab per Drishti; publicservicesmap: 20-50%, max Rs 4 crore). ICAI handbook (June 2026) instead shows caps of Rs 50/40/30/20 lakh for A/B/C/D - likely the first-slab cap only. Paid in 2 annual instalments (micro, up to Rs 1 cr) or 5 annual instalments (Rs 1-50 cr). Extra for SC/ST/women: up to Rs 10/15/20 lakh by investment slab; +5%/+10% for priority/most-priority sectors. Applies to units starting commercial production within the policy period; claims via investuttarakhand.uk.gov.in, State Level Authorised Committee."
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "slabs_by_zone": {
+          "A": [
+            [
+              10000000,
+              0.5
+            ],
+            [
+              50000000,
+              0.25
+            ],
+            [
+              100000000,
+              0.2
+            ],
+            [
+              500000000,
+              0.0375
+            ]
+          ],
+          "B": [
+            [
+              10000000,
+              0.4
+            ],
+            [
+              50000000,
+              0.2
+            ],
+            [
+              100000000,
+              0.16
+            ],
+            [
+              500000000,
+              0.025
+            ]
+          ],
+          "C": [
+            [
+              10000000,
+              0.3
+            ],
+            [
+              50000000,
+              0.125
+            ],
+            [
+              100000000,
+              0.08
+            ],
+            [
+              500000000,
+              0.02
+            ]
+          ],
+          "D": [
+            [
+              10000000,
+              0.2
+            ],
+            [
+              50000000,
+              0.1
+            ],
+            [
+              100000000,
+              0.06
+            ],
+            [
+              500000000,
+              0.015
+            ]
+          ]
+        },
+        "cap_by_zone": {
+          "A": 40000000,
+          "B": 30000000,
+          "C": 20000000,
+          "D": 15000000
+        }
+      },
+      "clause": "Uttarakhand MSME Policy 2023 - official FAQs (Invest Uttarakhand), Q11-Q12, Q18",
+      "verified": true,
+      "notes": "Official FAQ table: Category A 50% of fixed capital investment up to Rs 1 crore (max Rs 50 lakh); above that Rs 50 lakh + 25% of the excess up to Rs 5 crore (max Rs 1.5 crore), Rs 1.5 crore + 20% up to Rs 10 crore (max Rs 2.5 crore), Rs 2.5 crore + 3.75% up to Rs 50 crore (max Rs 4 crore). B: 40/20/16/2.5% (max Rs 3 crore). C: 30/12.5/8/2% (max Rs 2 crore). D: 20/10/6/1.5% (max Rs 1.5 crore). Modelled as marginal slabs, which reproduce every stated maximum. New units and substantial expansion. Paid in 2 instalments (micro) or 5 (small, medium). Extra 5-10% for priority / most-priority sectors, anchor units and SC/ST/women/divyang owners (one only) is not modelled."
     },
     {
       "id": "uk-msme-2023-interest",
       "name": "Interest subsidy on term loan",
-      "categories": ["micro","small","medium"],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
       "zones": null,
       "asset_classes": [],
-      "window": {"from": "2023-08-01", "to": "2028-07-31"},
+      "window": {
+        "from": "2023-08-09",
+        "to": "2028-08-08"
+      },
       "min_investment": 0,
-      "benefit": {"type": "interest_subsidy", "rate": 0.04, "annual_cap": 500000, "years": 3,
-                  "annual_cap_by_zone": {"A": 500000, "B": 400000, "C": 300000, "D": 200000}},
-      "clause": "MSME Policy 2023 - interest subsidy (clause no. not confirmed)",
-      "verified": false,
-      "notes": "SECONDARY. ICAI handbook: 4% p.a. for 3 years, max Rs 5/4/3/2 lakh per year in A/B/C/D. publicservicesmap lists 2-4% p.a. (rate may vary by category). Not checked against official text."
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": {
+          "micro": 0.04,
+          "small": 0.03,
+          "medium": 0.02
+        },
+        "years": 3,
+        "annual_cap_by_zone": {
+          "A": {
+            "micro": 500000,
+            "small": 600000,
+            "medium": 700000
+          },
+          "B": {
+            "micro": 400000,
+            "small": 500000,
+            "medium": 600000
+          },
+          "C": {
+            "micro": 300000,
+            "small": 400000,
+            "medium": 500000
+          },
+          "D": {
+            "micro": 200000,
+            "small": 300000,
+            "medium": 400000
+          }
+        }
+      },
+      "clause": "Uttarakhand MSME Policy 2023 - official FAQs (Invest Uttarakhand), Q19-Q21",
+      "verified": true,
+      "notes": "Official FAQ: new units with a term loan for building and P&M; micro 4%, small 3%, medium 2% for 3 years from commercial production; yearly caps by area A-D: micro Rs 5/4/3/2 lakh, small Rs 6/5/4/3 lakh, medium Rs 7/6/5/4 lakh."
     },
     {
       "id": "uk-msme-2023-ed",
       "name": "Electricity duty reimbursement",
-      "categories": ["micro","small","medium"],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
       "zones": null,
       "asset_classes": [],
-      "window": {"from": "2023-08-01", "to": "2028-07-31"},
+      "window": {
+        "from": "2023-08-09",
+        "to": "2028-08-08"
+      },
       "min_investment": 0,
-      "benefit": {"type": "electricity_duty_exemption", "years_by_zone": {"ALL": 5}},
-      "clause": "MSME Policy 2023 - electricity duty (clause no. not confirmed)",
-      "verified": false,
-      "notes": "SECONDARY. 100% reimbursement of electricity duty for 5 years for connected load up to 500 kW (ICAI; publicservicesmap). Not checked against official text."
+      "benefit": {
+        "type": "electricity_duty_exemption",
+        "years_by_zone": {
+          "ALL": 5
+        }
+      },
+      "clause": "Uttarakhand MSME Policy 2023 - official FAQs (Invest Uttarakhand), Q22-Q23",
+      "verified": true,
+      "notes": "Official FAQ: new units with sanctioned load up to 500 kW get electricity duty exemption for 5 years (FAQ does not state the share; taken as full exemption)."
     },
     {
       "id": "uk-msme-2023-cert",
       "name": "Quality certification reimbursement",
-      "categories": ["micro","small","medium"],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
       "zones": null,
       "asset_classes": [],
-      "window": {"from": "2023-08-01", "to": "2028-07-31"},
+      "window": {
+        "from": "2023-08-09",
+        "to": "2028-08-08"
+      },
       "min_investment": 0,
-      "benefit": {"type": "certification_topup", "rate": 0.75, "cap": 100000},
-      "clause": "MSME Policy 2023 - quality certification (clause no. not confirmed)",
-      "verified": false,
-      "notes": "SECONDARY. 75% up to Rs 1 lakh for ISO/ISI/BIS/ZED/FSSAI etc. (ICAI handbook). ZED awards Rs 75,000 Gold / 50,000 Silver / 25,000 Bronze (ICAI)."
+      "benefit": {
+        "type": "certification_topup",
+        "rate": 0.75,
+        "cap": 100000
+      },
+      "clause": "Uttarakhand MSME Policy 2023 - official FAQs (Invest Uttarakhand), Q33-Q35",
+      "verified": true,
+      "notes": "Official FAQ: 75% of the cost of ISO, ISI, BIS, FSSAI, ZED and similar certificates, up to Rs 1 lakh per unit; new units."
     }
   ],
   "other_benefits": [
@@ -75,10 +229,10 @@
     "Cluster CFC support up to Rs 5 crore (secondary)"
   ],
   "unverifiable": [
-    "Official policy/guidelines PDF (destinationuttarakhand.uk.gov.in) and all *.uk.gov.in hosts reset connections from this environment after repeated retries; no figure verified against the official text.",
-    "Secondary sources conflict on capital subsidy caps (Rs 4 crore overall tiered vs Rs 50/40/30/20 lakh) and notification date (09-08-2023 vs 06-09-2023). valid_to assumed as 5 years from 01-08-2023 per secondary sources ('policy period began 01.08.2023').",
-    "District category annexure (A-D) not obtained.",
-    "Central Industrial Development Scheme for Himalayan states (IDS 2017 for HP & Uttarakhand) ended 31-03-2022 per general knowledge - not re-verified."
+    "Verified against the government's official FAQ on the MSME Policy 2023 (Invest Uttarakhand), supplied by the client; the notification itself has not been read. FAQs restate the policy tables in full.",
+    "Extra capital subsidy for priority / most-priority sectors, anchor units and SC/ST/women/divyang-owned units (5-10%, one only) is not modelled.",
+    "ZED award (Rs 25,000-75,000), stamp duty, mandi fee and DPR assistance are not modelled.",
+    "Manufacturing only; 70% of permanent jobs must go to state residents (FAQ Q39)."
   ],
-  "checked_on": "2026-10-17"
+  "checked_on": "2026-10-18"
 }

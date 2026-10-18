@@ -92,6 +92,11 @@
           "A": 5,
           "B": 5,
           "C": 5
+        },
+        "share_by_zone": {
+          "A": 0.5,
+          "B": 0.75,
+          "C": 0.75
         }
       },
       "clause": "unknown (notification not seen)",
@@ -116,7 +121,11 @@
       "benefit": {
         "type": "certification_topup",
         "rate": 0.5,
-        "cap": 500000
+        "cap": {
+          "micro": 500000,
+          "small": 500000,
+          "medium": 1000000
+        }
       },
       "clause": "unknown (notification not seen)",
       "verified": false,
@@ -131,7 +140,8 @@
   "unverifiable": [
     "WBIS 2026 official notification (number, date, zone list, caps) not found; all schemes verified=false.",
     "Predecessor verified from official notification: Banglashree for MSMEs (No. 1543/MSMET-18011(11)/1/2020 dated 22.07.2020, Kolkata Gazette Extraordinary WB(Part-I)/2020/SAR-642) was in force 01.04.2020-31.03.2025 (para 1), source https://myenterprisewb.in (Banglashree - 22/07/2020 download) - EXPIRED; units commencing production 01.04.2025-30.09.2026 appear to have no MSME incentive scheme.",
-    "West Bengal also enacted a 2025 Act revoking older industrial incentive schemes (reported); not relevant to MSME scheme figures."
+    "West Bengal also enacted a 2025 Act revoking older industrial incentive schemes (reported); not relevant to MSME scheme figures.",
+    "18-10-2026: the client re-sent the KNN India report; it matches these figures, but the government notification (number, date, zone list, caps) is still needed to mark them verified."
   ],
   "checked_on": "2026-10-17"
 }

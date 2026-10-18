@@ -168,12 +168,13 @@ def test_purchases_before_policy_window_do_not_count():
 
 
 def test_unverified_schemes_flagged_in_disclaimer():
-    # Uttarakhand figures could only be taken from secondary sources, so they stay unverified.
+    # West Bengal's WBIS 2026 is known only from news reports, so it stays unverified.
     assets = [policy.CapitalAsset("plant_machinery", "VMC", "8457", 4e6, date(2026, 6, 1))]
-    result = policy.match(policy.Profile("05", category="small", zone="D", has_udyam=True), assets, today=TODAY)
-    uk = _scheme(result, "uk-msme-2023-capital")
-    assert uk["estimated_benefit"] == pytest.approx(0.2 * 4e6) and not uk["verified"]
-    assert uk["name"] in result["unverified_in_total"]
+    result = policy.match(policy.Profile("19", category="small", zone="B", has_udyam=True,
+                                         monthly_electricity_duty=10000), assets, today=TODAY)
+    wb = _scheme(result, "wb-wbis2026-ed")
+    assert wb["estimated_benefit"] == pytest.approx(10000 * 12 * 5 * 0.75) and not wb["verified"]
+    assert wb["name"] in result["unverified_in_total"]
     assert "not yet verified" in result["disclaimer"]
 
 
@@ -187,6 +188,22 @@ def test_verified_from_supplied_documents():
     assert _scheme(tr, "tr-tiipis2022-cis-nonthrust")["estimated_benefit"] == pytest.approx(0.3 * 5e6)
     jk = _scheme(policy.match(policy.Profile("01", category="small", has_udyam=True), assets, today=TODAY), "jk-ip-2021-pcd")
     assert jk["verified"] and jk["estimated_benefit"] == pytest.approx(0.6 * 1e6)
+
+
+def test_slab_and_share_rules():
+    big = [policy.CapitalAsset("plant_machinery", "VMC", "8457", 7e7, date(2026, 6, 1))]
+    # Uttarakhand Category A: 50% of first Rs 1 cr + 25% of next Rs 4 cr + 20% of the last Rs 2 cr = Rs 1.9 cr
+    uk = _scheme(policy.match(policy.Profile("05", category="small", zone="A", has_udyam=True), big, today=TODAY),
+                 "uk-msme-2023-capital")
+    assert uk["verified"] and uk["estimated_benefit"] == pytest.approx(0.5e7 + 0.25 * 4e7 + 0.2 * 2e7)
+    # Rajasthan add-on interest: a Rs 8 crore loan falls in the 1% slab
+    rj = _scheme(policy.match(policy.Profile("08", category="small", has_udyam=True, term_loan_amount=8e7), big,
+                              today=TODAY), "rj-msme2024-addl-interest")
+    assert rj["verified"] and rj["estimated_benefit"] == pytest.approx(0.01 * 8e7)
+    # West Bengal Zone A waives half the electricity duty
+    wb = _scheme(policy.match(policy.Profile("19", category="small", zone="A", has_udyam=True,
+                                             monthly_electricity_duty=10000), big, today=TODAY), "wb-wbis2026-ed")
+    assert wb["estimated_benefit"] == pytest.approx(10000 * 12 * 5 * 0.5)
 
 
 def test_either_or_benefits_count_once():

@@ -237,9 +237,13 @@
         "annual_cap": null,
         "years": 7
       },
-      "clause": "Rajasthan MSME Policy 2024, section 6.2 (per secondary source)",
-      "verified": false,
-      "notes": "NOT VERIFIED. Figures come from the ICAI MSME & Startup Committee handbook 'Rajasthan State MSME Policy' (startup.icai.org, 2026), table 5.2.1. It also lists +2% (up to Rs 7.5 lakh/yr) for ODOP/thrust-sector MSMEs and +1% (up to Rs 5 lakh/yr) for backward/tribal areas and women/SC/ST/PwBD/young entrepreneurs. Aggregators give different numbers ('0.5% to 2%'). The official MSME Policy 2024 PDF could not be retrieved (industries.rajasthan.gov.in refused connections)."
+      "clause": "Rajasthan MSME Policy 2024, section 6.2",
+      "verified": true,
+      "notes": "Official text: selected new or expanding MSMEs get extra interest subvention over RIPS 2024, by loan for plant & machinery: up to Rs 5 crore 2%, Rs 5-10 crore 1%, Rs 10-50 crore 0.5%, for the same period as the RIPS 2024 MSME interest subsidy (7 years). Projects are selected by the district (up to Rs 10 crore) or high-level (above) task force. Collateral-free CGTMSE loans under Rs 5 crore also get 100% of the annual guarantee fee for 7 years.",
+      "source_url": "https://industries.rajasthan.gov.in/",
+      "conditions": [
+        "Project selected by the district or high-level task force committee"
+      ]
     },
     {
       "id": "rj-msme2024-cert",
@@ -261,9 +265,10 @@
         "rate": 0.5,
         "cap": 300000
       },
-      "clause": "Rajasthan MSME Policy 2024 (section number not confirmed)",
-      "verified": false,
-      "notes": "NOT VERIFIED. 50% up to Rs 3 lakh for ISO/BIS/FSSAI/ZED/WHO-GMP and IPR, per ICAI handbook section 5.6 (secondary). The official text was not obtained."
+      "clause": "Rajasthan MSME Policy 2024, section 6.6(a)",
+      "verified": true,
+      "notes": "Official text: one-time reimbursement of 50% of the cost (including testing and documentation) of quality certifications (BIS, FSSAI), system certifications (ISO, ZED) and IPR, up to Rs 3 lakh.",
+      "source_url": "https://industries.rajasthan.gov.in/"
     }
   ],
   "other_benefits": [
@@ -281,12 +286,13 @@
   "unverifiable": [
     "The RIPS 2024 copy used is the signed Finance Dept order hosted on epch.in. No rajasthan.gov.in-hosted copy was reachable (industries.rajasthan.gov.in, rajnivesh, invest.rajasthan refused connections or returned errors). Pages 44-49 and 65-88 are image-only and were read visually.",
     "Amendments to RIPS 2024 after Oct 2024 were not found. The Finance Dept issued procedural guidelines on 2025-01-03 (notification F.12(32)FD/Tax/2024-118, per TeamLease RegTech), which were not reviewed.",
-    "Rajasthan MSME Policy 2024 (in force to 2029-03-31): official text not obtained. Its add-on interest subsidy, CGTMSE fee and certification figures are from secondary sources only.",
-    "RIPS 2024 has no per-unit power tariff subsidy for MSMEs. The SGST incentive is a share of tax plus an overall % of EFCI ceiling, not a pure % of FCI ceiling."
+    "RIPS 2024 has no per-unit power tariff subsidy for MSMEs. The SGST incentive is a share of tax plus an overall % of EFCI ceiling, not a pure % of FCI ceiling.",
+    "Rajasthan MSME Policy 2024 verified from the copy supplied by the client, kept at research/inbox/rajasthan-msme-policy-2024.pdf (in force from Gazette notification to 31-03-2029; supersedes the MSME Policy Package 2022)."
   ],
-  "checked_on": "2026-10-17",
+  "checked_on": "2026-10-18",
   "curation": [
     "rj-rips2024-msme-plastic-alt-capital: conditions added",
-    "rj-rips2024-msme-agro-capital: conditions added"
+    "rj-rips2024-msme-agro-capital: conditions added",
+    "rj-msme2024-addl-interest: conditions added"
   ]
 }

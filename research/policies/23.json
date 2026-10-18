@@ -4,11 +4,11 @@
   "status": "current",
   "policy": {
     "name": "Madhya Pradesh MSME Development Policy, 2025 (Department of MSME, GoMP)",
-    "order_no": "Notification No. F 0057/2025/1/65 (as cited by TeamLease RegTech; not seen in official text)",
+    "order_no": "Department of MSME, Government of Madhya Pradesh",
     "date": "2025-02-22",
     "valid_from": "2025-02-24",
     "valid_to": null,
-    "source_url": "https://teamleaseregtech.com/updates/article/39993/madhya-pradesh-msme-development-policy-2025/ (secondary listing; the attached notification PDF has been removed; no official mp.gov.in copy reachable)",
+    "source_url": "https://mpmsme.gov.in/mpmsmecms/Uploaded%20Document/Documents/MP%20MSMED%20Policy%202025.pdf",
     "language": "en"
   },
   "zones": null,
@@ -23,9 +23,7 @@
         "medium"
       ],
       "zones": null,
-      "asset_classes": [
-        "plant_machinery"
-      ],
+      "asset_classes": [],
       "window": {
         "from": "2025-02-24",
         "to": null
@@ -37,9 +35,10 @@
         "rate": 0.4,
         "cap": null
       },
-      "clause": "MSME Development Policy 2025, section 7.1.1(i)-(iv) (per ICAI handbook; KIP Financial cites 'Clause 1')",
-      "verified": false,
-      "notes": "NOT VERIFIED; from secondary sources only (ICAI MSME & Startup Committee 'Madhya Pradesh State MSME Policy' 2026 handbook; KIP Financial consultancy summary). 40% of eligible investment in plant & machinery, building and other listed items made before commercial production. Paid in 4 equal annual instalments. Building cost counted only up to 100% of P&M cost. Applies to units with P&M investment up to Rs 10 crore. Women/SC/ST-owned units (at least 51%) get +2% p.a. for 4 years (+2.5% for SC/ST women). Exporters get +2% p.a. for 4 years if exports are 25-50% of sales, or +3% if above 50%. No absolute cap was found in the sources. Units above Rs 10 crore P&M (medium) instead get 'Investment Promotion Assistance' up to 40%, paid over 7 years under a formula with multipliers (Annexure-II). That formula was not captured."
+      "clause": "MP MSME Development Policy 2025, clause 7.1.1 and 7.1.2(i), Annexure-2",
+      "verified": true,
+      "notes": "Official text: new units with P&M up to Rs 10 crore get 40% of eligible investment (P&M, building capped at 100% of P&M, and items in clause 17(vi)) in 4 annual instalments; above Rs 10 crore, up to 40% as investment promotion assistance over 7 years per the Annexure-2 formula, which equals 40% up to Rs 50 crore eligible investment and tapers above. Women/SC/ST owners get +2% a year for 4 years, exporters +2-3%; multipliers for exports, employment, priority blocks and FDI raise it further (not modelled, so the estimate is a floor). Expansion/diversification of existing units counts on the additional investment.",
+      "max_investment": 500000000
     },
     {
       "id": "mp-msme2025-quality",
@@ -61,13 +60,13 @@
         "rate": 1.0,
         "cap": 2000000
       },
-      "clause": "MSME Development Policy 2025, section 7.2(i) (per ICAI handbook)",
-      "verified": false,
-      "notes": "NOT VERIFIED; ICAI handbook only. 100% of cost, cumulative cap Rs 20 lakh per unit over the policy period. International/export certifications: 50% up to Rs 50 lakh (7.2(ii)). Patents/IPR: 100% up to Rs 10 lakh per patent (7.3)."
+      "clause": "MP MSME Development Policy 2025, clause 7.2(i)",
+      "verified": true,
+      "notes": "Official text: 100% of quality certification spend (ISO/BIS/BEE/ISI/FPO/AGMARK), up to Rs 20 lakh in total during the policy. Export-market certification: 50% up to Rs 50 lakh (7.2(ii))."
     },
     {
-      "id": "mp-msme2025-interest-textile",
-      "name": "Sector package interest subsidy (e.g. textiles/pharma) for MSMEs above Rs 5 crore P&M",
+      "id": "mp-msme2025-interest-apparel",
+      "name": "Interest subsidy - apparel and made-ups units (P&M above Rs 5 crore)",
       "categories": [
         "small",
         "medium"
@@ -84,29 +83,83 @@
       "benefit": {
         "type": "interest_subsidy",
         "rate": 0.05,
+        "annual_cap": null,
+        "years": 7
+      },
+      "clause": "MP MSME Development Policy 2025, clause 8.3(ii)(a)",
+      "verified": true,
+      "notes": "Official text: apparel and made-ups units with more than Rs 5 crore in P&M get 5% interest subsidy on term loans for plant and machinery for 7 years; no yearly ceiling stated.",
+      "conditions": [
+        "Apparel or made-ups unit with plant & machinery above Rs 5 crore"
+      ]
+    },
+    {
+      "id": "mp-msme2025-interest-pharma",
+      "name": "Interest subsidy - pharmaceutical / medical device units (P&M above Rs 5 crore)",
+      "categories": [
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2025-02-24",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
         "annual_cap": 10000000,
         "years": 5
       },
-      "clause": "MSME Development Policy 2025, section 8.1(iv) (per ICAI handbook)",
-      "verified": false,
-      "notes": "NOT VERIFIED; ICAI handbook only, and the handbook's sector attribution is unclear. 5% on term loans for 5 years, max Rs 1 crore per year, for sector-package units with P&M above Rs 5 crore. Food processing units above Rs 5 crore reportedly get a Rs 1/unit power tariff subsidy for 5 years (8.2(ii)(a)) and 100% mandi fee reimbursement for 5 years (8.2). Do not use without the official text.",
+      "clause": "MP MSME Development Policy 2025, clause 8.1(iv)",
+      "verified": true,
+      "notes": "Official text: pharmaceutical / medical device makers with more than Rs 5 crore in P&M get 5% interest subsidy on term loans for 5 years, up to Rs 100 lakh a year. (Earlier secondary sources attributed this to textiles.)",
       "conditions": [
-        "Unit under a sector package with plant & machinery above Rs 5 crore"
+        "Pharmaceutical or medical device unit with plant & machinery above Rs 5 crore"
       ]
+    },
+    {
+      "id": "mp-msme2025-green",
+      "name": "Green industrialization assistance (pollution control, waste management)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2025-02-24",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 5000000
+      },
+      "clause": "MP MSME Development Policy 2025, clause 7.5(i)",
+      "verified": true,
+      "notes": "Official text: 50% of spend on waste management, pollution control devices, health & safety equipment and water conservation, up to Rs 50 lakh for units with P&M up to Rs 10 crore and Rs 250 lakh above that. The lower cap is used."
     }
   ],
   "other_benefits": [
     "Unverified (secondary): inland freight for exporters at 50% up to Rs 40 lakh/yr for 5 years; testing lab 50% up to Rs 20 lakh; green industrialization (waste management, pollution control, water conservation) at 50% up to Rs 50 lakh per unit, and CETP for 5+ MSMEs up to Rs 100 lakh; patent 100% up to Rs 10 lakh"
   ],
   "unverifiable": [
-    "The official MSME Development Policy 2025 text could not be obtained. mpmsme.gov.in returned 503 or connection resets. invest.mp.gov.in redirects to a JavaScript single-window app (sws.invest.mp.gov.in) whose bundle links only Energy/Export/Logistics/Health/Start-up policy PDFs. The TeamLease RegTech attachment (blob storage) is gone (ResourceNotFound). All MP figures are therefore verified=false.",
-    "The MP Investment Promotion Scheme 2025 (official document, copy on nsws.gov.in) was obtained, but it covers LARGE and mega units under IPP 2025, not MSMEs (its section 1). It was not used for MSME figures.",
-    "Validity: per secondary sources, effective 2025-02-24 and in force until amended/replaced. No fixed end date was confirmed.",
-    "Electricity duty exemption and SGST reimbursement for MSMEs: not found in any source; MP MSME incentives are capital-subsidy based.",
-    "The ICAI handbook text shows signs of paraphrase/auto-generation (e.g. 'sigmoidal curve basic model') and should not be relied on for exact figures."
+    "Verified against the official MP MSME Development Policy 2025 (mpmsme.gov.in), supplied by the client. In force from 24-02-2025 until amended or replaced; the implementing MP MSME Promotion Scheme 2025 has not been read.",
+    "Multipliers (exports, employment, priority blocks, FDI) and the extra 2-3% for women/SC/ST owners and exporters are not modelled, so subsidy estimates are a floor.",
+    "Above Rs 50 crore eligible investment the Annexure-2 formula tapers below 40%; such units are left out.",
+    "No electricity duty or SGST reimbursement for MSMEs in this policy."
   ],
-  "checked_on": "2026-10-17",
+  "checked_on": "2026-10-18",
   "curation": [
-    "mp-msme2025-interest-textile: conditions added"
+    "mp-msme2025-interest-apparel: conditions added",
+    "mp-msme2025-interest-pharma: conditions added"
   ]
 }

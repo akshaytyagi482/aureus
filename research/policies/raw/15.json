@@ -3,26 +3,78 @@
   "state": "Mizoram",
   "status": "current",
   "policy": {
-    "name": "The Industrial and Investment Policy of Mizoram, 2025 (replaces Mizoram Industrial Policy 2012)",
-    "order_no": "No.P-19020/6/2025-C&I (Mizoram Gazette Extraordinary Issue No. 597, 22.08.2025) - per secondary source, not seen",
-    "date": "2025-08-21",
-    "valid_from": "2025-08-21",
+    "name": "The Industrial Policy of Mizoram, 2025",
+    "order_no": "Notification No. B.16017/05/2020-C&I dated 23-05-2025 (Mizoram Gazette Extraordinary Issue No. 344, 26-05-2025)",
+    "date": "2025-05-23",
+    "valid_from": "2025-05-23",
     "valid_to": null,
-    "source_url": null,
+    "source_url": "https://industries.mizoram.gov.in/uploads/attachments/2025/09/0b918d996ad1ef9bcda2820c81658832/pages-177-the-industrial-policy-of-mizoram-2025-gazette.pdf",
     "language": "en"
   },
   "zones": null,
   "zone_lookup": null,
-  "schemes": [],
+  "schemes": [
+    {
+      "id": "mz-ip2025-interest",
+      "name": "Interest subsidy on term loans (new micro and small units)",
+      "categories": [
+        "micro",
+        "small"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2025-05-23",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "interest_subsidy",
+        "rate": 0.05,
+        "annual_cap": 1000000,
+        "years": 5
+      },
+      "clause": "Industrial Policy of Mizoram 2025, para 4.4 table, Sl. 3",
+      "verified": true,
+      "notes": "Official text: interest on term loans subsidised up to 5% for the first 5 years; the claim is limited to Rs 10 lakh of interest paid in a full year (modelled as a Rs 10 lakh yearly cap, the most it could be); only the shortfall if another scheme already pays interest subsidy; regular repayment required."
+    },
+    {
+      "id": "mz-ip2025-captive-power",
+      "name": "Subsidy on captive power generating set (incl. renewable)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "solar"
+      ],
+      "window": {
+        "from": "2025-05-23",
+        "to": null
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.5,
+        "cap": 500000
+      },
+      "clause": "Industrial Policy of Mizoram 2025, para 4.4 table, Sl. 6",
+      "verified": true,
+      "notes": "Official text: 50% of the cost and installation of a captive power generating set (including renewable sources), up to Rs 5 lakh per unit, for new MSMEs within 5 years of production. Applied to solar purchases the app can detect; a DG set also qualifies."
+    }
+  ],
   "other_benefits": [
-    "UNVERIFIED (secondary: schemekosh.com page on power subsidy): Power subsidy for new MSMEs for 5 years from production = 60% (micro) / 25% (small) / 15% (medium) of power consumption expenditure, ceiling Rs 20 lakh per annum - percentage-of-bill, not per-unit.",
-    "UNVERIFIED (same secondary source): new water subsidy at the same 60/25/15% rates, ceiling Rs 10 lakh per annum.",
-    "Central UNNATI 2024 applies: all Mizoram districts are Zone B (see central-ne.json)."
+    "Power subsidy for 5 years: 60% (micro), 25% (small), 15% (medium) of power bills (para 4.4 Sl. 4); not estimated because the app does not read power bill amounts.",
+    "Land development 25% up to Rs 10 lakh and factory building 25% up to Rs 15 lakh, inside notified industrial areas, with prior approval (Sl. 1-2).",
+    "Power line 50% up to Rs 5 lakh (Sl. 5); transport of plant & machinery 50% (Sl. 7); skilling 50% up to Rs 2 lakh (Sl. 8); trade-fair stall 30% up to Rs 1 lakh (para 12)."
   ],
   "unverifiable": [
-    "Official text of the Industrial and Investment Policy of Mizoram, 2025 could not be obtained: industries.mizoram.gov.in returns HTTP 403 to this environment (curl and WebFetch), web.archive.org blocked, and Gazette Extraordinary No. 597 (22.08.2025) not found on mizoramassembly.in. Existence confirmed by cabinet approval report (virthli.in, 13.05.2025) and AIR Aizawl bulletin (launch 07.10.2025); notification no./date from schemekosh.com (secondary).",
-    "Capital investment subsidy, interest subsidy, SGST reimbursement, electricity duty and certification provisions of the 2025 policy unknown; older (2012 and earlier) figures deliberately not used as they are superseded.",
-    "Department site still also lists 'Draft Mizoram Industrial Policy 2025' - status of final text unconfirmed from primary source."
+    "Verified against the Mizoram Gazette Extraordinary No. 344 (26-05-2025), supplied by the client. The policy states detailed schemes and guidelines will be notified separately; those were not read.",
+    "Green incentives (ETP, ZLD, pollution control) are promised in para 9.1 but rates are left to later notification.",
+    "No capital investment subsidy on plant & machinery; UNNATI 2024 (central) still applies alongside."
   ],
-  "checked_on": "2026-10-17"
+  "checked_on": "2026-10-18"
 }
