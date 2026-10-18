@@ -4,11 +4,11 @@
   "status": "current",
   "policy": {
     "name": "Jammu and Kashmir Industrial Policy 2021-30",
-    "order_no": "Government Order No. 117-IND of 2021 dated 19-04-2021, Industries & Commerce Department (reported as '117-IND of 2020' in some sources)",
+    "order_no": "Government Order No. 117-IND of 2021 dated 19-04-2021, Industries & Commerce Department (Administrative Council Decision No. 46/7/2021 dated 09-04-2021)",
     "date": "2021-04-19",
     "valid_from": "2021-04-01",
     "valid_to": "2030-03-31",
-    "source_url": "https://industriescommerce.jk.gov.in/Schemes%20and%20Policies.html",
+    "source_url": "https://globalgbc.org/wp-content/uploads/2022/08/0925_117-IND-OF-2021-1.pdf",
     "language": "en"
   },
   "zones": {
@@ -44,9 +44,9 @@
           "B": 4500000
         }
       },
-      "clause": "J&K Industrial Policy 2021-30, incentive 'Subsidy on DG Set' (para no. not confirmed)",
-      "verified": false,
-      "notes": "100% subsidy on purchase & installation of ONE new DG set of 10-2000 kW; cap Rs 40 lakh Zone A / Rs 45 lakh Zone B; once under the policy; new units, existing units and units undertaking substantial expansion. SOURCE: ICAI 'J&K State MSME Policies' handbook (startup.icai.org, June 2026) - secondary; official policy PDF not retrievable.",
+      "clause": "J&K Industrial Policy 2021-30, para 4.2.1",
+      "verified": true,
+      "notes": "Official text: 100% subsidy on purchase and installation of one new DG set (10-2000 kW), capped at Rs 40 lakh in Zone A and Rs 45 lakh in Zone B; once under the policy. Sets of 125 kVA and above need retrofitted emission control (4.2.5).",
       "conditions": [
         "Applies only to one new DG set (10-2000 kW)"
       ]
@@ -71,9 +71,39 @@
         "rate": 0.3,
         "cap": 200000
       },
-      "clause": "J&K Industrial Policy 2021-30, 'Subsidy on procurement of Quality Certificate'",
-      "verified": false,
-      "notes": "30% of cost of ISO/ISI/BIS/FPO/BEE/AGMARK/ECOMARK/ZED etc., max Rs 2 lakh, once, CA-certified. SOURCE: ICAI handbook (secondary)."
+      "clause": "J&K Industrial Policy 2021-30, para 4.4.1",
+      "verified": true,
+      "notes": "Official text: 30% of the cost of ISO, ISI, BIS, FPO, BEE, AGMARK, ECOMARK, ZED and similar certificates, up to Rs 2 lakh, certified by a CA; once only."
+    },
+    {
+      "id": "jk-ip-2021-pcd",
+      "name": "Subsidy on Pollution Control Devices",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2021-04-01",
+        "to": "2030-03-31"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": 0.6,
+        "cap": 5000000
+      },
+      "clause": "J&K Industrial Policy 2021-30, para 4.6.1",
+      "verified": true,
+      "notes": "Official text: 60% of the cost of new pollution control devices, up to Rs 50 lakh, if not already claimed under CII or a similar central/UT scheme; new units, existing units and substantial expansions.",
+      "conditions": [
+        "Pollution control devices not already claimed under the central CII or a similar scheme"
+      ]
     },
     {
       "id": "jk-ip-2021-green",
@@ -98,9 +128,9 @@
         "rate": 0.5,
         "cap": null
       },
-      "clause": "J&K Industrial Policy 2021-30, 'Green and Environment Protection Initiative'",
-      "verified": false,
-      "notes": "50% of expenditure on new rainwater harvesting, wastewater recycling, zero discharge / solid waste management equipment. Cap not stated in the secondary source. SOURCE: ICAI handbook (secondary).",
+      "clause": "J&K Industrial Policy 2021-30, para 4.7.1",
+      "verified": true,
+      "notes": "Official text: 50% of spend on new rainwater harvesting, wastewater recycling, zero-discharge or solid waste management equipment; no ceiling stated.",
       "conditions": [
         "Applies only to rainwater harvesting, recycling or waste-management equipment"
       ]
@@ -129,9 +159,9 @@
         "rate": 0.25,
         "cap": 200000
       },
-      "clause": "J&K Industrial Policy 2021-30, 'Subsidy on Automation'",
-      "verified": false,
-      "notes": "25% of expenditure on automation/software/hardware/BPR/online pollution control devices, max Rs 2 lakh. SOURCE: ICAI handbook (secondary).",
+      "clause": "J&K Industrial Policy 2021-30, para 4.5.1",
+      "verified": true,
+      "notes": "Official text: 25% of spend on automation / software / hardware / BPR through computers, IT or online pollution-control devices, up to Rs 2 lakh, if not claimed under CII or a similar scheme.",
       "conditions": [
         "Applies only to automation, IT or online pollution-monitoring spend"
       ]
@@ -161,9 +191,9 @@
         },
         "share_of_net_sgst_reimbursed": 1.0
       },
-      "clause": "J&K Industrial Policy 2021-30, 'SGST Incentive' (separate order issued)",
-      "verified": false,
-      "notes": "100% Net SGST reimbursement for 10 years from 01-04-2021, ONLY for units registered under GST in J&K on or before 31-03-2021 - NOT available to new units. No FCI-linked ceiling reported (rate_by_zone null). Also 'Turnover Incentive' for the same existing units: 3% of turnover (micro, max Rs 10 lakh/yr) / 2% (SME, max Rs 50 lakh/yr) for 5 consecutive years, overall annual scheme cap Rs 50 crore. SOURCE: ICAI handbook + ICAI newsletter Mar 2026 (secondary).",
+      "clause": "J&K Industrial Policy 2021-30, para 4.9.1",
+      "verified": true,
+      "notes": "Official text: units GST-registered in J&K on or before 31-03-2021 get 100% net SGST reimbursement for 10 years from 01-04-2021. No investment-linked ceiling, so no estimate.",
       "conditions": [
         "Unit was GST-registered in J&K on or before 31 Mar 2021"
       ]
@@ -180,9 +210,7 @@
         "A",
         "B"
       ],
-      "asset_classes": [
-        "plant_machinery"
-      ],
+      "asset_classes": [],
       "window": {
         "from": "2021-04-01",
         "to": "2037-03-31"
@@ -201,9 +229,10 @@
           "B": 75000000
         }
       },
-      "clause": "DPIIT notification (Ministry of Commerce & Industry) dated 19-02-2021, CII component",
-      "verified": false,
-      "notes": "level: central. 30% (Zone A, max Rs 5 cr) / 50% (Zone B, max Rs 7.5 cr) of investment in P&M (manufacturing); eligible units with investment up to Rs 50 crore. Other components: Capital Interest Subvention 6% p.a. for up to 7 years on loans up to Rs 500 crore for P&M; GST-linked incentive up to 300% of eligible P&M investment over 10 years; Working Capital Interest Subvention 5% for existing units, max 5 years, Rs 1 crore cap. Scheme period 01-04-2021 to 31-03-2037, outlay Rs 28,400 crore. REGISTRATION WINDOW 01-04-2021 to 30-09-2024 (disposal by 31-03-2025) and registration pauses at 115% of committed funds - so NOT open to a unit registering in Oct 2026 unless extended (no extension notice found). SOURCE: Khaitan & Co / Tribune / SCC Online / Drishti summaries (secondary); DPIIT/egazette text not retrievable.",
+      "clause": "DPIIT Notification F.No.1(1)/2020-SSS dated 19-02-2021 (Annexure III of the J&K policy), para 10.1",
+      "verified": true,
+      "notes": "Official text: Zone A 30% of investment in plant & machinery, max Rs 5 crore; Zone B 50%, max Rs 7.5 crore. New units or substantial expansion with P&M up to Rs 50 crore. Registration window 01-04-2021 to 30-09-2024; scheme runs to 31-03-2037.",
+      "max_investment": 500000000,
       "conditions": [
         "Registered under the central J&K scheme (NCSS 2021) before registration closed on 30 Sep 2024"
       ]
@@ -229,11 +258,12 @@
         "type": "interest_subsidy",
         "rate": 0.06,
         "annual_cap": null,
-        "years": 7
+        "years": 7,
+        "floor": 0.02
       },
-      "clause": "DPIIT notification dated 19-02-2021, Capital Interest Subvention component",
-      "verified": false,
-      "notes": "level: central. 6% p.a. for max 7 consecutive years on loans up to Rs 500 crore for P&M; registration closed 30-09-2024 (see CII entry). SOURCE: secondary summaries.",
+      "clause": "DPIIT Notification F.No.1(1)/2020-SSS dated 19-02-2021 (Annexure III of the J&K policy), para 10.2",
+      "verified": true,
+      "notes": "Official text: 6% a year on term loans for P&M (principal up to Rs 500 crore) for up to 7 consecutive years; if the lending rate falls below 8% the unit still pays at least 2%.",
       "conditions": [
         "Registered under the central J&K scheme (NCSS 2021) before registration closed on 30 Sep 2024"
       ]
@@ -247,15 +277,16 @@
     "Land premium rebate for early start of production under J&K Industrial Land Allotment Policy 2021-30 (10%/5%)"
   ],
   "unverifiable": [
-    "All J&K government hosts (industriescommerce.jk.gov.in, singlewindow.jk.gov.in, jk.gov.in) and DPIIT/egazette PDFs were unreachable from this environment; India Environment Portal mirror returned 404. No figure could be checked against the official text, so every scheme is verified:false.",
-    "Exact clause numbers of the UT policy not confirmed.",
-    "Deputy CM has announced an amendment to the J&K Industrial Policy 2021-30 (recalibrating incentives, sick-unit parity) - no notified amendment found.",
-    "NCSS 2021 registration closed 30-09-2024; a PIB-style page mentions registration up to 31-03-2026 under a 'proposed' scheme - status unconfirmed. No central J&K scheme appears open for new registrations on 17-10-2026.",
-    "The older central Industrial Development Scheme for J&K 2017 (DIPP F.No. 2(2)/2018-SPS, 23-04-2018) ran 15-06-2017 to 31-03-2022 and has expired (verified from the gazette copy on ladakh.gov.in)."
+    "Verified against Government Order 117-IND of 2021 with the policy annexure and the DPIIT notification of 19-02-2021 (Annexure III), from a scanned copy supplied by the client (hosted on globalgbc.org, not a government site); text read by OCR.",
+    "Turnover incentive for existing units (3% micro up to Rs 10 lakh a year, 2% SME up to Rs 50 lakh, para 4.8) is not modelled: it depends on turnover since 2021.",
+    "NCSS 2021 registration closed 30-09-2024; only units registered by then can claim.",
+    "The Zone A / Zone B block list is set by the UT government in the scheme guidelines, which were not supplied.",
+    "Deputy CM has announced an amendment to the J&K Industrial Policy 2021-30; no notified amendment found."
   ],
-  "checked_on": "2026-10-17",
+  "checked_on": "2026-10-18",
   "curation": [
     "jk-ip-2021-dgset: conditions added",
+    "jk-ip-2021-pcd: conditions added",
     "jk-ip-2021-green: conditions added",
     "jk-ip-2021-automation: conditions added",
     "jk-ip-2021-sgst-existing: conditions added",

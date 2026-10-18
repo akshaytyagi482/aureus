@@ -168,13 +168,25 @@ def test_purchases_before_policy_window_do_not_count():
 
 
 def test_unverified_schemes_flagged_in_disclaimer():
-    # Andhra Pradesh figures could only be taken from secondary sources, so they stay unverified.
+    # Uttarakhand figures could only be taken from secondary sources, so they stay unverified.
     assets = [policy.CapitalAsset("plant_machinery", "VMC", "8457", 4e6, date(2026, 6, 1))]
-    result = policy.match(policy.Profile("37", category="small", has_udyam=True), assets, today=TODAY)
-    ap = _scheme(result, "ap-medp4-capital-gen")
-    assert ap["estimated_benefit"] == pytest.approx(0.25 * 4e6) and not ap["verified"]
-    assert ap["name"] in result["unverified_in_total"]
+    result = policy.match(policy.Profile("05", category="small", zone="D", has_udyam=True), assets, today=TODAY)
+    uk = _scheme(result, "uk-msme-2023-capital")
+    assert uk["estimated_benefit"] == pytest.approx(0.2 * 4e6) and not uk["verified"]
+    assert uk["name"] in result["unverified_in_total"]
     assert "not yet verified" in result["disclaimer"]
+
+
+def test_verified_from_supplied_documents():
+    assets = [policy.CapitalAsset("plant_machinery", "VMC", "8457", 4e6, date(2026, 6, 1)),
+              policy.CapitalAsset("pollution_control", "ETP", "8421", 1e6, date(2026, 6, 1))]
+    ap = _scheme(policy.match(policy.Profile("37", category="small", has_udyam=True, monthly_power_units=100000),
+                              assets, today=TODAY), "ap-medp4-power")
+    assert ap["verified"] and ap["estimated_benefit"] == pytest.approx(5 * 500000)  # Rs 12 lakh/yr capped at Rs 5 lakh
+    tr = policy.match(policy.Profile("16", category="micro", has_udyam=True), assets, today=TODAY)
+    assert _scheme(tr, "tr-tiipis2022-cis-nonthrust")["estimated_benefit"] == pytest.approx(0.3 * 5e6)
+    jk = _scheme(policy.match(policy.Profile("01", category="small", has_udyam=True), assets, today=TODAY), "jk-ip-2021-pcd")
+    assert jk["verified"] and jk["estimated_benefit"] == pytest.approx(0.6 * 1e6)
 
 
 def test_either_or_benefits_count_once():

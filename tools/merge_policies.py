@@ -19,7 +19,7 @@ TYPES = {
     "sgst_refund_ceiling": set(),
     "interest_subsidy": set(),
     "electricity_duty_exemption": set(),
-    "power_tariff_per_unit": {"per_unit", "years"},
+    "power_tariff_per_unit": {"years"},
     "certification_topup": set(),
     "certification_support": {"certification_cost", "rate"},
 }
@@ -84,6 +84,8 @@ def validate(doc: dict, path: str) -> list[str]:
             check("rate_by_zone" in b, f"{where}: sgst_refund_ceiling needs rate_by_zone (null if uncapped)")
         if kind == "interest_subsidy":
             check("rate" in b or "rate_by_zone" in b, f"{where}: interest_subsidy needs rate or rate_by_zone")
+        if kind == "power_tariff_per_unit":
+            check("per_unit" in b or "per_unit_by_zone" in b, f"{where}: needs per_unit or per_unit_by_zone")
         if kind == "electricity_duty_exemption":
             check("years_by_zone" in b or "years" in b, f"{where}: needs years_by_zone or years")
         for key in ("rate_by_zone", "years_by_zone", "cap_by_zone", "annual_cap_by_zone", "per_unit_by_zone"):

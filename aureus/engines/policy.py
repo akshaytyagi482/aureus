@@ -215,9 +215,16 @@ def evaluate_scheme(scheme: dict, profile: Profile, assets: list[CapitalAsset], 
         missing.append("subsidy period (the policy leaves it to a separate order)")
     elif kind == "power_tariff_per_unit" and years:
         if profile.monthly_power_units:
-            per_unit = benefit.get("per_unit") or _zone_value(benefit.get("per_unit_by_zone"), zone, profile.category) or 0
-            estimate = profile.monthly_power_units * 12 * years * per_unit
+            per_unit = _rate(benefit.get("per_unit") or _zone_value(benefit.get("per_unit_by_zone"), zone, profile.category),
+                             profile.category) or 0
+            yearly = profile.monthly_power_units * 12 * per_unit
+            annual_cap = _rate(_zone_value(benefit.get("annual_cap_by_zone"), zone, profile.category), profile.category)
+            if annual_cap:
+                yearly = min(yearly, annual_cap)
+            estimate = yearly * years
             basis_text = f"₹{per_unit:g}/unit on {profile.monthly_power_units:,.0f} units/month for {years} years{where}"
+            if annual_cap:
+                basis_text += f", up to {inr(annual_cap, 0)} a year"
         else:
             missing.append("monthly electricity consumption in units (kWh)")
     elif kind == "interest_subsidy" and rate is not None:

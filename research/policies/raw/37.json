@@ -23,9 +23,7 @@
         "medium"
       ],
       "zones": null,
-      "asset_classes": [
-        "plant_machinery"
-      ],
+      "asset_classes": [],
       "window": {
         "from": "2024-10-26",
         "to": "2029-10-25"
@@ -44,9 +42,10 @@
           }
         }
       },
-      "clause": "MSME&EDP 4.0 - Investment Subsidy (para no. not confirmed)",
-      "verified": false,
-      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). 25% of Fixed Capital Investment; caps micro Rs 25 lakh (disbursed over 2 yrs), small Rs 1.5 crore (3 yrs), medium Rs 7 crore (4 yrs). Both sources agree on these figures. Overall incentives under all packages capped at 75% of FCI (Finance Dept condition quoted in G.O. preamble per search snippet). Manufacturing only; new units and expansion (>=25% increase)."
+      "clause": "G.O.Ms.No.22, I&C (Programme-I) Dept, 17-02-2025, para 5(ii) (substituting MEDP 4.0 para 6.3)",
+      "verified": true,
+      "notes": "Official text: General category 25% of FCI, cap micro Rs 25 lakh (2 annual instalments), small Rs 1.5 crore (3), medium Rs 7 crore (4), on CoD/first invoice. 'The subsidy is applicable to only new enterprises.'",
+      "source_url": "https://apiic.in/wp-content/themes/custom-theme/assets/Pdfs/MSME2024-29%20Amendment.pdf"
     },
     {
       "id": "ap-medp4-capital-special",
@@ -57,9 +56,7 @@
         "medium"
       ],
       "zones": null,
-      "asset_classes": [
-        "plant_machinery"
-      ],
+      "asset_classes": [],
       "window": {
         "from": "2024-10-26",
         "to": "2029-10-25"
@@ -82,9 +79,10 @@
           }
         }
       },
-      "clause": "MSME&EDP 4.0 as amended by G.O.Ms.No.22 dt 17-02-2025 (para no. not confirmed)",
-      "verified": false,
-      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). ICAI: micro 45% (Rs 45 lakh), small 45% (Rs 4.5 crore), medium 35% (Rs 7 crore). CONFLICT: KIP Financial says 35% up to Rs 7 crore for all special categories (likely pre-amendment). Women: ICAI also mentions '10% additional investment subsidy'."
+      "clause": "G.O.Ms.No.22, I&C (Programme-I) Dept, 17-02-2025, para 5(ii) (substituting MEDP 4.0 para 6.3)",
+      "verified": true,
+      "notes": "Official text: Special Category 45% of FCI (cap Rs 45 lakh) micro, 45% (Rs 4.5 crore) small, 35% (Rs 7 crore) medium. Special Category = enterprises wholly owned by women/BC/SC/ST/minority/specially-abled/transgender entrepreneurs domiciled in AP. SC/ST transport-service units have separate caps (not modelled: services). New enterprises only.",
+      "source_url": "https://apiic.in/wp-content/themes/custom-theme/assets/Pdfs/MSME2024-29%20Amendment.pdf"
     },
     {
       "id": "ap-medp4-sgst",
@@ -110,9 +108,10 @@
           "ALL": 5
         }
       },
-      "clause": "MSME&EDP 4.0 - Net SGST reimbursement (para no. not confirmed)",
-      "verified": false,
-      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). ICAI: 100% of net SGST for 5 years or until 100% of FCI realised (rate_by_zone = FCI ceiling), additionally capped at 5% of annual turnover (as summarised - unclear if annual cap). Applies to manufacturing and service."
+      "clause": "G.O.Ms.No.22, I&C (Programme-I) Dept, 17-02-2025, para 5(v) (substituting MEDP 4.0 para 6.6)",
+      "verified": true,
+      "notes": "Official text: 100% net SGST for 5 years, annual cap 5% of annual turnover; total SGST incentive shall not exceed 100% of FCI (the ceiling modelled here).",
+      "source_url": "https://apiic.in/wp-content/themes/custom-theme/assets/Pdfs/MSME2024-29%20Amendment.pdf"
     },
     {
       "id": "ap-medp4-power",
@@ -133,11 +132,56 @@
         "type": "power_tariff_per_unit",
         "per_unit": 1.0,
         "years": 5,
-        "cap": null
+        "annual_cap_by_zone": {
+          "ALL": {
+            "micro": 100000,
+            "small": 500000,
+            "medium": 1500000
+          }
+        }
       },
-      "clause": "MSME&EDP 4.0 - Power cost reimbursement (para no. not confirmed)",
-      "verified": false,
-      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). ICAI: Rs 1/unit for 5 years from commercial production, annual cap micro Rs 1 lakh, small Rs 5 lakh, medium Rs 15 lakh; special category Rs 1.5/unit with same caps. cap field left null because caps are per year and per size."
+      "clause": "G.O.Ms.No.22, I&C (Programme-I) Dept, 17-02-2025, para 5(iv) (substituting MEDP 4.0 para 6.5)",
+      "verified": true,
+      "notes": "Official text: General category Rs 1/unit for 5 years from DCP, annual cap micro Rs 1 lakh, small Rs 5 lakh, medium Rs 15 lakh. Special Category Rs 1.5/unit (micro, small) and Rs 1/unit (medium), same caps.",
+      "source_url": "https://apiic.in/wp-content/themes/custom-theme/assets/Pdfs/MSME2024-29%20Amendment.pdf"
+    },
+    {
+      "id": "ap-medp4-power-special",
+      "name": "Power cost reimbursement - Special category",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-10-26",
+        "to": "2029-10-25"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "power_tariff_per_unit",
+        "years": 5,
+        "annual_cap_by_zone": {
+          "ALL": {
+            "micro": 100000,
+            "small": 500000,
+            "medium": 1500000
+          }
+        },
+        "per_unit_by_zone": {
+          "ALL": {
+            "micro": 1.5,
+            "small": 1.5,
+            "medium": 1.0
+          }
+        }
+      },
+      "clause": "G.O.Ms.No.22, I&C (Programme-I) Dept, 17-02-2025, para 5(iv) (substituting MEDP 4.0 para 6.5)",
+      "verified": true,
+      "notes": "Official text: Special Category Rs 1.5/unit (micro, small), Rs 1/unit (medium) for 5 years from DCP, annual caps Rs 1 lakh / 5 lakh / 15 lakh.",
+      "source_url": "https://apiic.in/wp-content/themes/custom-theme/assets/Pdfs/MSME2024-29%20Amendment.pdf"
     },
     {
       "id": "ap-medp4-quality",
@@ -172,9 +216,7 @@
         "medium"
       ],
       "zones": null,
-      "asset_classes": [
-        "plant_machinery"
-      ],
+      "asset_classes": [],
       "window": {
         "from": "2024-10-26",
         "to": "2029-10-25"
@@ -193,9 +235,47 @@
           }
         }
       },
-      "clause": "MSME&EDP 4.0 - Technology upgradation (para no. not confirmed)",
-      "verified": false,
-      "notes": "SECONDARY ONLY: ICAI MSME & Startup Committee handbook 'Andhra Pradesh State MSME Policy' (startup.icai.org, 2026) and KIP Financial summary; official G.O. could not be downloaded (apmsmeone.ap.gov.in unreachable). General 20% (micro Rs 20 lakh/2 yrs, small Rs 2 crore/3 yrs, medium Rs 5 crore/5 yrs); special category 40% (micro Rs 40 lakh, small Rs 4 crore, medium Rs 5 crore). Mutually exclusive with capital subsidy per Finance Dept remark."
+      "clause": "G.O.Ms.No.22, I&C (Programme-I) Dept, 17-02-2025, para 5(iii) (substituting MEDP 4.0 para 6.4)",
+      "verified": true,
+      "notes": "Official text: Technology Upgradation, General category 20% of FCI, cap micro Rs 20 lakh, small Rs 2 crore, medium Rs 5 crore. 'Applicable to only expansion/diversification units.'",
+      "source_url": "https://apiic.in/wp-content/themes/custom-theme/assets/Pdfs/MSME2024-29%20Amendment.pdf"
+    },
+    {
+      "id": "ap-medp4-techup-special",
+      "name": "Technology upgradation subsidy - Special category (Women/SC/ST/BC/Minority/specially-abled/transgender)",
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
+      "zones": null,
+      "asset_classes": [],
+      "window": {
+        "from": "2024-10-26",
+        "to": "2029-10-25"
+      },
+      "min_investment": 0,
+      "benefit": {
+        "type": "capital_subsidy",
+        "basis": "eligible_cost",
+        "rate": {
+          "micro": 0.4,
+          "small": 0.4,
+          "medium": 0.3
+        },
+        "cap": null,
+        "cap_by_zone": {
+          "ALL": {
+            "micro": 4000000,
+            "small": 40000000,
+            "medium": 50000000
+          }
+        }
+      },
+      "clause": "G.O.Ms.No.22, I&C (Programme-I) Dept, 17-02-2025, para 5(iii) (substituting MEDP 4.0 para 6.4)",
+      "verified": true,
+      "notes": "Official text: Special Category 40% of FCI (cap Rs 40 lakh) micro, 40% (Rs 4 crore) small, 30% (Rs 5 crore) medium. Expansion/diversification units only.",
+      "source_url": "https://apiic.in/wp-content/themes/custom-theme/assets/Pdfs/MSME2024-29%20Amendment.pdf"
     }
   ],
   "other_benefits": [
@@ -206,9 +286,9 @@
     "No interest subsidy for MSMEs found in summaries (8% interest subsidy is under AP Innovation & Startup Policy 4.0). No electricity duty exemption found."
   ],
   "unverifiable": [
-    "Official G.O.Ms.No.69 (26-10-2024) PDF on apmsmeone.ap.gov.in and amendment G.O.Ms.No.22 (17-02-2025) and G.O.Ms.No.28 (2025) could not be downloaded - host resets/503 from this environment; apchambers.in copy returns 404. ALL figures are from secondary summaries and are marked verified:false.",
-    "Policy confirmed in force in Sept 2026 (All India Radio news, 11-09-2026). valid_to computed as 5 years from notification ('5 years or until new policy').",
-    "Operational guidelines (Director of Industries / AP MSME DC) not obtained; disbursement schedules, para numbers, and SGST turnover cap need confirmation."
+    "Verified against G.O.Ms.No.22 (17-02-2025), which re-states paras 6.3-6.6 of MEDP 4.0 in full (official copy on apiic.in, supplied by the client). Policy period 2024-29 from G.O.Ms.No.69.",
+    "Quality certification top-up comes from the base G.O.Ms.No.69, which is still not downloadable here; it stays unverified.",
+    "SC/ST transport-service caps and the SC/ST 75% land-cost rebate (para 6.11) are not modelled: services and land are outside what the app reads from invoices."
   ],
-  "checked_on": "2026-10-17"
+  "checked_on": "2026-10-18"
 }
