@@ -151,7 +151,7 @@ async function viewLanding() {
       <p>One console for every client: who is losing credit, who qualifies for subsidies, and whose filing is due next,
       under your firm's name.</p></div>
   </section>
-  <footer class="site">AureusRecon · Subsidy estimates use an illustrative rule grid pending verification against official notifications.</footer>`;
+  <footer class="site">AureusRecon · Subsidy figures come from official state and central policy documents, cited on each scheme; estimates are ceilings until the DIC approves.</footer>`;
 }
 
 async function viewCoverage() {
