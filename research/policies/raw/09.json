@@ -15,22 +15,42 @@
     "BP": "Bundelkhand and Purvanchal regions",
     "MP": "Madhyanchal and Paschimanchal regions (Gautam Buddha Nagar and Ghaziabad are in Paschimanchal; they differ only for stamp duty)"
   },
-  "zone_lookup": "The MSME Policy 2022 (para 5.3.3, 5.3.4) uses the four regions but has no district annexure. The same regions are used in the UP Industrial Investment & Employment Promotion Policy 2022, which also has no district list. Look up the region from the district's revenue division: Bundelkhand is the Jhansi and Chitrakoot divisions. The Purvanchal/Madhyanchal/Paschimanchal split by division was NOT confirmed from an official document (see unverifiable).",
+  "zone_lookup": "Bundelkhand (BP) is the Jhansi division (Jhansi, Jalaun, Lalitpur) and the Chitrakoot division (Banda, Chitrakoot, Hamirpur, Mahoba). Gautam Buddha Nagar and Ghaziabad (Meerut division) are Paschimanchal (MP). The MSME Policy 2022 does not list which divisions form Purvanchal, Madhyanchal and Paschimanchal; check with your DIC for other districts.",
   "schemes": [
     {
       "id": "up-msme-2022-capital",
       "name": "Investment Promotion Assistance (capital subsidy) on fixed capital investment",
-      "categories": ["micro", "small", "medium"],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
       "zones": null,
-      "asset_classes": ["plant_machinery", "testing_equipment", "pollution_control", "solar"],
-      "window": {"from": "2022-09-28", "to": "2027-09-27"},
+      "asset_classes": [
+        "plant_machinery",
+        "testing_equipment",
+        "pollution_control",
+        "solar"
+      ],
+      "window": {
+        "from": "2022-09-28",
+        "to": "2027-09-27"
+      },
       "min_investment": 0,
       "benefit": {
         "type": "capital_subsidy",
         "basis": "eligible_cost",
         "rate_by_zone": {
-          "BP": {"micro": 0.25, "small": 0.20, "medium": 0.15},
-          "MP": {"micro": 0.20, "small": 0.15, "medium": 0.10}
+          "BP": {
+            "micro": 0.25,
+            "small": 0.2,
+            "medium": 0.15
+          },
+          "MP": {
+            "micro": 0.2,
+            "small": 0.15,
+            "medium": 0.1
+          }
         },
         "cap": 40000000
       },
@@ -41,10 +61,15 @@
     {
       "id": "up-msme-2022-interest",
       "name": "Capital interest subsidy for new micro enterprises",
-      "categories": ["micro"],
+      "categories": [
+        "micro"
+      ],
       "zones": null,
       "asset_classes": [],
-      "window": {"from": "2022-09-28", "to": "2027-09-27"},
+      "window": {
+        "from": "2022-09-28",
+        "to": "2027-09-27"
+      },
       "min_investment": 0,
       "benefit": {
         "type": "interest_subsidy",
@@ -61,14 +86,25 @@
     {
       "id": "up-msme-2022-cert",
       "name": "Quality certification reimbursement (ZED, WHO-GMP, Hallmark, BIS/NABCB-accredited certifications)",
-      "categories": ["micro", "small", "medium"],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
       "zones": null,
       "asset_classes": [],
-      "window": {"from": "2022-09-28", "to": "2027-09-27"},
+      "window": {
+        "from": "2022-09-28",
+        "to": "2027-09-27"
+      },
       "min_investment": 0,
       "benefit": {
         "type": "certification_topup",
-        "rate": {"micro": 0.75, "small": 0.50, "medium": 0.25},
+        "rate": {
+          "micro": 0.75,
+          "small": 0.5,
+          "medium": 0.25
+        },
         "cap": 500000
       },
       "clause": "Para 5.5.3 (table, row 'Cost of certification or approval, cost of certification or approval by third party testing')",
@@ -78,15 +114,24 @@
     {
       "id": "up-msme-2022-cleantech",
       "name": "Clean production technology / pollution control equipment reimbursement",
-      "categories": ["micro", "small", "medium"],
+      "categories": [
+        "micro",
+        "small",
+        "medium"
+      ],
       "zones": null,
-      "asset_classes": ["pollution_control"],
-      "window": {"from": "2022-09-28", "to": "2027-09-27"},
+      "asset_classes": [
+        "pollution_control"
+      ],
+      "window": {
+        "from": "2022-09-28",
+        "to": "2027-09-27"
+      },
       "min_investment": 0,
       "benefit": {
         "type": "capital_subsidy",
         "basis": "eligible_cost",
-        "rate": 0.40,
+        "rate": 0.4,
         "cap": 2000000
       },
       "clause": "Para 5.9.4",
@@ -111,7 +156,8 @@
     "District-to-region mapping (Purvanchal/Madhyanchal/Paschimanchal) is not annexed in the MSME policy or IIEPP 2022, and no official district list was found.",
     "The GO number of the 28.09.2022 Hindi order was not found. The source is the official English translation, which says the Hindi version prevails.",
     "Validity is 5 years from promulgation or until a new policy (para 7.2); valid_to 2027-09-27 is derived from this. No replacement MSME policy notified before 2026-10-17 was found. An ICAI handbook (secondary) mentions a 'UP MSME Policy 2025-2030', but no official document for it was found.",
-    "Operational rules/GOs (niyamavali) for IPA and interest subsidy, which may add conditions, were not reviewed."
+    "Operational rules/GOs (niyamavali) for IPA and interest subsidy, which may add conditions, were not reviewed.",
+    "18-10-2026: the client supplied the official list of UP's 18 revenue divisions and their districts (up.gov.in); it confirms the Bundelkhand districts but does not assign divisions to Purvanchal/Madhyanchal/Paschimanchal."
   ],
   "checked_on": "2026-10-17"
 }

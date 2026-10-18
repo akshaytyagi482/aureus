@@ -362,7 +362,37 @@ function zoneHint(m, stateCode) {
   const info = zoneInfo(m, stateCode);
   if (!info) return '';
   return `<p class="muted" style="font-size:.85rem" data-zone-hint>${esc(info.lookup || 'Incentives depend on the area category of your unit.')}
-    ${info.source_url ? `<a href="${esc(info.source_url)}" target="_blank" rel="noopener noreferrer">Official list</a>` : ''}</p>`;
+    ${info.source_url ? `<a href="${esc(info.source_url)}" target="_blank" rel="noopener noreferrer">Official list</a>` : ''}</p>
+    ${info.places ? placeFinder(info, stateCode) : ''}`;
+}
+
+// District + taluka/block pickers that fill in the zone for states whose list we hold.
+function placeFinder(info, stateCode) {
+  const kind = info.places_kind || 'area';
+  return `<div class="fields" data-place-finder="${esc(stateCode)}">
+    <div class="field"><label>District</label><select data-action-change="zone-district"><option value="">Choose district</option>
+      ${Object.keys(info.places).sort().map((d) => `<option>${esc(d)}</option>`).join('')}</select></div>
+    <div class="field"><label>${esc(kind[0].toUpperCase() + kind.slice(1))}</label><select data-action-change="zone-place" disabled>
+      <option value="">Choose ${esc(kind)}</option></select></div>
+  </div>`;
+}
+
+function onPlaceChange(select) {
+  const box = select.closest('[data-place-finder]');
+  const info = zoneInfo(store.meta, box.dataset.placeFinder);
+  const form = select.closest('form');
+  const district = box.querySelector('[data-action-change=zone-district]').value;
+  const placeSel = box.querySelector('[data-action-change=zone-place]');
+  if (select.dataset.actionChange === 'zone-district') {
+    const places = Object.keys(info.places[district] || {}).sort();
+    placeSel.innerHTML = `<option value="">Choose ${esc(info.places_kind || 'area')}</option>`
+      + places.map((p) => `<option>${esc(p)}</option>`).join('');
+    placeSel.disabled = !places.length;
+    return;
+  }
+  const zone = (info.places[district] || {})[placeSel.value];
+  const zoneSel = form && form.querySelector('select[name=zone]');
+  if (zone && zoneSel) zoneSel.value = zone;
 }
 
 function profileFields(o = {}) {
@@ -396,6 +426,8 @@ function refreshZoneField(form, stateCode) {
   const hint = form.querySelector('[data-zone-hint-box]');
   if (field) field.innerHTML = zoneSelect(store.meta, '', stateCode);
   if (hint) hint.innerHTML = zoneHint(store.meta, stateCode);
+  const result = document.getElementById('calc-result');
+  if (result && form.dataset.form === 'calculator') result.innerHTML = '';
 }
 
 function profilePayload(d) {
@@ -1029,6 +1061,7 @@ document.addEventListener('input', (e) => {
 document.addEventListener('change', (e) => {
   if (e.target.name === 'state_code' && e.target.closest('form[data-form=calculator]')) refreshZoneField(e.target.closest('form'), e.target.value);
   if (e.target.dataset.upload) uploadFile(e.target);
+  if (['zone-district', 'zone-place'].includes(e.target.dataset.actionChange)) onPlaceChange(e.target);
   if (e.target.dataset.actionChange === 'period') go(`#/org/${e.target.dataset.org}/recon${e.target.value ? `?period=${e.target.value}` : ''}`);
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });

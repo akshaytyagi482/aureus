@@ -12,10 +12,10 @@ Every month, AureusRecon reads a factory's purchase records and its GSTR-2B. It 
 
 | Stage | What happens | Status today | What would make it better |
 |---|---|---|---|
-| **1. Onboard** | Business profile, GSTIN check, taluka group, consent | Built | Read the Udyam certificate PDF to pre-fill the profile |
+| **1. Onboard** | Business profile, GSTIN check, taluka group (district/taluka picker for Gujarat and J&K), consent | Built | Read the Udyam certificate PDF to pre-fill the profile |
 | **2. Bring in data** | Tally XML / Zoho / Busy CSV / GSTN template + GSTR-2B + IMS JSON | Built; Zoho and Tally connector untested on live systems | Real client exports to harden parsers; licensed GSTR-2B feed (GSP) instead of manual download |
 | **3. Check tax credit** | Match every bill to GSTR-2B, explain misses with IMS, suggest IMS actions, HSN checks | Built (paisa-exact, 3-pass matching, GSTN categories, IMS) | GST rate check (was the right rate charged for this HSN?); supplier filing-history score; multi-month carry-forward |
-| **4. Find incentives** | Machinery purchases → state/central scheme rules → estimate | Built for every state and UT: 182 schemes, 172 verified against official policies; only West Bengal unverified, 5 with no current policy ([coverage](STATE_COVERAGE.md)) | West Bengal's notification; zone lists for Gujarat, UP and J&K; read building and land costs too |
+| **4. Find incentives** | Machinery purchases → state/central scheme rules → estimate | Built for every state and UT: 182 schemes, 172 verified against official policies; only West Bengal unverified, 5 with no current policy ([coverage](STATE_COVERAGE.md)) | West Bengal's notification; UP's region list; taluka lists for more states; read building and land costs too |
 | **5. Act** | Supplier reminders, notice replies, DIC application packets | Built | Read the notice PDF the officer sent and pre-fill the reply; send reminders by email/WhatsApp |
 | **6. Repeat monthly** | New month's data, deadline countdown, CA console | Manual uploads | Scheduled syncs and alerts before the 20th |
 

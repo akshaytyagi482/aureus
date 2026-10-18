@@ -12,11 +12,11 @@
     "language": "en"
   },
   "zones": {
-    "A": "Zone A (definition not available)",
-    "B": "Zone B (definition not available)",
-    "C": "Zone C (definition not available)"
+    "A": "Zone A (reported: Kolkata Municipal Corporation, Bidhannagar, New Town / NKDA)",
+    "B": "Zone B",
+    "C": "Zone C"
   },
-  "zone_lookup": "Unknown - WBIS 2026 notification not obtained. (Banglashree 2020 used Zones A-E per its annexure; not reused here.)",
+  "zone_lookup": "Not yet confirmed from the WBIS 2026 notification. Secondary sources (myScheme / UMANG summaries) place Kolkata Municipal Corporation, Bidhannagar and New Town (NKDA) in Zone A, and the industrial districts (rest of North and South 24 Parganas, Howrah, Hooghly, Paschim Bardhaman, Nadia, Malda) in Zones B and C. Zones B and C get the same rates, so picking either gives the same estimate.",
   "schemes": [
     {
       "id": "wb-wbis2026-interest-a",
@@ -141,7 +141,8 @@
     "WBIS 2026 official notification (number, date, zone list, caps) not found; all schemes verified=false.",
     "Predecessor verified from official notification: Banglashree for MSMEs (No. 1543/MSMET-18011(11)/1/2020 dated 22.07.2020, Kolkata Gazette Extraordinary WB(Part-I)/2020/SAR-642) was in force 01.04.2020-31.03.2025 (para 1), source https://myenterprisewb.in (Banglashree - 22/07/2020 download) - EXPIRED; units commencing production 01.04.2025-30.09.2026 appear to have no MSME incentive scheme.",
     "West Bengal also enacted a 2025 Act revoking older industrial incentive schemes (reported); not relevant to MSME scheme figures.",
-    "18-10-2026: the client re-sent the KNN India report; it matches these figures, but the government notification (number, date, zone list, caps) is still needed to mark them verified."
+    "18-10-2026: the client re-sent the KNN India report; it matches these figures, but the government notification (number, date, zone list, caps) is still needed to mark them verified.",
+    "Zone descriptions are from secondary summaries supplied by the client on 18-10-2026; the 'Zone D/E, 50% SGST for 8 years' part of those summaries comes from the older WBIS 2013 and was not used."
   ],
   "checked_on": "2026-10-17"
 }

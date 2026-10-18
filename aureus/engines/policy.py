@@ -346,7 +346,7 @@ def match(profile: Profile, assets: list[CapitalAsset], include_ineligible: bool
         by_class[a.asset_class] = round(by_class.get(a.asset_class, 0) + a.value, 2)
     counted = _best_per_exclusive_group([e for e in shown if e["status"] == "eligible" and e["in_total"]])
     unverified = [e["name"] for e in counted if not e["verified"]]
-    disclaimer = ("Maharashtra and ZED figures are checked against the official documents cited on each scheme. "
+    disclaimer = ("Figures marked verified are checked against the official document cited on each scheme. "
                   "Estimates are ceilings: actual payouts depend on DIC approval and, for the SGST refund, on tax you pay.")
     if unverified:
         disclaimer = ("Some estimates use an illustrative rule grid not yet verified against official notifications. "

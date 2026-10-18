@@ -62,6 +62,9 @@ def validate(doc: dict, path: str) -> list[str]:
 
     check(doc.get("status") in ("current", "expired", "not_found"), "status must be current/expired/not_found")
     zones = doc.get("zones") or {}
+    for district, places in (doc.get("places") or {}).items():
+        for place, z in places.items():
+            check(z in zones, f"places: {district} / {place} uses zone {z!r} not defined in 'zones'")
     for s in doc.get("schemes", []):
         where = s.get("id", "?")
         b = s.get("benefit", {})
@@ -201,6 +204,8 @@ def merge(paths: list[str], check_only: bool = False) -> dict:
             grid.setdefault("zones_by_state", {})[d["state_code"]] = {
                 "zones": d["zones"], "lookup": d.get("zone_lookup"),
                 "source": pol.get("name"), "source_url": pol.get("source_url")}
+            if d.get("places"):
+                grid["zones_by_state"][d["state_code"]].update(places=d["places"], places_kind=d.get("places_kind", "area"))
     if not check_only:
         GRID.write_text(json.dumps(grid, indent=2, ensure_ascii=False) + "\n")
         COVERAGE_DOC.write_text(coverage_markdown(grid))

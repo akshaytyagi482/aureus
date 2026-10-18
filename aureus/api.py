@@ -527,7 +527,8 @@ def meta():
         "states": [{"code": c, "name": n} for c, n in sorted(gstin_mod.STATES.items(), key=lambda kv: kv[1])],
         "asset_classes": [{"id": k, "label": v["label"]} for k, v in grid["asset_classes"].items()],
         "zones_by_state": {code: {"zones": [{"id": k, "label": v} for k, v in z["zones"].items()],
-                                  "lookup": z.get("lookup"), "source": z.get("source"), "source_url": z.get("source_url")}
+                                  "lookup": z.get("lookup"), "source": z.get("source"), "source_url": z.get("source_url"),
+                                  "places": z.get("places"), "places_kind": z.get("places_kind")}
                            for code, z in grid.get("zones_by_state", {}).items()},
         "schemes": [{"id": s["id"], "name": s["name"], "states": s["states"], "verified": s["verified"]} for s in grid["schemes"]],
         "coverage": grid.get("coverage", {}),

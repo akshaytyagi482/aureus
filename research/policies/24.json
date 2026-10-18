@@ -15,7 +15,7 @@
     "A": "Category-A talukas (relatively less industrially developed; higher incentives)",
     "B": "Category-B talukas (more industrially developed)"
   },
-  "zone_lookup": "Taluka classification GR of the Industries & Mines Dept (Oct 2026), Annexure-A: 268 talukas, 130 in Category A and 138 in Category B (per press reports). The Annexure was NOT retrieved; the IC site ic.gujarat.gov.in was unreachable. The older 2020-policy list (taluka category.pdf on indextb.com) does NOT apply.",
+  "zone_lookup": "Pick your district and taluka below. 268 talukas: 130 in Category A (higher incentives), 138 in Category B, per the Industries & Mines Department's taluka classification under VGIP 2026 (Annexure-A of the Oct 2026 GR).",
   "schemes": [
     {
       "id": "gj-vgip2026-msme-capital",
@@ -182,12 +182,351 @@
   ],
   "unverifiable": [
     "Detailed MSME scheme GR under VGIP 2026 (reported GR dated 2026-09-25, IMD/WRT/e-file/9/2026/2630/CH, operative 2026-06-01 to 2031-05-31): ic.gujarat.gov.in, imd.gujarat.gov.in and gujaratindia.gov.in all refused connections (SSL_ERROR_SYSCALL / reset / 503). It holds the exact caps, disbursal, eligible-asset rules and the micro early-year power caps.",
-    "Taluka Category A/B list (Annexure-A of the Oct 2026 classification GR): not retrieved, so a unit's zone cannot be looked up yet.",
     "Electricity duty exemption duration.",
     "MSME quality certification and ZED assistance amounts in the GR (press: 50% up to Rs 10 lakh combined).",
     "Aatmanirbhar Gujarat Scheme for MSMEs (GR MIS-102022-1271(1)-I dated 2022-10-05, window to 2027-10-04) appears superseded by the VGIP 2026 MSME scheme for units from 2026-06-01. Not confirmed from a GR.",
-    "Policy PDF is image-only. Figures were first read visually from an indextb.com copy, then re-checked by OCR on the official ic.gujarat.gov.in copy supplied by the client (18-10-2026): the MSME table (Category A 35% / B 25% of eFCI, 7% interest for 5 years up to 10% of eFCI, Rs 2 / Rs 1 per unit for 5 years up to 25% of eFCI, ceilings 45% / 35%) matches."
+    "Policy PDF is image-only. Figures were first read visually from an indextb.com copy, then re-checked by OCR on the official ic.gujarat.gov.in copy supplied by the client (18-10-2026): the MSME table (Category A 35% / B 25% of eFCI, 7% interest for 5 years up to 10% of eFCI, Rs 2 / Rs 1 per unit for 5 years up to 25% of eFCI, ceilings 45% / 35%) matches.",
+    "Taluka list supplied by the client on 18-10-2026 (district-wise Category A/B table). It has exactly 130 Category A and 138 Category B talukas, matching the published counts for the Oct 2026 classification GR; the GR itself has not been read."
   ],
   "checked_on": "2026-10-18",
+  "places": {
+    "Ahmedabad": {
+      "Dholera": "A",
+      "Detroj-Rampura": "A",
+      "Dhandhuka": "A",
+      "Viramgam": "B",
+      "Daskroi": "B",
+      "Bavla": "B",
+      "Dholka": "B",
+      "Sanand": "B",
+      "Mandal": "B",
+      "Ahmedabad City": "B"
+    },
+    "Amreli": {
+      "Khambha": "A",
+      "Dhari": "A",
+      "Lilia": "A",
+      "Savar Kundla": "A",
+      "Babra": "A",
+      "Kunkavav Vadia": "A",
+      "Lathi": "A",
+      "Jafrabad": "B",
+      "Rajula": "B",
+      "Bagasara": "B",
+      "Amreli": "B"
+    },
+    "Anand": {
+      "Tarapur": "A",
+      "Anklav": "A",
+      "Sojitra": "A",
+      "Anand": "B",
+      "Umreth": "B",
+      "Khambhat": "B",
+      "Petlad": "B",
+      "Borsad": "B"
+    },
+    "Arvalli": {
+      "Dhansura": "A",
+      "Malpur": "A",
+      "Meghraj": "B",
+      "Bayad": "B",
+      "Bhiloda": "B",
+      "Modasa": "B",
+      "Shamalaji (Bhiloda)": "B",
+      "Sathamba (Bayad)": "B"
+    },
+    "Banas Kantha": {
+      "Amirgadh": "A",
+      "Danta": "A",
+      "Dhanera": "A",
+      "Kankrej": "A",
+      "Vadgam": "A",
+      "Dantiwada": "A",
+      "Hadad (Danta)": "A",
+      "Ogad (Kankrej)": "A",
+      "Deesa": "B",
+      "Palanpur": "B"
+    },
+    "Bharuch": {
+      "Netrang": "A",
+      "Bharuch": "B",
+      "Jhagadia": "B",
+      "Vagra": "B",
+      "Ankleshwar": "B",
+      "Hansot": "B",
+      "Valia": "B",
+      "Jambusar": "B",
+      "Amod": "B"
+    },
+    "Bhavnagar": {
+      "Jesar": "A",
+      "Umrala": "A",
+      "Vallabhipur": "A",
+      "Gariadhar": "A",
+      "Palitana": "A",
+      "Talaja": "A",
+      "Ghogha": "A",
+      "Bhavnagar": "B",
+      "Mahuva": "B",
+      "Sihor": "B"
+    },
+    "Botad": {
+      "Ranpur": "A",
+      "Gadhada": "A",
+      "Barwala": "A",
+      "Botad": "A"
+    },
+    "Chhota Udepur": {
+      "Chhota Udepur": "A",
+      "Kavant": "A",
+      "Nasvadi": "A",
+      "Sankheda": "A",
+      "Bodeli": "A",
+      "Jetpur Pavi": "A",
+      "Kadval (Jetpur Pavi)": "A"
+    },
+    "Devbhumi Dwarka": {
+      "Kalyanpur": "A",
+      "Bhanvad": "A",
+      "Khambhalia": "B",
+      "Okhamandal": "B"
+    },
+    "Dahod": {
+      "Dhanpur": "A",
+      "Sanjeli": "A",
+      "Limkheda": "A",
+      "Dahod": "A",
+      "Fatepura": "A",
+      "Jhalod": "A",
+      "Singvad": "A",
+      "Garbada": "A",
+      "Devgadbaria": "A",
+      "Sukhasar (Fatehpura)": "A",
+      "Guru Govind Limbdi (Jhalod)": "A"
+    },
+    "Gandhinagar": {
+      "Kalol": "B",
+      "Dehgam": "B",
+      "Gandhinagar": "B",
+      "Mansa": "B"
+    },
+    "Gir Somnath": {
+      "Gir Gadhada": "A",
+      "Talala": "A",
+      "Una": "B",
+      "Kodinar": "B",
+      "Sutrapada": "B",
+      "Veraval": "B"
+    },
+    "Jamnagar": {
+      "Jodiya": "A",
+      "Lalpur": "B",
+      "Jamnagar": "B",
+      "Jamjodhpur": "B",
+      "Kalavad": "B",
+      "Dhrol": "B"
+    },
+    "Junagadh": {
+      "Bhesan": "A",
+      "Mendarda": "A",
+      "Junagadh": "B",
+      "Junagadh City": "B",
+      "Visavadar": "B",
+      "Malia Hatina": "B",
+      "Mangrol": "B",
+      "Vanthali": "B",
+      "Manavadar": "B",
+      "Keshod": "B"
+    },
+    "Kachchh": {
+      "Rapar": "A",
+      "Nakhatrana": "A",
+      "Lakhpat": "A",
+      "Mandvi": "A",
+      "Mundra": "B",
+      "Anjar": "B",
+      "Gandhidham": "B",
+      "Abdasa": "B",
+      "Bhachau": "B",
+      "Bhuj": "B"
+    },
+    "Kheda": {
+      "Galteshwar": "A",
+      "Matar": "A",
+      "Vaso": "A",
+      "Mahudha": "A",
+      "Kheda": "B",
+      "Nadiad": "B",
+      "Mehmedabad": "B",
+      "Kathlal": "B",
+      "Thasra": "B",
+      "Kapadvanj": "B",
+      "Fagvel (Kathlal and Kapadvanj)": "B"
+    },
+    "Mehsana": {
+      "Satlasana": "A",
+      "Jotana": "A",
+      "Kheralu": "A",
+      "Becharaji": "A",
+      "Vadnagar": "A",
+      "Kadi": "B",
+      "Mehsana": "B",
+      "Unjha": "B",
+      "Vijapur": "B",
+      "Visnagar": "B"
+    },
+    "Mahisagar": {
+      "Khanpur": "A",
+      "Kadana": "A",
+      "Virpur": "A",
+      "Lunawada": "B",
+      "Balasinor": "B",
+      "Santrampur": "B",
+      "Godhar (Santrampur, Shehra)": "B",
+      "Kothamba (Lunavada)": "B"
+    },
+    "Morbi": {
+      "Maliya": "A",
+      "Wankaner": "B",
+      "Morbi": "B",
+      "Tankara": "B",
+      "Halvad": "B"
+    },
+    "Narmada": {
+      "Garudeshwar": "A",
+      "Dediapada": "A",
+      "Tilakwada": "A",
+      "Sagbara": "A",
+      "Chikda (Dediapada)": "A",
+      "Nandod": "B"
+    },
+    "Navsari": {
+      "Khergam": "A",
+      "Navsari": "B",
+      "Bansda": "B",
+      "Chikhli": "B",
+      "Jalalpore": "B",
+      "Gandevi": "B"
+    },
+    "Panch Mahals": {
+      "Ghoghamba": "A",
+      "Morwa (Hadaf)": "A",
+      "Jambughoda": "A",
+      "Shehera": "A",
+      "Halol": "B",
+      "Kalol": "B",
+      "Godhra": "B"
+    },
+    "Patan": {
+      "Sarasvati": "A",
+      "Santalpur": "A",
+      "Shankheshwar": "A",
+      "Sami": "A",
+      "Radhanpur": "A",
+      "Harij": "A",
+      "Sidhpur": "B",
+      "Chanasma": "B",
+      "Patan": "B"
+    },
+    "Porbandar": {
+      "Kutiyana": "A",
+      "Porbandar": "B",
+      "Ranavav": "B"
+    },
+    "Rajkot": {
+      "Vinchhiya": "A",
+      "Jamkandorna": "A",
+      "Paddhari": "B",
+      "Lodhika": "B",
+      "Rajkot": "B",
+      "Kotda Sangani": "B",
+      "Jasdan": "B",
+      "Upleta": "B",
+      "Dhoraji": "B",
+      "Jetpur": "B",
+      "Gondal": "B"
+    },
+    "Sabar Kantha": {
+      "Poshina": "A",
+      "Vijaynagar": "A",
+      "Khedbrahma": "A",
+      "Talod": "B",
+      "Vadali": "B",
+      "Idar": "B",
+      "Prantij": "B",
+      "Himatnagar": "B"
+    },
+    "Surat": {
+      "Umarpada": "A",
+      "Mahuva": "A",
+      "Ambika (Mahuva)": "A",
+      "Mangrol": "B",
+      "Kamrej": "B",
+      "Palsana": "B",
+      "Chorasi": "B",
+      "Olpad": "B",
+      "Surat City": "B",
+      "Mandvi": "B",
+      "Bardoli": "B",
+      "Areth (Mandvi)": "B"
+    },
+    "Surendranagar": {
+      "Lakhtar": "A",
+      "Chuda": "A",
+      "Muli": "A",
+      "Sayla": "A",
+      "Limbdi": "A",
+      "Dasada": "A",
+      "Chotila": "A",
+      "Wadhwan": "B",
+      "Thangadh": "B",
+      "Dhrangadhra": "B"
+    },
+    "Tapi": {
+      "Kukarmunda": "A",
+      "Uchchhal": "A",
+      "Nizar": "A",
+      "Dolvan": "A",
+      "Songadh": "A",
+      "Ukai (Songadh)": "A",
+      "Vyara": "B",
+      "Valod": "B"
+    },
+    "The Dangs": {
+      "Subir": "A",
+      "Waghai": "A",
+      "Aahva": "A"
+    },
+    "Vadodara": {
+      "Sinor": "A",
+      "Desar": "A",
+      "Vaghodia": "B",
+      "Karjan": "B",
+      "Padra": "B",
+      "Savli": "B",
+      "Vadodara": "B",
+      "Dabhoi": "B"
+    },
+    "Valsad": {
+      "Kaprada": "A",
+      "Dharampur": "A",
+      "Nanapodha (Kaprada, Vapi, Pardi)": "A",
+      "Valsad": "B",
+      "Pardi": "B",
+      "Vapi": "B",
+      "Umbergaon": "B"
+    },
+    "Vav-Tharad": {
+      "Lakhani": "A",
+      "Suigam": "A",
+      "Vav": "A",
+      "Tharad": "A",
+      "Deodar": "A",
+      "Dharnidhar (Vav)": "A",
+      "Rah (Tharad)": "A",
+      "Bhabhar": "B"
+    }
+  },
+  "places_kind": "taluka",
   "curation": []
 }

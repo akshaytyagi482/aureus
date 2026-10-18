@@ -16,7 +16,7 @@ Keep the original file name. Tick the box when done.
   https://apmsmeone.ap.gov.in → Existing Policy
 - [ ] **West Bengal.** *(Received so far: a tourism-only scheme and the KNN India news report; the government notification is still needed.)* The official notification of **WBIS 2026 for MSMEs** (in force from 01-10-2026), including its zone A/B/C list.
   https://myenterprisewb.in or https://wbmsme.gov.in
-- [x] **Jammu & Kashmir.** *Done 18-10-2026 (scanned GO, read by OCR). Still needed: the Zone A/B block list from the scheme guidelines.* Industrial Policy 2021-30 (GO 117-IND dated 19-04-2021), with its zone A/B list.
+- [x] **Jammu & Kashmir.** *Done 18-10-2026 (scanned GO, read by OCR). Zone A/B blocks added from the Land Allotment Policy as amended by GO 112-JK(IND) of 2024.* Industrial Policy 2021-30 (GO 117-IND dated 19-04-2021), with its zone A/B list.
   https://industriescommerce.jk.gov.in/Schemes%20and%20Policies.html
 - [x] **Tripura.** *TIIPIS 2022 done 18-10-2026. TIIP 2024 notification still useful.* TIIPIS 2022 notification and the TIIP 2024 notification (07-10-2024).
   https://industries.tripura.gov.in/state-scheme-details
@@ -27,9 +27,9 @@ Keep the original file name. Tick the box when done.
 
 ## Priority 2: zone lists (needed before estimates work there)
 
-- [ ] **Gujarat.** *(VGIP 2026 received and matches; still needed: the taluka Category A/B list.)* The MSME scheme GR under Viksit Gujarat Industrial Policy 2026 (reported GR dated 25-09-2026), and the **taluka Category A/B list** (Annexure-A of the Oct 2026 classification GR).
+- [x] **Gujarat.** *VGIP 2026 matches; taluka list received 18-10-2026 (130 A / 138 B) and built into the calculator. A copy of the classification GR itself would make it final.* The MSME scheme GR under Viksit Gujarat Industrial Policy 2026 (reported GR dated 25-09-2026), and the **taluka Category A/B list** (Annexure-A of the Oct 2026 classification GR).
   https://ic.gujarat.gov.in (Schemes / GR section)
-- [ ] **Uttar Pradesh.** *(District lists received from unofficial sources; they overlap, so they are not used. Needed: a GO or the policy annexure naming the districts.)* The official list of districts in Bundelkhand / Purvanchal / Madhyanchal / Paschimanchal used by the MSME Policy 2022.
+- [ ] **Uttar Pradesh.** *(Official divisions list received: Bundelkhand districts now named. Still needed: which divisions are Purvanchal / Madhyanchal / Paschimanchal, from a GO or policy annexure.)* The official list of districts in Bundelkhand / Purvanchal / Madhyanchal / Paschimanchal used by the MSME Policy 2022.
   https://msme1connect.up.gov.in
 - [ ] **Maharashtra.** The implementing scheme GR for MIISP 2025 (Package Scheme of Incentives), which defines eligible fixed capital investment. Ask the DIC if it isn't online.
 

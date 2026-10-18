@@ -126,7 +126,13 @@ def test_public_endpoints(client):
                                                              "investments": {"plant_machinery": 5000000}})
     assert res.status_code == 200 and res.json()["total_estimated_benefit"] > 0
     assert client.get("/api/public/gstin/27AAPFU0939F1ZV").json()["valid"]
-    assert client.get("/api/public/meta").json()["states"]
+    meta = client.get("/api/public/meta").json()
+    assert meta["states"]
+    gj, jk = meta["zones_by_state"]["24"], meta["zones_by_state"]["01"]
+    gj_zones = [z for places in gj["places"].values() for z in places.values()]
+    assert (gj_zones.count("A"), gj_zones.count("B")) == (130, 138)  # the Oct 2026 classification's counts
+    assert gj["places"]["Ahmedabad"]["Sanand"] == "B" and gj["places"]["The Dangs"]["Aahva"] == "A"
+    assert jk["places_kind"] == "block" and jk["places"]["Srinagar"]["Khonmoh"] == "B"  # moved by the 2024 amendment
     assert client.get("/api/health").json() == {"status": "ok"}
     assert client.get("/").status_code == 200
 
