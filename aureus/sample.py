@@ -57,7 +57,7 @@ _BOOKS = [
     ("solar", "solar", "SSS/0098", 8, [("Mono PERC solar modules 540Wp", "85414300", 220, 1200000),
                                         ("String inverter 100kW", "85044010", 1, 250000)], 12, False),
     ("tools", "tools", "PTC/1188", 9, [("Carbide inserts", "82090090", 600, 96000)], 18, True),
-    ("pack", "packaging", "inv-0042", 10, [("Corrugated boxes", "48191010", 5000, 85000)], 18, False),
+    ("pack", "packaging", "inv-0042", 10, [("Corrugated boxes", "48199900", 5000, 85000)], 18, False),  # wrong HSN
     ("oil", "oil", "WL/772", 11, [("Cutting oil", "27101980", 400, 62000)], 18, False),
     ("laptop", "it", "PIS/2026/310", 12, [("Engineering workstation", "84713010", 1, 85000)], 18, False),
     ("car", "auto", "MM/INV/5521", 14, [("Company car (sedan)", "87032391", 1, 900000)], 28, False),
@@ -67,7 +67,7 @@ _BOOKS = [
     ("missing3", "tools", "PTC/1214", 24, [("Drill bits", "82075000", 300, 54000)], 18, True),
     ("value", "castings", "DC-0937", 21, [("SG iron castings", "73251000", 2500, 410000)], 18, False),
     ("paisa_ok", "oil", "WL/790", 22, [("Hydraulic oil", "27101980", 200, 31000)], 18, False),
-    ("paisa_warn", "packaging", "SPI/0461", 23, [("Pallets", "44152000", 100, 42000)], 18, False),
+    ("paisa_warn", "packaging", "SPI/0461", 23, [("Wooden pallets", "", 100, 42000)], 18, False),  # no HSN
     ("taxhead", "steel", "BST/2026/1201", 25, [("MS plates", "72085110", 3000, 270000)], 18, False),
     ("typo", "castings", "DC-0951", 26, [("Aluminium die castings", "76169990", 1800, 324000)], 18, False),
     ("wronggstin", "it", "PIS/2026/333", 27, [("Network switches", "85176290", 4, 64000)], 18, False),
@@ -90,6 +90,8 @@ _PORTAL_TWEAKS = {
 _PORTAL_ONLY = [
     ("Bharat Steel Traders", S["steel"][1], "BST/2026/1150", 16, 156000, 18, False),
     ("Shiv Packaging Industries", S["packaging"][1], "SPI/0455", 19, 22000, 18, False),
+    # missing3 as the supplier actually filed it: second registration, trade name, bare number (for the AI matcher)
+    ("PRECISION TOOLING COMPANY", gstin("33", "AAJCP4410C", "2"), "1214", 24, 54000, 18, True),
 ]
 
 EXPECTED = {

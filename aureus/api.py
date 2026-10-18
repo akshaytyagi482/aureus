@@ -10,7 +10,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, EmailStr, Field
 
-from . import accounts, config, crypto, db, gstin as gstin_mod, integrations, mailer, sample, services
+from . import accounts, ai, ai_features, config, crypto, db, gstin as gstin_mod, integrations, mailer, sample, services
 from .config import BASE_DIR
 from .engines import policy
 from .engines.deadlines import period_label
@@ -61,6 +61,17 @@ def _consent(_, exc):
 @app.exception_handler(integrations.NotConfigured)
 def _not_configured(_, exc):
     return JSONResponse({"detail": str(exc)}, status_code=501)
+
+
+@app.exception_handler(ai.AIUnavailable)
+def _ai_off(_, exc):
+    return JSONResponse({"detail": str(exc), "code": "ai_not_configured"}, status_code=503)
+
+
+@app.exception_handler(ai.AIError)
+def _ai_error(_, exc):
+    headers = {"Retry-After": "60"} if exc.status == 429 else None
+    return JSONResponse({"detail": str(exc), "code": "ai_error"}, status_code=exc.status, headers=headers)
 
 
 @app.exception_handler(ValueError)
@@ -427,7 +438,77 @@ def notice_copilot(org_id: int, body: DefenseBody, user=Depends(current_user)):
         raise HTTPException(400, "No mismatched or missing invoices selected")
     draft = notice.draft_reply(org, rows, body.notice_type, body.notice_ref, body.notice_date,
                                period_label(body.period) if body.period else "")
-    return notice.polish_with_claude(draft) if body.polish else draft
+    return notice.polish(draft) if body.polish else draft
+
+
+# ---------------------------------------------------------------- AI features (Gemini)
+
+MAX_NOTICE_BYTES = 10 * 1024 * 1024
+
+
+def _ai_used(org: dict, user: dict, feature: str) -> None:
+    services.audit(org["id"], user["id"], "ai_used", {"feature": feature, "tier": config.AI_TIER})
+
+
+class AskBody(BaseModel):
+    question: str = Field(min_length=2, max_length=500)
+    period: str | None = Field(default=None, pattern=r"^\d{6}$")
+    history: list[dict] = Field(default_factory=list, max_length=6)
+
+
+@app.post("/api/orgs/{org_id}/ai/ask")
+def ai_ask(org_id: int, body: AskBody, user=Depends(current_user)):
+    org = services.get_org(user, org_id)
+    if not ai.enabled():
+        raise ai.AIUnavailable("AI features need a Gemini API key on the server (GEMINI_API_KEY)")
+    recon = services.run_reconciliation(org, body.period)
+    result = ai_features.ask(org, recon, services.run_policy(org), body.question, body.history)
+    _ai_used(org, user, "assistant")
+    return result
+
+
+@app.post("/api/orgs/{org_id}/ai/read-notice")
+async def ai_read_notice(org_id: int, file: UploadFile = File(...), acknowledge_free_tier: bool = Form(False),
+                         user=Depends(current_user)):
+    org = services.get_org(user, org_id)
+    if not ai.enabled():
+        raise ai.AIUnavailable("AI features need a Gemini API key on the server (GEMINI_API_KEY)")
+    if config.AI_TIER == "free" and not acknowledge_free_tier:
+        raise HTTPException(409, "On the free Gemini tier the notice is sent as it is and Google may use it. "
+                                 "Tick the box to confirm this is a test or anonymised notice.")
+    data = await file.read(MAX_NOTICE_BYTES + 1)
+    if len(data) > MAX_NOTICE_BYTES:
+        raise HTTPException(413, "Notice file is larger than 10 MB")
+    recon = services.run_reconciliation(org)
+    result = ai_features.read_notice(org, recon, data, (file.content_type or "").split(";")[0])
+    _ai_used(org, user, "notice_reader")
+    return result
+
+
+@app.get("/api/orgs/{org_id}/ai/hsn-fixer")
+def ai_hsn_fixer(org_id: int, user=Depends(current_user)):
+    org = services.get_org(user, org_id)
+    items = ai_features.hsn_problems(services.load_invoices(org["id"], "books"))
+    if not items:
+        return {"items": [], "total_problems": 0}
+    if not ai.enabled():
+        raise ai.AIUnavailable("AI features need a Gemini API key on the server (GEMINI_API_KEY)")
+    result = ai_features.suggest_hsn(items)
+    _ai_used(org, user, "hsn_fixer")
+    return {"items": result, "total_problems": len(items)}
+
+
+@app.get("/api/orgs/{org_id}/ai/supplier-matches")
+def ai_supplier_matches(org_id: int, period: str | None = Query(default=None, pattern=r"^\d{6}$"), user=Depends(current_user)):
+    org = services.get_org(user, org_id)
+    recon = services.run_reconciliation(org, period)
+    if not ai_features.candidate_pairs(recon):
+        return {"matches": [], "checked": 0}
+    if not ai.enabled():
+        raise ai.AIUnavailable("AI features need a Gemini API key on the server (GEMINI_API_KEY)")
+    matches = ai_features.match_suppliers(recon)
+    _ai_used(org, user, "supplier_matcher")
+    return {"matches": matches, "checked": len(ai_features.candidate_pairs(recon))}
 
 
 # ---------------------------------------------------------------- IMS
@@ -533,6 +614,7 @@ def meta():
         "schemes": [{"id": s["id"], "name": s["name"], "states": s["states"], "verified": s["verified"]} for s in grid["schemes"]],
         "coverage": grid.get("coverage", {}),
         "notice_types": [{"id": k, "title": v["title"]} for k, v in notice.NOTICE_TYPES.items()],
+        "ai": ai.status(),
         "purposes": [{"id": k, **v} for k, v in services.PURPOSES.items()],
     }
 

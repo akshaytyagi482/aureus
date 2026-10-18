@@ -18,8 +18,16 @@ SESSION_TTL_HOURS = int(os.environ.get("AUREUS_SESSION_TTL_HOURS", "12"))
 # Variance (in rupees) at or below which an invoice counts as matched (PRD: <= ₹0.99).
 MATCH_TOLERANCE_PAISE = int(os.environ.get("AUREUS_MATCH_TOLERANCE_PAISE", "99"))
 
-# Optional: Claude polishes Notice Copilot drafts when a key is configured.
+# Optional: Claude polishes Notice Copilot drafts when a key is configured (and Gemini is not).
 ANTHROPIC_MODEL = os.environ.get("AUREUS_LLM_MODEL", "claude-opus-5-5")
+
+# Optional: Gemini powers the AI features (assistant, notice reader, HSN fixer, supplier matcher, policy reader).
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", "")
+GEMINI_MODEL = os.environ.get("AUREUS_GEMINI_MODEL", "gemini-3.8-flash")
+GEMINI_LITE_MODEL = os.environ.get("AUREUS_GEMINI_LITE_MODEL", "gemini-3.5-flash-lite")
+# "free": Google may use prompts to improve its products, so the app masks client names and GSTINs
+# where it can and asks before sending documents. Set to "paid" once billing is enabled on the key.
+AI_TIER = os.environ.get("AUREUS_AI_TIER", "free").lower()
 
 # Optional: Zoho Books OAuth (India data centre by default).
 ZOHO_CLIENT_ID = os.environ.get("ZOHO_CLIENT_ID", "")

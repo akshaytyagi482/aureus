@@ -554,7 +554,7 @@ async function uploadFile(input) {
 
 // ---------------------------------------------------------------- organisation workspace
 
-const TABS = [['', 'Overview'], ['recon', 'Tax reconciliation'], ['ims', 'IMS actions'], ['subsidies', 'Subsidies'], ['notices', 'Notice copilot'], ['data', 'Data & consent'], ['settings', 'Profile']];
+const TABS = [['', 'Overview'], ['recon', 'Tax reconciliation'], ['ims', 'IMS actions'], ['subsidies', 'Subsidies'], ['notices', 'Notice copilot'], ['ai', 'Ask AI'], ['data', 'Data & consent'], ['settings', 'Profile']];
 
 async function orgShell(orgId, tab) {
   const org = await api(`/api/orgs/${orgId}`);
@@ -769,7 +769,7 @@ async function viewOrgNotices(orgId) {
   const { el } = await orgShell(orgId, 'notices');
   const [recon, m] = await Promise.all([getRecon(orgId), meta()]);
   const rows = recon.results.filter((r) => r.status !== 'MATCHED_ELIGIBLE');
-  el.innerHTML = noDataState(orgId, recon) || `<div class="grid two">
+  el.innerHTML = noDataState(orgId, recon) || `${noticeReaderCard(orgId, m.ai)}<div class="grid two">
     <div class="card"><h2>Draft a reply</h2>
       <p class="muted">Pick the notice you received (or expect). The draft cites only provisions and rulings from a vetted list.</p>
       <form data-form="notice" data-org="${orgId}">
@@ -781,11 +781,155 @@ async function viewOrgNotices(orgId) {
           ${rows.map((r) => `<label class="check"><input type="checkbox" name="row" value="${r.id}" checked>
             <span>${badge(r.status)} <span class="mono">${esc(r.books.invoice_no)}</span> · ${esc(r.books.supplier_name)} · ${inr(r.itc_at_risk)}</span></label>`).join('') || '<p class="muted">No mismatches to address.</p>'}
           </div></div>
-        <label class="check"><input type="checkbox" name="polish"> <span>Polish wording with Claude <small>(keeps every fact and citation; needs an API key on the server)</small></span></label>
+        <label class="check"><input type="checkbox" name="polish"> <span>Polish wording with AI <small>(keeps every fact and citation; needs an AI key on the server)</small></span></label>
         <div id="form-msg"></div>
         <button class="primary" type="submit" ${rows.length ? '' : 'disabled'}>Generate draft</button>
       </form></div>
     <div class="card" id="notice-out"><div class="empty">Your draft appears here.</div></div></div>`;
+}
+
+// ---------------------------------------------------------------- AI features (Gemini)
+
+function aiOffCard() {
+  return `<div class="card"><h2>AI features are switched off</h2>
+    <p>Add a Gemini API key on the server (environment variable <span class="mono">GEMINI_API_KEY</span>) to turn on:
+    the assistant, the notice reader, the HSN fixer and the supplier matcher. Everything else works without it.</p></div>`;
+}
+
+function freeTierBanner(info) {
+  return info && info.free_tier_notice ? `<div class="banner warn">${esc(info.free_tier_notice)}</div>` : '';
+}
+
+function noticeReaderCard(orgId, info) {
+  if (!info || !info.enabled) return '';
+  return `<div class="card"><h2>Read a notice with AI</h2>
+    <p class="muted">Upload the DRC-01C / ASMT-10 / DRC-01 you received (PDF or photo). The app reads the reference, dates,
+    amounts and invoices, fills the form below and ticks the invoices the officer lists.</p>
+    <form data-form="ai-notice" data-org="${orgId}" class="row" style="flex-wrap:wrap;gap:.6rem;align-items:center">
+      <input type="file" name="file" accept="application/pdf,image/png,image/jpeg,image/webp" required>
+      ${info.tier === 'free' ? '<label class="check"><input type="checkbox" name="ack"> <span>This is a test or anonymised notice (free AI tier)</span></label>' : ''}
+      <button class="primary" type="submit">Read notice</button></form>
+    <div id="ai-notice-out"></div></div>`;
+}
+
+async function submitAiNotice(form) {
+  const btn = form.querySelector('button[type=submit]');
+  const out = document.getElementById('ai-notice-out');
+  const fd = new FormData();
+  fd.append('file', form.querySelector('input[name=file]').files[0]);
+  fd.append('acknowledge_free_tier', form.querySelector('input[name=ack]')?.checked ? 'true' : 'false');
+  busy(btn, true, 'Reading…');
+  try {
+    const r = await api(`/api/orgs/${form.dataset.org}/ai/read-notice`, { method: 'POST', form: fd });
+    if (!r.is_gst_notice) { out.innerHTML = `<div class="banner warn">${esc(r.warnings.join(' '))} ${esc(r.summary)}</div>`; return; }
+    const nf = document.querySelector('form[data-form=notice]');
+    if (nf) {
+      if (r.notice_type !== 'other') nf.querySelector('[name=notice_type]').value = r.notice_type;
+      nf.querySelector('[name=notice_ref]').value = r.reference_no || '';
+      if (r.notice_date) nf.querySelector('[name=notice_date]').value = r.notice_date;
+      if (r.result_ids.length) nf.querySelectorAll('input[name=row]').forEach((c) => { c.checked = r.result_ids.includes(c.value); });
+    }
+    const a = r.amounts;
+    out.innerHTML = `<div class="banner info" style="margin-top:.8rem"><strong>${esc(r.form || 'Notice')}</strong>
+      ${r.reference_no ? ` · ref <span class="mono">${esc(r.reference_no)}</span>` : ''}${r.notice_date ? ` · dated ${fmtDate(r.notice_date)}` : ''}
+      ${r.reply_due_date ? ` · <strong>reply by ${fmtDate(r.reply_due_date)}</strong>${r.days_to_reply >= 0 ? ` (${r.days_to_reply} days left)` : ''}` : ''}
+      ${r.tax_period ? ` · period ${esc(r.tax_period)}` : ''}<br>${esc(r.summary)}</div>
+      ${a.total ? `<p>Amount in the notice: <strong>${inr2(a.total)}</strong> (IGST ${inr2(a.igst)}, CGST ${inr2(a.cgst)}, SGST ${inr2(a.sgst)})</p>` : ''}
+      ${r.issues.length ? `<h3>Issues raised</h3><ul class="tight">${r.issues.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>` : ''}
+      ${r.sections_cited.length ? `<p class="muted">Sections cited: ${esc(r.sections_cited.join(', '))}</p>` : ''}
+      ${r.result_ids.length || r.invoices_not_in_books.length ? `<p>${r.result_ids.length} listed invoice(s) found in your books and ticked below.
+      ${r.invoices_not_in_books.length ? `Not found in your books: <span class="mono">${esc(r.invoices_not_in_books.join(', '))}</span>` : ''}</p>`
+      : '<p>The notice does not list invoices, so every invoice with an issue stays ticked below.</p>'}
+      ${r.warnings.map((w) => `<div class="banner warn">${esc(w)}</div>`).join('')}
+      <p class="muted"><small>Read by AI: check each detail against the notice before you reply.</small></p>`;
+  } catch (err) { showError(err, out); }
+  busy(btn, false);
+}
+
+const AI_EXAMPLES = ['Why is my credit at risk this month?', 'Which supplier should I chase first?',
+  'Kaunsi subsidy mil sakti hai aur kya chahiye?', 'What do I need to fix before the 3B due date?'];
+
+async function viewOrgAi(orgId) {
+  const { el } = await orgShell(orgId, 'ai');
+  const m = await meta();
+  if (!m.ai || !m.ai.enabled) { el.innerHTML = aiOffCard(); return; }
+  const log = (store.aiHistory ||= {})[orgId] || [];
+  el.innerHTML = `${freeTierBanner(m.ai)}
+    <div class="card"><h2>Ask about this business</h2>
+      <p class="muted">Answers come only from this business's reconciliation and subsidy results. Ask in English or Hindi.</p>
+      <div id="ai-log">${log.map(chatTurn).join('')}</div>
+      <form data-form="ai-ask" data-org="${orgId}" class="row" style="gap:.5rem;margin-top:.6rem">
+        <input name="question" maxlength="500" required placeholder="e.g. Why is my credit at risk this month?" style="flex:1">
+        <button class="primary" type="submit">Ask</button></form>
+      <div class="row" style="flex-wrap:wrap;gap:.4rem;margin-top:.5rem">${AI_EXAMPLES.map((q) =>
+        `<button class="small" data-action="ai-example" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>
+      <div id="ai-ask-msg"></div></div>
+    <div class="grid two">
+      <div class="card"><h2>HSN fixer</h2>
+        <p class="muted">Finds bill lines with a missing or wrong HSN code and suggests the right 8-digit code from the
+        official GST directory. Correct codes stop blocked-credit surprises and reveal machinery that qualifies for subsidies.</p>
+        <button class="primary" data-action="ai-hsn" data-org="${orgId}">Check HSN codes</button><div id="ai-hsn-out"></div></div>
+      <div class="card"><h2>Supplier matcher</h2>
+        <p class="muted">Looks at bills missing from GSTR-2B and invoices in GSTR-2B you haven't booked, and spots pairs that
+        are the same bill under a different name, GSTIN or invoice number.</p>
+        <button class="primary" data-action="ai-match" data-org="${orgId}">Find hidden matches</button><div id="ai-match-out"></div></div>
+    </div>`;
+}
+
+function chatTurn(t) {
+  return `<div class="chat-q">${esc(t.q)}</div><div class="chat-a">${esc(t.a)}</div>`;
+}
+
+async function submitAiAsk(form) {
+  const orgId = form.dataset.org;
+  const input = form.querySelector('input[name=question]');
+  const btn = form.querySelector('button[type=submit]');
+  const history = (store.aiHistory ||= {})[orgId] ||= [];
+  const q = input.value.trim();
+  if (!q) return;
+  busy(btn, true, 'Thinking…');
+  try {
+    const r = await api(`/api/orgs/${orgId}/ai/ask`, { method: 'POST', body: { question: q, history: history.slice(-3) } });
+    history.push({ q, a: r.answer });
+    document.getElementById('ai-log').insertAdjacentHTML('beforeend', chatTurn({ q, a: r.answer }));
+    input.value = '';
+    document.getElementById('ai-ask-msg').innerHTML = '';
+  } catch (err) { showError(err, document.getElementById('ai-ask-msg')); }
+  busy(btn, false);
+}
+
+async function runHsnFixer(el) {
+  const out = document.getElementById('ai-hsn-out');
+  busy(el, true, 'Checking…');
+  try {
+    const r = await api(`/api/orgs/${el.dataset.org}/ai/hsn-fixer`);
+    if (!r.items.length) { out.innerHTML = '<p class="muted" style="margin-top:.6rem">Every HSN code on your bills is valid. Nothing to fix.</p>'; return; }
+    out.innerHTML = `<p style="margin-top:.6rem">${r.total_problems} item(s) need a code${r.total_problems > r.items.length ? ` (top ${r.items.length} by value shown)` : ''}.</p>
+      <table><thead><tr><th>Item</th><th>In books</th><th>Suggested</th></tr></thead><tbody>${r.items.map((i) => `<tr>
+        <td>${esc(i.description)}<br><small class="muted">${i.invoices} line(s) · ${inr(i.value)}</small></td>
+        <td class="mono">${esc(i.current_hsn || '—')}<br><small>${esc(i.status)}</small></td>
+        <td>${i.suggestion ? `<span class="mono">${esc(i.suggestion.hsn)}</span> ${badge(i.suggestion.confidence === 'high' ? 'MATCHED_ELIGIBLE' : 'MISMATCH_WARN', i.suggestion.confidence)}
+          <br><small>${esc(i.suggestion.description)}</small><br><small class="muted">${esc(i.suggestion.reason)}</small>
+          ${i.suggestion.subsidy_note ? `<br><small><strong>${esc(i.suggestion.subsidy_note)}</strong></small>` : ''}`
+          : '<small class="muted">No confident match; check with the supplier</small>'}</td></tr>`).join('')}</tbody></table>
+      <p class="muted"><small>Update the codes in your Tally / Zoho item master, then re-import.</small></p>`;
+  } catch (err) { showError(err, out); }
+  busy(el, false);
+}
+
+async function runSupplierMatcher(el) {
+  const out = document.getElementById('ai-match-out');
+  busy(el, true, 'Comparing…');
+  try {
+    const r = await api(`/api/orgs/${el.dataset.org}/ai/supplier-matches`);
+    if (!r.matches.length) { out.innerHTML = `<p class="muted" style="margin-top:.6rem">${r.checked ? `Checked ${r.checked} possible pair(s); none look like the same bill.` : 'No unmatched bills with a similar amount in GSTR-2B.'}</p>`; return; }
+    out.innerHTML = r.matches.map((x) => `<div class="banner ${x.verdict === 'same' ? 'info' : 'warn'}" style="margin-top:.6rem">
+      <strong>${x.verdict === 'same' ? 'Likely the same bill' : 'Possibly the same bill'}</strong> · ITC ${inr2(x.itc)}<br>
+      Books: ${esc(x.books.supplier_name)} · <span class="mono">${esc(x.books.invoice_no)}</span> · ${esc(x.books.supplier_gstin)}<br>
+      GSTR-2B: ${esc(x.portal.supplier_name)} · <span class="mono">${esc(x.portal.invoice_no)}</span> · ${esc(x.portal.supplier_gstin)}<br>
+      <small>${esc(x.reason)}</small><br><strong>${esc(x.fix)}</strong></div>`).join('');
+  } catch (err) { showError(err, out); }
+  busy(el, false);
 }
 
 async function submitNotice(form) {
@@ -799,7 +943,7 @@ async function submitNotice(form) {
       notice_type: d.get('notice_type'), notice_ref: d.get('notice_ref') || '',
       notice_date: date ? date.split('-').reverse().join('-') : '', result_ids: d.getAll('row'), polish: !!d.get('polish') } });
     out.innerHTML = `<h2>${esc(r.title)}</h2>
-      <p class="muted">${r.invoice_count} invoice(s) · ${inr(r.itc_in_dispute)} in dispute · reply in ${esc(r.reply_form)}${r.polished ? ' · polished by Claude' : ''}</p>
+      <p class="muted">${r.invoice_count} invoice(s) · ${inr(r.itc_in_dispute)} in dispute · reply in ${esc(r.reply_form)}${r.polished ? ` · polished by ${esc(r.polished_by || 'AI')}` : ''}</p>
       <div class="banner warn">${esc(r.review_note)}</div>
       ${r.polish_error ? `<div class="banner info">Template text shown: ${esc(r.polish_error)}</div>` : ''}
       <textarea id="notice-text">${esc(r.text)}</textarea>
@@ -905,6 +1049,9 @@ async function viewOrgSettings(orgId) {
 // ---------------------------------------------------------------- actions
 
 const actions = {
+  'ai-example': (el) => { const i = document.querySelector('form[data-form=ai-ask] input[name=question]'); i.value = el.dataset.q; i.focus(); },
+  'ai-hsn': runHsnFixer,
+  'ai-match': runSupplierMatcher,
   logout: async () => { try { await api('/api/auth/logout', { method: 'POST' }); } catch (_) { /* ignore */ } setSession(null, null); renderNav(); go('#/'); },
   open: (el) => go(el.dataset.href),
   'pick-role': (el) => {
@@ -991,6 +1138,8 @@ const actions = {
 };
 
 const forms = {
+  'ai-ask': submitAiAsk,
+  'ai-notice': submitAiNotice,
   calculator: submitCalculator,
   login: (f) => submitAuth(f, 'login'),
   signup: (f) => submitAuth(f, 'signup'),
@@ -1088,6 +1237,7 @@ const routes = [
   [/^\/org\/(\d+)\/ims$/, (m) => viewOrgIms(m[1]), true],
   [/^\/org\/(\d+)\/subsidies$/, (m) => viewOrgSubsidies(m[1]), true],
   [/^\/org\/(\d+)\/notices$/, (m) => viewOrgNotices(m[1]), true],
+  [/^\/org\/(\d+)\/ai$/, (m) => viewOrgAi(m[1]), true],
   [/^\/org\/(\d+)\/data$/, (m, p) => viewOrgData(m[1], p), true],
   [/^\/org\/(\d+)\/settings$/, (m) => viewOrgSettings(m[1]), true],
 ];

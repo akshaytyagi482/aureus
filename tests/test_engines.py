@@ -62,8 +62,8 @@ def test_reasons_and_flags(recon):
 def test_summary_totals(recon):
     s = recon["summary"]
     assert s["by_status"]["MISSING_IN_PORTAL"]["count"] == 3
-    assert len(recon["portal_only"]) == 2
-    assert s["itc_unclaimed_in_portal"] == 32040.0
+    assert len(recon["portal_only"]) == 3
+    assert s["itc_unclaimed_in_portal"] == 41760.0  # incl. missing3 as filed under the supplier's second GSTIN
     assert s["itc_books"] == pytest.approx(s["itc_claimable"] + s["itc_at_risk"], abs=0.01)
     assert s["suppliers_at_risk"][0]["supplier_name"] == "Bharat Steel Traders"
 

@@ -28,6 +28,7 @@ To switch, delete the `databases:` block in `render.yaml` and set `DATABASE_URL`
      `python -c "import os,base64;print(base64.b64encode(os.urandom(32)).decode())"`.
      **Store a copy in a password manager.** If it is lost, every encrypted record becomes unreadable.
    - `APP_BASE_URL` and the `SMTP_*` / `MAIL_FROM` email settings (section 3).
+   - `GEMINI_API_KEY` (optional; turns on the AI features). Get one at aistudio.google.com. Leave `AUREUS_AI_TIER` as `free` on a free key, and set it to `paid` once billing is enabled, before any real client data goes through it.
    - `ANTHROPIC_API_KEY` (optional), and the `ZOHO_*` values (optional; leave blank for now).
 3. **Deploy.** Render builds and starts the app, and checks `/api/health`. If the key or database is wrong, the deploy fails straight away and the log says why.
 4. **Custom domain (optional).** Under *Settings → Custom domains*, Render provides HTTPS automatically. If you use Zoho, set `ZOHO_REDIRECT_URI` to `https://<domain>/api/integrations/zoho/callback`.

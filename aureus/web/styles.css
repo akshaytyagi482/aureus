@@ -160,3 +160,7 @@ ul.tight li { margin: .15rem 0; }
 .role-toggle button.selected { border-color: var(--navy); box-shadow: 0 0 0 3px var(--blue-soft); }
 footer.site { text-align: center; color: var(--muted); font-size: .82rem; padding: 2rem 1rem; }
 @media print { .topbar, .tabs, button { display: none !important; } }
+
+/* AI assistant */
+.chat-q { margin: .8rem 0 .3rem auto; max-width: 80%; background: var(--blue-soft); border-radius: 10px 10px 2px 10px; padding: .5rem .8rem; width: fit-content; }
+.chat-a { max-width: 90%; background: #fff; border: 1px solid var(--line); border-radius: 10px 10px 10px 2px; padding: .6rem .8rem; white-space: pre-wrap; line-height: 1.5; }

@@ -1,14 +1,14 @@
 """Notice Copilot: section-specific reply drafts, and supplier follow-up messages.
 
 Drafts are assembled from vetted templates and a fixed citation list, so every
-legal reference in the output comes from `CITATIONS` below. When an Anthropic
-API key is configured, Claude can tighten the wording, but it is instructed not
-to add citations, and the template is returned unchanged if anything goes wrong.
+legal reference in the output comes from `CITATIONS` below. When a Gemini (or
+Anthropic) key is configured, the model can tighten the wording, but it is told
+not to add citations, and the template is returned unchanged if anything goes wrong.
 """
 
 from datetime import date
 
-from .. import config
+from .. import ai, config
 from ..engines.tax import MISSING
 from ..money import inr as _inr
 
@@ -185,6 +185,25 @@ SYSTEM_PROMPT = (
 )
 
 
+def _citations_kept(draft: dict, text: str) -> bool:
+    return all(c["cite"].split(" (")[0].split(" v. ")[0] in text for c in draft["citations"])
+
+
+def polish(draft: dict) -> dict:
+    """Refine wording with Gemini when configured, else Claude. Falls back to the template on any problem."""
+    if not ai.enabled():
+        return polish_with_claude(draft)
+    try:
+        text = ai.generate_text(draft["text"], SYSTEM_PROMPT, max_tokens=8000)
+    except (ai.AIError, ai.AIUnavailable) as exc:
+        return {**draft, "polish_error": str(exc)}
+    if not text:
+        return {**draft, "polish_error": "Empty response; template kept"}
+    if not _citations_kept(draft, text):
+        return {**draft, "polish_error": "Polished text dropped a citation; template kept"}
+    return {**draft, "text": text, "polished": True, "polished_by": "Gemini"}
+
+
 def polish_with_claude(draft: dict) -> dict:
     """Optionally refine wording with Claude. Falls back to the template on any problem."""
     try:
@@ -211,11 +230,9 @@ def polish_with_claude(draft: dict) -> dict:
     text = "".join(block.text for block in response.content if block.type == "text").strip()
     if not text:
         return {**draft, "polish_error": "Empty response; template kept"}
-    # Guard: keep the template if any citation was dropped.
-    for c in draft["citations"]:
-        if c["cite"].split(" (")[0].split(" v. ")[0] not in text:
-            return {**draft, "polish_error": "Polished text dropped a citation; template kept"}
-    return {**draft, "text": text, "polished": True}
+    if not _citations_kept(draft, text):  # keep the template if any citation was dropped
+        return {**draft, "polish_error": "Polished text dropped a citation; template kept"}
+    return {**draft, "text": text, "polished": True, "polished_by": "Claude"}
 
 
 def supplier_reminder(org: dict, supplier: dict, rows: list[dict], due_date: str) -> dict:

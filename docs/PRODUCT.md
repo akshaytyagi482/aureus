@@ -21,19 +21,20 @@ Every month, AureusRecon reads a factory's purchase records and its GSTR-2B. It 
 
 ## Where AI is used, and where it isn't
 
-**Today, AI is a small part, and that is deliberate.** Tax credit amounts and subsidy eligibility must be exact and explainable to a tax officer or a DIC official. So the matching and the rules are deterministic code: the same input always gives the same answer, and every rupee traces back to a rule or an invoice. The one AI piece is optional. Claude can polish the wording of a notice reply, and it is not allowed to change any fact or citation.
+**AI sits at the edges, and the core stays deterministic.** Tax credit amounts and subsidy eligibility must be exact and explainable to a tax officer or a DIC official, so the matching and the rules are plain code: the same input always gives the same answer, and every rupee traces back to a rule or an invoice. AI (Gemini, switched on with `GEMINI_API_KEY`) handles the messy edges, and the app checks its output before showing it:
 
-**Where AI genuinely helps** is the messy edges that rules handle badly:
-
-| AI feature | What it does | Data it needs | Where that data comes from |
+| AI feature | Status | What it does | What still improves it |
 |---|---|---|---|
-| **A. HSN fixer** | Suggests the right HSN code for items with a missing or wrong code, from the item description. Missed machinery codes mean missed subsidies | Item names from Tally item masters; the HS code list | HS 2022 list: **already bundled**. Item names: one real client export |
-| **B. Notice reader** | Reads a DRC-01C / ASMT-10 / DRC-01 PDF and pulls out the reference number, period, amounts and invoices in dispute, then drafts the reply | 5–10 real notices with names blanked out | The CA's files (notices are not public) |
-| **C. Policy reader** | Turns a new government order (GR PDF) into a draft scheme rule for a human to approve | Government policy PDFs | Public: state industries department websites |
-| **D. Supplier name matcher** | Links "Bharat Steel" in Tally to "BHARAT STEEL TRADERS" in GSTR-2B when GSTINs are missing or wrong in the books | Real ledger and GSTR-2B pairs | One real client's month |
-| **E. Ask-your-books assistant** | Answers "why is my credit at risk this month?" in plain language from the app's own results | Nothing new | The app's own data |
+| **A. HSN fixer** | Built | Suggests the 8-digit code for lines with a missing or wrong HSN, picking only from a shortlist drawn from the official GST directory, and flags when the fix makes the item count for subsidies | One real Tally item master to measure accuracy |
+| **B. Notice reader** | Built | Reads a DRC-01C / ASMT-10 / DRC-01 PDF or photo, fills Notice Copilot and ticks the invoices in dispute | 5–10 real notices (names blanked) to measure accuracy |
+| **C. Policy reader** | Built (command line) | Drafts a rule file from a government order for a person to verify | Nothing; used whenever a state issues a new order |
+| **D. Supplier matcher** | Built | Finds "missing" bills that are in GSTR-2B under another name, GSTIN or invoice number | One real client month |
+| **E. Ask AI assistant** | Built | Answers questions about the business in English or Hindi, only from its own results | Nothing new |
+| Notice reply polish | Built | Gemini (or Claude) tightens a reply's wording without touching facts or citations | — |
 
-No model training is needed for any of these: Claude works from instructions plus a few examples. What we do need is a handful of **real, labelled examples per feature** to measure accuracy before showing it to clients.
+No model training is needed: the models work from instructions and the app's own data. Before showing these to paying clients, measure them on a handful of **real, labelled examples per feature**.
+
+**Free vs paid Gemini key.** On the free tier Google may use what is sent to improve its products. With `AUREUS_AI_TIER=free` (the default) the app replaces client names and GSTINs with placeholders in assistant questions, and asks the user to confirm before an uploaded notice is sent. Use a paid key (and set `AUREUS_AI_TIER=paid`) before real client data goes through it.
 
 ## Data: what I collected, what I couldn't, and what only you can get
 

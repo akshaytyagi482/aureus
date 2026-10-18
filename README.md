@@ -125,7 +125,21 @@ Builds a reply from section-specific templates. It groups invoices by mismatch r
 
 Every legal citation comes from a fixed, reviewed list in `notice.py`. Each citation states its caveat, for example when it predates Sec 16(2)(aa). The list also includes the adverse Supreme Court authority on burden of proof, so the reply addresses it instead of ignoring it.
 
-If `ANTHROPIC_API_KEY` is set, ticking *Polish with Claude* refines the wording (model `claude-opus-5-5`, server-side refusal fallback enabled). The prompt forbids changing facts or citations, and the template is kept if any citation goes missing or the call fails. Drafts are marked for professional review either way.
+Ticking *Polish wording with AI* refines the wording with Gemini when `GEMINI_API_KEY` is set, otherwise with Claude (`ANTHROPIC_API_KEY`, model `claude-opus-5-5`). The prompt forbids changing facts or citations, and the template is kept if any citation goes missing or the call fails. Drafts are marked for professional review either way.
+
+### AI features (Gemini)
+
+Set `GEMINI_API_KEY` to switch these on (the *Ask AI* tab and the notice reader). Without a key the rest of the app works unchanged. All calls go through `aureus/ai.py`; the features are in `aureus/ai_features.py`.
+
+| Feature | What it does | Model | Safeguard |
+|---|---|---|---|
+| **Ask AI** | Answers questions about the business ("which supplier should I chase?", in English or Hindi) from its reconciliation and subsidy results | `gemini-3.8-flash` | Told to answer only from the data; on the free tier, client names and GSTINs are replaced with placeholders before sending and restored in the answer |
+| **Notice reader** | Reads a DRC-01C / ASMT-10 / DRC-01 PDF or photo, fills Notice Copilot (type, reference, date, period) and ticks the invoices the officer lists | `gemini-3.8-flash` | Structured JSON schema; GSTIN checked against the business; on the free tier the user must confirm the notice is a test or anonymised copy |
+| **HSN fixer** | Suggests the 8-digit code for bill lines with a missing or invalid HSN, and says when it makes the item count for subsidies | `gemini-3.5-flash-lite` | The model may only pick from a shortlist built from the official GST HSN directory; anything else is dropped |
+| **Supplier matcher** | Spots bills marked "missing in GSTR-2B" that are really in GSTR-2B under another name, GSTIN or invoice number, and says what to correct | `gemini-3.5-flash-lite` | Only pairs with matching amounts and dates are sent; suggestions never change results |
+| **Policy reader** | `python tools/policy_reader.py policy.pdf --state-code 24 --state Gujarat` drafts a rule file from a government order | `gemini-3.8-flash` | Every scheme is forced to `verified: false`; the draft goes to `research/policies/drafts/` and is validated by the merge tool |
+
+`AUREUS_AI_TIER=free` (the default) is for a free Gemini key, where Google may use prompts to improve its products. Switch to `paid` once billing is enabled on the key, before using real client data. Every AI call is written to the audit log (feature and tier, never the content).
 
 ## Database (PostgreSQL)
 
@@ -164,12 +178,15 @@ Set `AUREUS_MASTER_KEY` (base64 of 32 random bytes) in production. Without it, a
 | `APP_BASE_URL` | Public URL used in emailed links |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `MAIL_FROM` | Outgoing email for password resets and alerts. In development, emails are printed to the log |
 | `AUREUS_LOGIN_MAX_FAILURES`, `AUREUS_LOGIN_MAX_FAILURES_PER_IP`, `AUREUS_LOGIN_WINDOW_MINUTES` | Login lockout: by default 5 failures per email or 20 per IP within 15 minutes |
-| `ANTHROPIC_API_KEY` | Enables *Polish with Claude* in Notice Copilot |
+| `GEMINI_API_KEY` | Enables the AI features (Ask AI, notice reader, HSN fixer, supplier matcher, policy reader) |
+| `AUREUS_AI_TIER` | `free` (default: mask client names/GSTINs, confirm before sending notices) or `paid` |
+| `AUREUS_GEMINI_MODEL`, `AUREUS_GEMINI_LITE_MODEL` | Override the models, default `gemini-3.8-flash` and `gemini-3.5-flash-lite` |
+| `ANTHROPIC_API_KEY` | Claude polishes Notice Copilot replies when no Gemini key is set |
 | `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REDIRECT_URI` | Enables one-click Zoho Books OAuth (India DC by default; override `ZOHO_ACCOUNTS_URL` / `ZOHO_API_URL`) |
 
 ## What is production-ready vs. what needs work
 
-**Built and tested** (67 tests against PostgreSQL 16, plus a browser run through every screen):
+**Built and tested** (79 tests against PostgreSQL 16, plus a browser run through every screen):
 - ingestion parsers and the reconciliation engine
 - paisa-level matching
 - the policy maths

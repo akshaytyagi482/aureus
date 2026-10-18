@@ -21,7 +21,11 @@ envVarGroups:
         sync: false
       - key: MAIL_FROM          # e.g. AureusRecon <alerts@yourdomain.in>
         sync: false
-      - key: ANTHROPIC_API_KEY  # optional: AI features
+      - key: GEMINI_API_KEY     # optional: AI features (assistant, notice reader, HSN fixer, supplier matcher)
+        sync: false
+      - key: AUREUS_AI_TIER     # "free" masks client names/GSTINs and asks before sending notices; "paid" once billing is on
+        value: free
+      - key: ANTHROPIC_API_KEY  # optional: Claude polishes notice replies when no Gemini key is set
         sync: false
       - key: ZOHO_CLIENT_ID     # optional: Zoho Books one-click connect
         sync: false

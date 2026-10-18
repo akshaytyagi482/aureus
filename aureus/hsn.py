@@ -64,7 +64,9 @@ def describe(hsn: str) -> dict:
             description = _codes()[code[:length]]
             # A 2-digit match alone means the heading itself is not a real code.
             status = "valid" if length >= 4 else "unknown_heading"
-            if len(code) == 8 and length == 6:
+            if len(code) > length == 4 and code not in _india()["hsn"]:
+                status = "unlisted"  # the heading is real but the subheading/tariff line typed after it is not
+            elif len(code) == 8 and length == 6:
                 if code in _india()["hsn"]:
                     length = 8
                     line = _tariff_line(code)
