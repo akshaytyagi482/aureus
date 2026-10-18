@@ -257,12 +257,22 @@ def test_hsn_lookup():
     assert hsn.describe("98765432")["status"] in ("unknown", "unknown_heading")
 
 
+def test_hsn_gst_directory():
+    from aureus import hsn
+    pc = hsn.describe("84713010")
+    assert (pc["status"], pc["level"]) == ("valid", 8) and pc["description"].endswith("Personal computer")
+    assert hsn.describe("84589999")["status"] == "unlisted"  # real heading, made-up tariff line
+    assert "Road transport" in hsn.describe("996511")["description"]
+    assert hsn.describe("030559")["status"] == "valid"  # Excel dropped this code's leading zero
+
+
 def test_hsn_flags_in_reconciliation():
     sup = sample.S["steel"][1]
     b = Invoice(sup, "S", "X-1", date(2026, 9, 1), 1000, cgst=90, sgst=90,
-                lines=[InvoiceLine("Mystery part", "98765432", 500), InvoiceLine("No code", "", 500)])
+                lines=[InvoiceLine("Mystery part", "98765432", 500), InvoiceLine("No code", "", 500),
+                       InvoiceLine("Odd lathe", "84589999", 500)])
     flags = {f["code"] for f in tax.reconcile([b], [], "27", today=TODAY)["results"][0]["flags"]}
-    assert {"HSN_UNKNOWN", "HSN_MISSING"} <= flags
+    assert {"HSN_UNKNOWN", "HSN_MISSING", "HSN_UNLISTED"} <= flags
 
 
 def _with_ims():

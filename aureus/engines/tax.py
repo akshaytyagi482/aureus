@@ -138,6 +138,9 @@ def _flags(books: Invoice, buyer_state: str, today: date) -> list[dict]:
         elif code["status"] in ("unknown", "unknown_heading"):
             flags.append({"code": "HSN_UNKNOWN", "text": f"{line.description or 'Item'}: HSN {line.hsn} is not a valid "
                                                         "HS heading; check the item master"})
+        elif code["status"] == "unlisted":
+            flags.append({"code": "HSN_UNLISTED", "text": f"{line.description or 'Item'}: HSN {line.hsn} is not a tariff "
+                                                         "line in the GST HSN directory; check the last two digits"})
         for prefix, why in BLOCKED_PREFIXES.items():
             if line.hsn.startswith(prefix):
                 flags.append({"code": "POSSIBLY_BLOCKED", "text": f"{line.description or line.hsn}: {why}"})

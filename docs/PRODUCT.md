@@ -38,7 +38,8 @@ No model training is needed for any of these: Claude works from instructions plu
 ## Data: what I collected, what I couldn't, and what only you can get
 
 **Collected and used (public, official):**
-- **HS 2022 product-code list** (UN Comtrade, 6,939 codes). Now used to validate HSN codes and describe items.
+- **HS 2022 product-code list** (UN Comtrade, 6,939 codes). Used for readable item descriptions.
+- **GST portal HSN directory** (sent by you: 21,928 goods codes down to India's 8-digit tariff lines, 681 SAC service codes). Every bill line's HSN is checked against it; a code whose heading is real but whose 8-digit line doesn't exist is flagged `HSN_UNLISTED`. Rebuild with `python tools/build_hsn.py HSN_SAC.xlsx` when the portal updates it.
 - **Maharashtra MIISP 2025 government order and its taluka list.** Used for verified subsidy rules.
 - **MSME ZED scheme guidelines.** Used for verified certification subsidy figures.
 - **PSI-2019 government order.** Used to confirm it no longer applies.
@@ -49,7 +50,7 @@ No model training is needed for any of these: Claude works from instructions plu
 - **Not used:** the other offline tools (TRAN, GSTR-4/6/7/8/10/11, SRM, ITC-01/03/04, annual returns, advance ruling, DRC-22A, TDS/TCS) are for other taxpayer types or filings outside this product. The portal's **tax-collection statistics** are useful for market sizing in a pitch, not for the product. The **CBIC and state tax websites** are the sources to use for Notice Copilot citations and GST rate data.
 
 **Could not get from here:**
-- **The GST portal** (gst.gov.in) refuses connections from outside India. It has the official 8-digit Indian HSN + SAC directory (free, no login) and the GSTR-2B offline matching tool. Your brother can download the HSN directory from India: *services.gst.gov.in → Search HSN Code → Download HSN Directory in Excel Format*.
+- **The GST portal** (gst.gov.in) often refuses connections from outside India, so its files have to be downloaded from India and sent over (as was done for the HSN directory).
 
 **Competitor apps:** I only looked at their public pages (features, pricing). Their customers' data is other businesses' confidential financial records, and taking it would breach their terms and the law (DPDP Act). Public positioning:
 - **ClearTax (ClearGST):** an established enterprise and CA product, with *exact / suggested / mismatch / missing* matching buckets.
